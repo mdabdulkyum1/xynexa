@@ -3,11 +3,11 @@ import { motion } from 'framer-motion';
 import { useState, useEffect } from 'react';
 
 const slides = [
-  'https://i.ibb.co.com/Rrg3Tfs/grap-1.jpg',
+  'https://i.ibb.co.com/M5MjS185/grap-2.webp',
   'https://i.ibb.co.com/TBBzpMyg/Bar-graph-showing-points-on-the-Daily-Report-Card-for-Weeks-4-5-and-6-of.png',
 
-  'https://i.ibb.co.com/M5MjS185/grap-2.webp',
   'https://i.ibb.co.com/V0ZCtQsc/grap-3.webp',
+  'https://i.ibb.co.com/xqfx3jt8/ae3c2faa-8502-4ade-9d29-ceaa26ae3438-cover.png',
 ];
 
 const Hero = () => {
