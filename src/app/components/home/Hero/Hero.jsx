@@ -2,7 +2,7 @@
 const Hero = () => {
     return (
         <div>
-            Hero
+            Hero boss coming
         </div>
     );
 };
