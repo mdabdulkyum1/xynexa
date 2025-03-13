@@ -26,7 +26,7 @@ const Faq = () => {
   return (
     <div className="max-w-6xl mx-auto p-4 flex flex-col lg:flex-row lg:items-start lg:gap-10">
     <div className="lg:w-1/2  text-center lg:text-left lg:mt-40 mb-6 lg:mb-0 ">
-      <span className="bg-primary text-white px-3 py-1 rounded-md text-sm font-semibold dark:text-white">Frequently Asked Questions</span>
+      <span className="bg-primary text-white px-3 py-1 rounded-md text-sm font-semibold dark:text-white">Frequently Asked Questions?</span>
       <h2 className="text-2xl font-bold mt-2">Do you have any questions?</h2>
       <p className="text-gray-600 mt-2 text-sm md:text-base">
       Below you’ll find answers to the most common questions about our Xynexa platform and its features. If you still can’t find what you're looking for, feel free to reach out to us. <br/> 
