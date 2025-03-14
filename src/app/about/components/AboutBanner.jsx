@@ -1,7 +1,6 @@
 
 import Image from "next/image";
-// import banner1 from '../../../../public/assets/images/about-banner1.jpg'
-// import banner2 from '../../../../public/assets/images/about-banner2.jpg'
+
 
 const AboutBanner = () => {
     return (
@@ -25,14 +24,14 @@ const AboutBanner = () => {
                         />
                     </div>
 
-                    <div className="w-full h-[200px] md:h-[500px] lg:h-[600px]">
+                    <div className="w-full h-[200px] md:h-[500px] lg:h-[600px] overflow-hidden group">
                         <Image
                             src="/assets/images/about-banner2.jpg"
                             alt="Seamless workflow"
                             width={0}
                             height={0}
                             sizes="100vw"
-                            className="w-full h-full object-cover rounded-2xl"
+                            className="w-full h-full object-cover rounded-2xl transition-transform duration-500 group-hover:scale-110"
                         />
                     </div>
 
