@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 
-const ReviewCard = (review) => {
+const ReviewCard = ({review}) => {
     return (
         <div className="bg-white shadow-md rounded-xl p-5 w-80 text-center">
         <p className="text-gray-700 italic">"{review.text}"</p>
