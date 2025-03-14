@@ -1,6 +1,8 @@
-const ReviewCard = ({ review }) => {
+import PropTypes from 'prop-types';
+
+const ReviewCard = (review) => {
     return (
-      <div className="bg-white shadow-md rounded-xl p-5 w-80 text-center">
+        <div className="bg-white shadow-md rounded-xl p-5 w-80 text-center">
         <p className="text-gray-700 italic">"{review.text}"</p>
         <div className="mt-4 flex items-center justify-center gap-3">
           <img
@@ -15,5 +17,10 @@ const ReviewCard = ({ review }) => {
         </div>
       </div>
     );
-  };
-  export default ReviewCard;
+};
+
+ReviewCard.propTypes = {
+    
+};
+
+export default ReviewCard;

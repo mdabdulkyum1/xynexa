@@ -33,7 +33,7 @@ const Reviews = () => {
         }
     ];
     return (
-        <div className="flex flex-wrap justify-center gap-6 p-10">
+        <div className="flex flex-wrap justify-center gap-6 p-10 bg-gradient-to-r from-purple-100/60 to-blue-100/60">
             {reviews.map((review) => (
                 <ReviewCard key={review.id} review={review} />
             ))}
