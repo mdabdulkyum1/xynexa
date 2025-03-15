@@ -3,6 +3,8 @@ import AboutHelp from "./components/AboutHelp";
 import AboutValue from "./components/AboutValue";
 import ClientSays from "./components/ClientSays";
 import AboutOurTeam from "./components/AboutOurTeam";
+import Timeline from "./components/Timeline";
+
 
 const About = () => {
     return (
@@ -12,7 +14,7 @@ const About = () => {
             <AboutValue></AboutValue>
             <ClientSays></ClientSays>
             <AboutOurTeam></AboutOurTeam>
-
+            <Timeline></Timeline>
         </div>
     );
 };
