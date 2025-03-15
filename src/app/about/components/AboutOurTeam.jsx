@@ -39,12 +39,12 @@ export default function AboutOurTeam() {
                             whileHover={{ scale: 1.05, rotate: 3 }}
                             transition={{ type: "spring", stiffness: 150 }}
                         />
-                        <div className="absolute bottom-0 right-1 w-full text-right py-2 rounded-b-lg glass-team p-2">
+                        <div className="absolute bottom-0  w-full text-right  glass-team ">
                             <p
                                 style={{ 
                                     textShadow: "0px 5px 10px rgba(0, 0, 0, 1)" 
                                 }}
-                                className={`text-lg font-semibold  leading-none ${member.name == "Natalia" ? "text-slate-700" : "text-white"}`}
+                                className={`text-lg font-semibold  leading-none text-white`}
                             >
                                 {member.name}
                             </p>
