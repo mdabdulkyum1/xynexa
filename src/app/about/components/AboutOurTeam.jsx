@@ -44,7 +44,7 @@ export default function AboutOurTeam() {
                                 style={{ 
                                     textShadow: "0px 5px 10px rgba(0, 0, 0, 1)" 
                                 }}
-                                className="text-lg font-semibold text-white leading-none"
+                                className={`text-lg font-semibold  leading-none ${member.name == "Natalia" ? "text-slate-700" : "text-white"}`}
                             >
                                 {member.name}
                             </p>
