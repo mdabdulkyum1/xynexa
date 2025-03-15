@@ -48,7 +48,7 @@ const ClientSays = () => {
                         <img src={clientImg.img2} alt="Natalia Larsson Avatar" width={40} height={40} className="rounded-full mr-2" />
                         <div>
                             <span className="font-bold">Natalia Larsson</span><br />
-                            <span>Director of Sales</span>
+                            <span>Director Of Sales</span>
                         </div>
                     </div>
                 </div>
