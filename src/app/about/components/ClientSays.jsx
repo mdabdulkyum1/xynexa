@@ -35,7 +35,7 @@ const ClientSays = () => {
                     </div>
                 </div>
 
-                {/* Testimonial 2 */}
+                {/* Testimonial 2 **/}
                 <div className="bg-white rounded-lg shadow-md xl:py-8 md:p-6 w-full md:w-1/3 border p-4">
                     <div className="flex items-center mb-4 text-2xl">
                         <TrelloIcon className="mr-2 text-3xl" size={32} />
