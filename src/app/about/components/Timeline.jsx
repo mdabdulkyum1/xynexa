@@ -45,7 +45,7 @@ const Timeline = () => {
   const containerRef = useRef(null);
 
   return (
-    <div className="bg-[#f5f2e9] py-12 px-4">
+    <div className="bg-primary/10 py-12 px-4">
       <h2 className="text-center text-3xl font-bold mb-8">How we got here</h2>
       <motion.div
         ref={containerRef}
