@@ -5,38 +5,38 @@ import { useRef } from "react";
 const timelineData = [
   {
     year: "2020",
-    title: "Opened a new office in London, UK",
-    description: "Expanded our operations to serve a broader audience.",
+    title: "Launched Collaboration Platform",
+    description: "Introduced a revolutionary platform for seamless team collaboration.",
     image: "https://i.ibb.co.com/v6T6kNHs/timeline-03.webp",
   },
   {
     year: "2021",
-    title: "Top-rated software solution for service suppliers",
-    description: "Recognized as a leading provider of software solutions.",
+    title: "Integrated Real-Time Editing",
+    description: "Added real-time document editing to enhance team productivity.",
     image: "https://i.ibb.co.com/RpqGggVK/timeline-02.webp",
   },
   {
     year: "2022",
-    title: "Growing customer base",
-    description: "Served over 10,000 satisfied customers worldwide.",
+    title: "Expanded to Global Teams",
+    description: "Supported over 10,000 teams worldwide with our collaboration tools.",
     image: "https://i.ibb.co.com/mfYZCk5/timeline-01.webp",
   },
   {
     year: "2023",
-    title: "Expansion to new markets",
-    description: "Entered new international markets and established strong partnerships.",
+    title: "Introduced AI-Powered Features",
+    description: "Integrated AI to automate tasks and improve team efficiency.",
     image: "https://i.ibb.co.com/T32kp44/timeline-06.webp",
   },
   {
     year: "2024",
-    title: "Our Executive Team",
-    description: "Strengthened our leadership with industry experts.",
+    title: "Enhanced Security Features",
+    description: "Rolled out advanced security protocols to protect team data.",
     image: "https://i.ibb.co.com/rGzKshjL/timeline-05.webp",
   },
   {
     year: "Today",
-    title: "Top-rated software solution for service suppliers",
-    description: "Continuing innovation and excellence in software solutions.",
+    title: "Leading Collaboration Platform",
+    description: "Continuing to innovate and empower teams worldwide.",
     image: "https://i.ibb.co.com/cK2qX0rv/timeline-04.webp",
   },
 ];
@@ -72,8 +72,7 @@ const Timeline = () => {
               />
               <div className="absolute top-24 md:top-32 left-1/2 w-2 h-2 bg-black rounded-full transform -translate-x-1/2"></div>
               <div className="text-center mt-8 md:mt-12">
-                <h3 className="text-lg  md:text-xl lg:text-2xl font-bold">{item.year}</h3>
-                {/* <h4 className="text-base md:text-lg font-medium">{item.title}</h4> */}
+                <h3 className="text-lg md:text-xl lg:text-2xl font-bold">{item.year}</h3>
                 <p className="text-gray-600 text-sm md:text-base">{item.description}</p>
               </div>
             </motion.div>
