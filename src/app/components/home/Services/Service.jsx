@@ -30,7 +30,7 @@ const Service = () => {
 
     return (
         <div className="container mx-auto p-4">
-            <div className="flex flex-col lg:flex-row items-start lg:items-center gap-6 p-6 bg-white shadow-lg rounded-lg">
+            <div className="flex flex-col lg:flex-row items-start lg:items-center gap-6 p-6 dark:bg-[#39325e] shadow-lg rounded-lg">
                 {/* Accordion Section */}
                 <div className="w-full lg:w-1/3">
                     <h2 className="text-2xl font-semibold mb-4 text-center lg:text-left">Our Services</h2>
