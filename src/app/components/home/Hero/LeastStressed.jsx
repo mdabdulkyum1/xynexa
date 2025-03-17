@@ -6,7 +6,7 @@ import Marquee from 'react-fast-marquee';
 
 const LeastStressed = () => {
   return (
-    <div className="px-4 md:px-8 lg:px-20 py-5 bg-gradient-to-r from-[#0b0e1f] via-[#39325e] to-[#0b0e1f]">
+    <div className="px-4 my-20  md:px-8 lg:px-20 py-5 bg-gradient-to-r from-[#0b0e1f] via-[#39325e] to-[#0b0e1f]">
       <h6 className="text-center text-2xl text-white">
         Happy customers. Happier clients. And the least-stressed teams around
       </h6>
@@ -84,7 +84,7 @@ const LeastStressed = () => {
       <div className=" py-3 marquee-container ">
         <Marquee speed={30} gradient={false} pauseOnHover={true}>
           <img
-            src="file:///C:/Users/V%20I%20V%20O%20B%20O%20O%20K/Downloads/shutterstock-light.svg"
+            src="/assets/contact/brand-01.svg"
             alt="ibm"
             className="h-11 mx-3 md:mx-8"
           />
