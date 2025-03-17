@@ -1,4 +1,5 @@
 "use client"
+import FAQSection from "@/app/contact-us/components/FAQSection";
 import { useState } from "react";
 
 const Faq = () => {
@@ -36,20 +37,8 @@ const Faq = () => {
     </div>
 
     <div className="lg:w-1/2 space-y-4">
-      {faqs.map((faq, index) => (
-        <div
-          key={index}
-          className="collapse collapse-arrow bg-white rounded-lg shadow-md"
-          onClick={() => setOpenIndex(openIndex === index ? null : index)}
-        >
-          <input type="checkbox" checked={openIndex === index} readOnly />
-          <div className="collapse-title font-medium text-lg flex justify-between">
-            {faq.question}
-            <span className="text-primary text-xl">{openIndex === index ? "-" : "+"}</span>
-          </div>
-          {openIndex === index && <div className="collapse-content text-gray-600 p-3">{faq.answer}</div>}
-        </div>
-      ))}
+      <FAQSection/>
+      
     </div>
   </div>
 );

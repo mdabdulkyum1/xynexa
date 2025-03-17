@@ -1,53 +1,66 @@
+'use client';
+
 import Link from 'next/link';
 import React from 'react';
+import { ModeToggle } from './ModeToggle';
+import { Button } from '@/components/ui/button';
+import { Sheet, SheetTrigger, SheetContent } from '@/components/ui/sheet';
+import { Menu } from 'lucide-react';
+import useScrollDirection from '@/hooks/ScrollDirection/useScrollDirection';
+import { usePathname } from 'next/navigation';
 
 const Navbar = () => {
 
-const links =<>
-  <li>
-    <Link href="/">Tasks</Link>
-  </li>
-  <li>
-    <Link href="/">About Us</Link>
-  </li>
-  <li>
-    <Link href="/">Pricing</Link>
-  </li>
-</>
+  const isVisible = useScrollDirection(); // Get the visibility status
 
+
+  const pathName = usePathname(); // Get the current path
+  if(!pathName.includes("dashboard")) {
     return (
-        <div>
-            <div className="navbar bg-base-100 shadow-sm">
-                <div className="navbar-start">
-                    <div className="dropdown">
-                        <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
-                            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"> <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h8m-8 6h16" /> </svg>
-                        </div>
-                        <ul
-                            tabIndex={0}
-                            className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow">
-                            {links}
-                        </ul>
-                    </div>
-                    <a className="btn btn-ghost text-xl lg:text-3xl">XYnexa</a>
-                    
-                </div>
-                {/* <div className="navbar-center hidden lg:flex">
-                    
-                </div> */}
-                <div className="navbar-end">
-                <div>
-                    <ul className="menu menu-horizontal px-1 hidden lg:flex">
-                        
-                        {links}
-                    </ul>
-                    </div>
-                    <a className=" btn p-1 lg:p-2 text-[#895ef7] bg-transparent border-2 border-[#895ef7] mr-2 rounded-2xl">Login</a>
-                    <a className="btn p-1 lg:p-2 bg-[#895ef7] text-white border-2 border-[#895ef7] rounded-2xl">Get Started</a>
-                </div>
-            </div>
+      <nav className={`border-b dark:border-b-slate-500 fixed top-0 left-0 z-50 w-full transition-transform duration-300 backdrop-blur-md bg-white/30 dark:bg-slate-800/30 ${
+        isVisible ? "translate-y-0" : "-translate-y-full"
+      }`}
+      >
+        <div className="container mx-auto flex items-center justify-between py-4 px-6 lg:px-12">
+          {/* Logo */}
+          <Link href="/" className="text-xl font-bold lg:text-2xl">
+            XYnexa
+          </Link>
+  
+          {/* Center-aligned links */}
+          <ul className="hidden lg:flex space-x-6 text-lg font-medium">
+            <li><Link href="/" className="hover:text-primary">Tasks</Link></li>
+            <li><Link href="/about" className="hover:text-primary">About Us</Link></li>
+            <li><Link href="/pricing" className="hover:text-primary">Pricing</Link></li>
+            <li><Link href="/dashboard" className="hover:text-primary">Dashboard</Link></li>
+            <li><Link href="/contact-us" className="hover:text-primary">Contact Us</Link></li>
+            <li><ModeToggle /></li>
+          </ul>
+  
+          {/* Mobile Menu */}
+          <Sheet>
+            <SheetTrigger asChild>
+              <Button variant="ghost" size="icon" className="lg:hidden">
+                <Menu className="w-6 h-6" />
+              </Button>
+            </SheetTrigger>
+            <SheetContent side="left" className="flex flex-col space-y-4 pt-6">
+              <Link href="/" className="text-lg font-medium hover:text-primary">Tasks</Link>
+              <Link href="/about" className="text-lg font-medium hover:text-primary">About Us</Link>
+              <Link href="/pricing" className="text-lg font-medium hover:text-primary">Pricing</Link>
+              <ModeToggle />
+            </SheetContent>
+          </Sheet>
+  
+          {/* Right-aligned buttons */}
+          <div className="hidden lg:flex space-x-4">
+            <Button variant="outline">Login</Button>
+            <Button>Get Started</Button>
+          </div>
         </div>
+      </nav>
     );
+  }
 };
 
 export default Navbar;
