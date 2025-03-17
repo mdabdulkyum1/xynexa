@@ -14,6 +14,7 @@ import {
   SidebarTrigger,
 } from "@/components/ui/sidebar"
 import { AppSidebar } from "./app-sidebar"
+import { ModeToggle } from "@/components/global/ModeToggle"
 
 export default function Page() {
   return (
@@ -37,6 +38,8 @@ export default function Page() {
                 </BreadcrumbItem>
               </BreadcrumbList>
             </Breadcrumb>
+
+            <div className="fixed right-10 to-5%"><ModeToggle></ModeToggle></div>
           </div>
         </header>
         <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
