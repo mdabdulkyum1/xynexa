@@ -84,47 +84,48 @@ const LeastStressed = () => {
       <div className=" py-3 marquee-container ">
         <Marquee speed={30} gradient={false} pauseOnHover={true}>
           <img
-            src="file:///C:/Users/V%20I%20V%20O%20B%20O%20O%20K/Downloads/shutterstock-light.svg"
-            alt="ibm"
-            className="h-11 mx-3 md:mx-8"
+            src="https://i.ibb.co.com/LhrbkmZm/Devnexus.png"
+            alt="Devnexus"
+            className="h-28 w-28 mx-5 md:mx-8"
           />
           <img
-            src="file:///C:/Users/V%20I%20V%20O%20B%20O%20O%20K/Downloads/unity-light.svg"
-            alt="ibm"
-            className="h-11 mx-3 md:mx-8"
-          />
-          <img
-            src="/assets/images/intel.png"
-            alt="intel"
-            className="h-12 mx-3 md:mx-8"
+            src="https://i.ibb.co.com/WvypBHnK/pngimg-com-google-PNG19644.png"
+            alt="google"
+            className="h-8 mx-5 md:mx-8"
           />
 
           <img
-            src="/assets/images/tesla-motors.png"
-            alt="tesla-motors"
-            className="h-20 mx-3 md:mx-8"
+            src="https://i.ibb.co.com/wZvkqc9Q/ibm-logo-sql-database-encryption-solutions-gemalto-enterprise-17.png"
+            alt="ibm"
+            className="h-8 mx-5 md:mx-8"
           />
 
           <img
-            src="/assets/images/meta.png"
+            src="https://i.ibb.co.com/LXdMgbcS/Netflix-logo.png"
+            alt="Netflix"
+            className="h-14 mx-5 md:mx-8"
+          />
+
+          <img
+            src="https://i.ibb.co.com/Fb3dvK8P/Spotify-Logo-wine.png"
+            alt="Spotify"
+            className="h-16 mx-5 md:mx-8"
+          />
+          <img
+            src="https://i.ibb.co.com/9906k1sG/microsoft-transparent-microsoft-free-free-png.webp"
+            alt="microsoft"
+            className="h-12 mx-5 md:mx-8"
+          />
+
+          <img
+            src="https://i.ibb.co.com/hFmdGRyP/tesla-logo-png-red-31.png"
+            alt="tesla"
+            className="h-14 mx-5 md:mx-8"
+          />
+          <img
+            src="https://i.ibb.co.com/HThVMdj2/Facebook-Logo-2019.png"
             alt="meta"
-            className="h-14 mx-3 md:mx-8"
-          />
-          <img
-            src="/assets/images/udemy.png"
-            alt="udemy"
-            className="h-10 mx-3 md:mx-8"
-          />
-
-          <img
-            src="/assets/images/netflix.png"
-            alt="netflix"
-            className="h-7 mx-3 md:mx-8"
-          />
-          <img
-            src="/assets/images/Nvidia-Logo.png"
-            alt="udemy"
-            className="h-20 mx-3 md:mx-8"
+            className="h-12 mx-5 md:mx-8"
           />
         </Marquee>
       </div>
@@ -133,3 +134,4 @@ const LeastStressed = () => {
 };
 
 export default LeastStressed;
+5;
