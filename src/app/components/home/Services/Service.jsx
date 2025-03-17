@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import { ChevronDown } from "lucide-react";
 
 const services = [
     { name: "Call", description: "Make and receive calls directly in Teams with features like group calling, voicemail, and call transfers.", image: "/assets/images/services.jpg" },
@@ -30,7 +29,7 @@ const Service = () => {
 
     return (
         <div className="container mx-auto p-4">
-            <div className="flex flex-col lg:flex-row items-start lg:items-center gap-6 p-6 dark:bg-[#39325e] shadow-lg rounded-lg">
+            <div className="flex flex-col lg:flex-row items-start lg:items-center gap-6 p-6 shadow rounded-lg">
                 {/* Accordion Section */}
                 <div className="w-full lg:w-1/3">
                     <h2 className="text-2xl font-semibold mb-4 text-center lg:text-left">Our Services</h2>
@@ -42,19 +41,20 @@ const Service = () => {
                                 onClick={() => toggleAccordion(index)} // Click anywhere on the accordion
                             >
                                 <div className={`p-4 font-semibold flex justify-between items-center transition-all duration-300 
-                                    ${activeIndex === index ? "bg-primary text-white" : "bg-gray-100 text-black"}`}
+                                    ${activeIndex === index ? "bg-primary text-black" : "bg-background "}`}
                                 >
                                     <span className="absolute left-0 top-0 bottom-0 transition-all duration-300"
-                                        style={{ width: activeIndex === index ? "4px" : "0px", backgroundColor: "#0073B1" }}
+                                        style={{ width: activeIndex === index ? "4px" : "0px", backgroundColor: "#895ef7" }}
                                     />
                                     <span className="ml-4">{service.name}</span>
-                                    <ChevronDown 
-                                        className={`transition-transform duration-300 ${activeIndex === index ? "rotate-180" : ""}`} 
-                                    />
+                                    {/* Text-based Arrow Icon */}
+                                    <span className={`text-purple-600 transition-transform duration-300 ${activeIndex === index ? "rotate-180" : ""}`}>
+                                        {activeIndex === index ? "▲" : "▼"}
+                                    </span>
                                 </div>
                                 <div
                                     className={`transition-all duration-500 ease-in-out overflow-hidden 
-                                    ${activeIndex === index ? "max-h-40 p-3 bg-blue-200 border-l-4 border-blue-500" : "max-h-0 p-0 border-l-2 border-transparent"}`}
+                                    ${activeIndex === index ? "max-h-40 p-3 dark:bg-[#252526] dark:text-white border-l-4 border-blue-500" : "max-h-0 p-0 border-l-2 border-transparent"}`}
                                 >
                                     <p className="text-sm">{service.description}</p>
                                 </div>
@@ -86,7 +86,7 @@ const Service = () => {
                                 ${imageTransition ? "translate-x-full opacity-0" : "translate-x-0 opacity-100"}`}
                         />
                     </div>
-                    <p className="mt-4 text-gray-600">{selectedService.description}</p>
+                    <p className="mt-4 dark:text-white">{selectedService.description}</p>
                 </div>
             </div>
         </div>

@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { BadgeCheck, Bell, ChevronsUpDown, CreditCard, LogOut, Sparkles } from "lucide-react";
+import { BadgeCheck, Bell, ChevronsUpDown, CreditCard, LogOut, Sparkles, Home } from "lucide-react";
 
 import {
   Avatar,
@@ -23,6 +23,7 @@ import {
   SidebarMenuItem,
   useSidebar
 } from "@/components/ui/sidebar";
+import Link from "next/link";
 
 export function NavUser({ user }) {
   const { isMobile } = useSidebar();
@@ -48,6 +49,10 @@ export function NavUser({ user }) {
             <DropdownMenuLabel>{user.name}</DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
+              <DropdownMenuItem>
+                <Home />
+                <Link href="/">Home</Link>
+              </DropdownMenuItem>
               <DropdownMenuItem>
                 <BadgeCheck />
                 Account

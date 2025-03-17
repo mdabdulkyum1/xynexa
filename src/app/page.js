@@ -1,4 +1,3 @@
-import Footer from '@/components/global/Footer';
 import Faq from './components/home/Faq/Faq';
 import Features from './components/home/Features';
 import Hero from './components/home/Hero/Hero';
@@ -6,6 +5,7 @@ import LeastStressed from './components/home/Hero/LeastStressed';
 import Pricing from './components/home/Pricing/Pricing';
 import Reviews from './components/home/Reviews/Reviews';
 import Service from './components/home/Services/Service';
+import TrackProgress from './components/home/TrackProgress/TrackProgress';
 
 export default function Home() {
   return (
@@ -17,7 +17,7 @@ export default function Home() {
       <Pricing></Pricing>
       <Reviews></Reviews>
       <Faq></Faq>
-      <Footer></Footer>
+      <TrackProgress></TrackProgress>
     </>
   );
 }
