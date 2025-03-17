@@ -41,7 +41,7 @@ const Service = () => {
                                 onClick={() => toggleAccordion(index)} // Click anywhere on the accordion
                             >
                                 <div className={`p-4 font-semibold flex justify-between items-center transition-all duration-300 
-                                    ${activeIndex === index ? "bg-primary text-white" : "bg-gray-100 text-black"}`}
+                                    ${activeIndex === index ? "bg-primary text-black" : "bg-background "}`}
                                 >
                                     <span className="absolute left-0 top-0 bottom-0 transition-all duration-300"
                                         style={{ width: activeIndex === index ? "4px" : "0px", backgroundColor: "#895ef7" }}
@@ -54,9 +54,9 @@ const Service = () => {
                                 </div>
                                 <div
                                     className={`transition-all duration-500 ease-in-out overflow-hidden 
-                                    ${activeIndex === index ? "max-h-40 p-3 bg-base-200 border-l-4 border-blue-500" : "max-h-0 p-0 border-l-2 border-transparent"}`}
+                                    ${activeIndex === index ? "max-h-40 p-3 dark:bg-[#252526] dark:text-white border-l-4 border-blue-500" : "max-h-0 p-0 border-l-2 border-transparent"}`}
                                 >
-                                    <p className="text-sm text-black">{service.description}</p>
+                                    <p className="text-sm">{service.description}</p>
                                 </div>
                             </div>
                         ))}
@@ -86,7 +86,7 @@ const Service = () => {
                                 ${imageTransition ? "translate-x-full opacity-0" : "translate-x-0 opacity-100"}`}
                         />
                     </div>
-                    <p className="mt-4 text-gray-600">{selectedService.description}</p>
+                    <p className="mt-4 dark:text-white">{selectedService.description}</p>
                 </div>
             </div>
         </div>
