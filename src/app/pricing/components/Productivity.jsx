@@ -1,4 +1,5 @@
-import React from 'react';
+
+import { Fade } from "react-awesome-reveal";
 
 const Productivity = () => {
     return (
@@ -7,7 +8,9 @@ const Productivity = () => {
                 Take your productivity to the next level
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-2 gap-6">
+
                 {/* ClickUp Brain Card */}
+                <Fade direction="left">
                 <div className="border rounded-xl p-6 shadow-lg bg-white relative bg-gradient-to-br from-orange-100 to-orange-200 ">
                    
                     <h3 className="text-xl font-bold mt-6 dark:text-black">One AI for all your work</h3>
@@ -26,6 +29,9 @@ const Productivity = () => {
                     </div>
                 </div>
                 {/* ClickUp Assist Card */}
+                </Fade>
+
+                <Fade direction="right">
                 <div className="border rounded-xl p-6 shadow-lg bg-white bg-gradient-to-br from-blue-100 to-blue-200 relative">
                     
                     <h3 className="text-xl font-bold mt-6 dark:text-black">Live training & support</h3>
@@ -46,6 +52,7 @@ const Productivity = () => {
                         </button>
                     </div>
                 </div>
+                </Fade>
             </div>
         </div>
     );

@@ -18,7 +18,7 @@ const Footer = () => {
               <h2 className="text-white text-2xl font-bold"><span className="text-primary">Xy</span>nexa</h2>
               <p className="text-sm mt-2">Work together & dream together</p>
               <p className="text-sm mt-2">
-                  "<span className="text-primary">Xynexa</span> Improving collaboration, productivity and workflow efficiency to help your team grow.
+                  <span className="text-primary">Xynexa</span> Improving collaboration, productivity and workflow efficiency to help your team grow.
                   </p>
             </div>
     
