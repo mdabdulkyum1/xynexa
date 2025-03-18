@@ -8,15 +8,15 @@ export default function PackInfo() {
       
       <div className="mt-4 space-y-2">
         <div className="flex items-center gap-2 text-gray-700">
-          <MessageCircle size={18} />
+          <MessageCircle className="text-purple-500" size={18} />
           <span>Unlimited message and file history</span>
         </div>
         <div className="flex items-center gap-2 text-gray-700">
-          <Users size={18} />
+          <Users className="text-purple-500" size={18} />
           <span>Work with people outside your organization</span>
         </div>
         <div className="flex items-center gap-2 text-gray-700">
-          <Video size={18} />
+          <Video className="text-purple-500" size={18} />
           <span>Group voice and video huddles</span>
         </div>
       </div>
