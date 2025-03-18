@@ -21,7 +21,6 @@ export default function Page() {
     
    
       <SidebarInset>
-        
         <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
           <div className="grid auto-rows-min gap-4 md:grid-cols-3">
             <div className="bg-purple-600/50 rounded-xl text-center">

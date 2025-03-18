@@ -84,9 +84,10 @@ const LeastStressed = () => {
       <div className=" py-3 marquee-container ">
         <Marquee speed={30} gradient={false} pauseOnHover={true}>
           <img
-            src="/assets/contact/brand-01.svg"
-            alt="ibm"
-            className="h-11 mx-3 md:mx-8"
+            src="https://i.ibb.co.com/LhrbkmZm/Devnexus.png"
+            alt="Devnexus"
+            className="h-28 w-28 mx-5 md:mx-8"
+
           />
           <img
             src="https://i.ibb.co.com/WvypBHnK/pngimg-com-google-PNG19644.png"

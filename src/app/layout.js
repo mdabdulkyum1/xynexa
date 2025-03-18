@@ -3,6 +3,9 @@ import "./globals.css";
 import Navbar from "@/components/global/Navbar";
 import { ThemeProvider } from "@/components/theme-provider";
 import Footer from "@/components/global/Footer";
+import { ClerkProvider } from "@clerk/nextjs";
+import { SaveUserToDB } from "@/lib/saveUserToDB";
+
 
 
 const geistSans = Geist({
@@ -22,23 +25,26 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
+    <ClerkProvider>
     <html lang="en">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <ThemeProvider
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
         >
              <Navbar></Navbar>
              <main className="min-h-screen">
+                    <SaveUserToDB></SaveUserToDB>
                     {children}
              </main>
              <Footer></Footer>
         </ThemeProvider>
       </body>
-    </html>
+    </html> 
+    </ClerkProvider>
   );
 }

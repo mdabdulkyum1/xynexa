@@ -8,6 +8,8 @@ import { Sheet, SheetTrigger, SheetContent } from '@/components/ui/sheet';
 import { Menu } from 'lucide-react';
 import useScrollDirection from '@/hooks/ScrollDirection/useScrollDirection';
 import { usePathname } from 'next/navigation';
+import { SignedIn, SignedOut, SignInButton, SignUpButton, UserButton } from '@clerk/nextjs';
+
 
 const Navbar = () => {
 
@@ -17,7 +19,8 @@ const Navbar = () => {
   const pathName = usePathname(); // Get the current path
   if(!pathName.includes("dashboard")) {
     return (
-      <nav className={`border-b dark:border-b-slate-500 fixed top-0 left-0 z-50 w-full transition-transform duration-300 backdrop-blur-md bg-white/30 dark:bg-slate-800/30 ${
+      <nav className={`border-b  dark:border-b-slate-500 fixed top-0 left-0 z-50 w-full transition-transform duration-300 backdrop-blur-md bg-white/30 dark:bg-slate-800/30 ${
+
         isVisible ? "translate-y-0" : "-translate-y-full"
       }`}
       >
@@ -54,8 +57,16 @@ const Navbar = () => {
   
           {/* Right-aligned buttons */}
           <div className="hidden lg:flex space-x-4">
-            <Button variant="outline">Login</Button>
-            <Button>Get Started</Button>
+            <div className=''>
+               <SignedOut className="flex gap-4">
+                  <SignInButton className="btn mr-2"/>
+                  <SignUpButton className="btn"/>
+               </SignedOut>
+                <SignedIn>
+                  <UserButton />
+                </SignedIn>
+             </div>
+
           </div>
         </div>
       </nav>
