@@ -8,6 +8,7 @@ import { Sheet, SheetTrigger, SheetContent } from '@/components/ui/sheet';
 import { Menu } from 'lucide-react';
 import useScrollDirection from '@/hooks/ScrollDirection/useScrollDirection';
 import { usePathname } from 'next/navigation';
+import { SignedIn, SignedOut, SignInButton, SignUpButton, UserButton } from '@clerk/nextjs';
 
 const Navbar = () => {
 
@@ -54,8 +55,15 @@ const Navbar = () => {
   
           {/* Right-aligned buttons */}
           <div className="hidden lg:flex space-x-4">
-            <Button variant="outline">Login</Button>
-            <Button>Get Started</Button>
+            <div className=''>
+               <SignedOut className="flex gap-4">
+                  <SignInButton className="btn mr-2"/>
+                  <SignUpButton className="btn"/>
+               </SignedOut>
+                <SignedIn>
+                  <UserButton />
+                </SignedIn>
+             </div>
           </div>
         </div>
       </nav>
