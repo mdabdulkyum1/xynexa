@@ -80,14 +80,14 @@ const TrackProgress = () => {
       </div>
       <div className=" flex items-center gap-5">
         <div className="w-2/3 grid grid-cols-2 gap-5">
-          {Image1.map(img => (
-            <img className="w-full h-full rounded-3xl" src={img} alt="" />
+          {Image1.map((img,inx) => (
+            <img key={inx} className="w-full h-full rounded-3xl" src={img} alt="" />
           ))}
         </div>
 
         <div className="w-1/3 grid grid-cols-1 gap-5">
-          {Image2.map(img => (
-            <img className="rounded-3xl" src={img} alt="" />
+          {Image2.map((img, inx) => (
+            <img key={inx} className="rounded-3xl" src={img} alt="" />
           ))}
         </div>
       </div>
