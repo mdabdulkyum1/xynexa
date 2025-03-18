@@ -3,7 +3,7 @@ import React from 'react';
 const Productivity = () => {
     return (
         <div>
-            Prodf
+            Productivity
         </div>
     );
 };
