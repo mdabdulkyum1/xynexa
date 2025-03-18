@@ -34,7 +34,7 @@ const Hero = () => {
             <div className="container mx-auto px-6 lg:px-32 flex flex-col lg:flex-row items-center justify-between gap-10 h-full">
                 {/* Text Container */}
                 <div className="w-full lg:w-2/5 text-white space-y-5">
-                    <h2 className="text-4xl lg:text-6xl font-bold">
+                    <h2 className="text-4xl lg:text-5xl uppercase leading-[70px] font-bold">
                         Master <span className="text-[#ff61c7]">projects, resources,</span>
                         and <span className="text-[#ff61c7]">profits</span> like a pro
                     </h2>

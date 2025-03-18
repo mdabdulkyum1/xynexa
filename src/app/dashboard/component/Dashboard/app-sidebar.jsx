@@ -8,6 +8,8 @@ import {
   Command,
   Frame,
   GalleryVerticalEnd,
+  GalleryVerticalEndIcon,
+  HelpCircle,
   Map,
   PieChart,
   Settings2,
@@ -39,115 +41,106 @@ const data = {
   teams: [
     {
       name: "XyNexa",
-      logo: GalleryVerticalEnd,
+      logo: GalleryVerticalEndIcon,
       plan: "Team collaboration",
     },
    
   ],
-  navMain: [
-    {
-      title: "Playground",
-      url: "#",
-      icon: SquareTerminal,
-      isActive: true,
-      items: [
-        {
-          title: "History",
-          url: "#",
-        },
-        {
-          title: "Starred",
-          url: "#",
-        },
-        {
-          title: "Settings",
-          url: "#",
-        },
-      ],
-    },
-    {
-      title: "Models",
-      url: "#",
-      icon: Bot,
-      items: [
-        {
-          title: "Genesis",
-          url: "#",
-        },
-        {
-          title: "Explorer",
-          url: "#",
-        },
-        {
-          title: "Quantum",
-          url: "#",
-        },
-      ],
-    },
-    {
-      title: "Documentation",
-      url: "#",
-      icon: BookOpen,
-      items: [
-        {
-          title: "Introduction",
-          url: "#",
-        },
-        {
-          title: "Get Started",
-          url: "#",
-        },
-        {
-          title: "Tutorials",
-          url: "#",
-        },
-        {
-          title: "Changelog",
-          url: "#",
-        },
-      ],
-    },
-    {
-      title: "Settings",
-      url: "#",
-      icon: Settings2,
-      items: [
-        {
-          title: "General",
-          url: "#",
-        },
-        {
-          title: "Team",
-          url: "#",
-        },
-        {
-          title: "Billing",
-          url: "#",
-        },
-        {
-          title: "Limits",
-          url: "#",
-        },
-      ],
-    },
-  ],
-  projects: [
-    {
-      name: "Design Engineering",
-      url: "#",
-      icon: Frame,
-    },
-    {
-      name: "Sales & Marketing",
-      url: "#",
-      icon: PieChart,
-    },
-    {
-      name: "Travel",
-      url: "#",
-      icon: Map,
-    },
-  ],
+ navMain :[
+  {
+    title: "Dashboard",
+    url: "/dashboard",
+    icon: SquareTerminal,
+    isActive: true,
+    items: [
+      { title: "OverView", url: "/dashboard" },
+      { title: "Activity", url: "/dashboard/activity" },
+      { title: "Deadlines", url: "/dashboard/deadlines" },
+      { title: "Progress", url: "/dashboard/progress" },
+    ],
+  },
+  {
+    title: "Team",
+    url: "/dashboard/team",
+    icon: Command,
+    items: [
+      { title: "View All team", url: "/dashboard/team/view" },
+      { title: "Create", url: "/dashboard/team/create" },
+      { title: "Invite", url: "/dashboard/team/invite" },
+      { title: "Roles", url: "/dashboard/team/roles" },
+      
+    ],
+  },
+  {
+    title: "Chat",
+    url: "/dashboard/chat",
+    icon: AudioWaveform,
+    items: [
+      { title: "Messages", url: "/dashboard/chat" },
+      
+    ],
+  },
+  {
+    title: "Tasks",
+    url: "/dashboard/tasks",
+    icon: Frame,
+    items: [
+      { title: "All Task", url: "/dashboard/tasks" },
+      { title: "Kanban", url: "/dashboard/tasks/kanban" },
+      { title: "Assign", url: "/dashboard/tasks/assign" },
+      { title: "Tracking", url: "/dashboard/tasks/tracking" },
+    ],
+  },
+  {
+    title: "Files",
+    url: "/dashboard/files",
+    icon: GalleryVerticalEnd,
+    items: [
+      { title: "Share File", url: "/dashboard/files" },
+      { title: "Upload", url: "/dashboard/files/upload" },
+      { title: "Cloud Sync", url: "/dashboard/files/sync" },
+    ],
+  },
+  {
+    title: "Meetings",
+    url: "/dashboard/meetings",
+    icon: Map,
+    items: [
+      { title: "Calendar", url: "/dashboard/meetings/calendar" },
+      { title: "Schedule", url: "/dashboard/meetings/schedule" },
+      { title: "Reminders", url: "/dashboard/meetings/reminders" },
+    ],
+  },
+  
+  {
+    title: "Alerts",
+    url: "/dashboard/alerts",
+    icon: Settings2,
+    items: [
+      { title: "Notifications", url: "/dashboard/alerts/notifications" },
+      { title: "Emails", url: "/dashboard/alerts/emails" },
+    ],
+  },
+  {
+    title: "Member",
+    url: "/dashboard/users",
+    icon: Bot,
+    items: [
+      { title: "Team Member", url: "/dashboard/users" },
+      { title: "Roles", url: "/dashboard/users/roles" },
+      { title: "Profile", url: "/dashboard/users/profile" },
+      { title: "Invites", url: "/dashboard/users/invites" },
+    ],
+  },
+],
+projects: [
+  {
+    name: "Help & Support ",
+    url: "#",
+    icon:HelpCircle,
+  },
+  
+],
 };
 
 export function AppSidebar(props) {
