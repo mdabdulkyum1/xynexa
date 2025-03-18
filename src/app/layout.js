@@ -27,16 +27,18 @@ export default function RootLayout({ children }) {
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <ThemeProvider
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
         >
-             <Navbar></Navbar>
-             <main className="min-h-screen">
-                    {children}
-             </main>
-             <Footer></Footer>
+          <div className="min-h-16">
+            <Navbar></Navbar>
+          </div>
+          <main className="min-h-screen">
+            {children}
+          </main>
+          <Footer></Footer>
         </ThemeProvider>
       </body>
     </html>
