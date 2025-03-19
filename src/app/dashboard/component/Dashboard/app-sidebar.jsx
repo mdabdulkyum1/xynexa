@@ -10,6 +10,7 @@ import {
   GalleryVerticalEnd,
   GalleryVerticalEndIcon,
   HelpCircle,
+  Home,
   Map,
   PieChart,
   Settings2,
@@ -111,6 +112,16 @@ const data = {
       { title: "Reminders", url: "/dashboard/meetings/reminders" },
     ],
   },
+  {
+    title: "Kyummmmmmmm",
+    url: "/dashboard/meetings",
+    icon: Home,
+    items: [
+      { title: "Calendar", url: "/dashboard/meetings/calendar" },
+      { title: "Schedule", url: "/dashboard/meetings/schedule" },
+      { title: "Reminders", url: "/dashboard/meetings/reminders" },
+    ],
+  },
   
   {
     title: "Alerts",
@@ -149,10 +160,12 @@ export function AppSidebar(props) {
       <SidebarHeader>
         <TeamSwitcher teams={data.teams} />
       </SidebarHeader>
+
       <SidebarContent>
         <NavMain items={data.navMain} />
         <NavProjects projects={data.projects} />
       </SidebarContent>
+
       <SidebarFooter>
         <NavUser user={data.user} />
       </SidebarFooter>
