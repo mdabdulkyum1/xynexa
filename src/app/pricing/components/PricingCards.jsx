@@ -16,7 +16,7 @@ const PricingCards = () => {
                         <ul className='space-y-2'>
                             <li className="flex items-center gap-2"><span className="text-green-500">✔</span> 100MB Storage</li>
                             <li className="flex items-center gap-2"><span className="text-green-500">✔</span> Unlimited Tasks</li>
-                            <li className="flex items-center gap-2"><span className="text-green-500">✔</span> Unlimited Free Plan Members</li>
+                            <li className="flex items-center gap-2"><span className="text-green-500">✔</span> Unlimited Free Plan </li>
                             <li className="flex items-center gap-2"><span className="text-green-500">✔</span> Two-Factor Authentication</li>
                             <li className="flex items-center gap-2"><span className="text-green-500">✔</span> Collaborative Docs</li>
                         </ul>

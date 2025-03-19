@@ -28,7 +28,7 @@ const PricingFaq = () => {
   </div>
 
   <div className='border-2 p-6 rounded-xl'>
-    <h2 className='font-bold text-xl lg:text-2xl mb-3'>What is a 'use' in context of ClickUp's plans?</h2>
+    <h2 className='font-bold text-xl lg:text-2xl mb-3'>What is a 'use' in context of Xynexa's plans?</h2>
     <p className='text-sm lg:text-base'>‘Uses’ are intended as a demonstration of paid plan features, allowing you to explore their value for your workflows.</p>
   </div>
 
