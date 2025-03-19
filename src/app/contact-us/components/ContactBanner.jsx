@@ -37,7 +37,7 @@ const ContactBanner = () => {
                 </div>
 
                
-                <div className="md:w-1/2 bg-secondary p-6 md:p-20">
+                <div className="md:w-1/2 bg-[#ECAB4F] p-6 md:p-20">
                     <p className="text-gray-700 mb-4">
                         Have a question or feedback? Fill out the form below, and we'll get back to you as soon as possible.
                     </p>

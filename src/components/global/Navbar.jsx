@@ -10,6 +10,7 @@ import useScrollDirection from '@/hooks/ScrollDirection/useScrollDirection';
 import { usePathname } from 'next/navigation';
 import { SignedIn, SignedOut, SignInButton, SignUpButton, UserButton } from '@clerk/nextjs';
 
+
 const Navbar = () => {
 
   const isVisible = useScrollDirection(); // Get the visibility status
@@ -19,6 +20,7 @@ const Navbar = () => {
   if(!pathName.includes("dashboard")) {
     return (
       <nav className={`border-b  dark:border-b-slate-500 fixed top-0 left-0 z-50 w-full transition-transform duration-300 backdrop-blur-md bg-white/30 dark:bg-slate-800/30 ${
+
         isVisible ? "translate-y-0" : "-translate-y-full"
       }`}
       >
@@ -64,6 +66,7 @@ const Navbar = () => {
                   <UserButton />
                 </SignedIn>
              </div>
+
           </div>
         </div>
       </nav>

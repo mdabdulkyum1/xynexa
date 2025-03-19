@@ -1,4 +1,3 @@
-import React from 'react';
 import PricingCards from './components/PricingCards';
 import PricingFaq from './components/PricingFaq';
 
@@ -11,6 +10,6 @@ const Pricing = () => {
     <PricingFaq></PricingFaq>
     </div>
   );
-};
+
 
 export default Pricing;
