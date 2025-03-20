@@ -1,7 +1,6 @@
 "use server";
 
 export async function saveUser(user) {
-  console.log("server url", process.env.NEXT_PUBLIC_SERVER_URL);
   try {
     const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/register`, {
       method: "POST",
