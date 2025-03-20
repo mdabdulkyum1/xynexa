@@ -2,7 +2,7 @@
 
 export async function saveUser(user) {
   try {
-    const res = await fetch("http://localhost:5000/api/register", {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/register`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(user),
