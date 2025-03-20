@@ -9,7 +9,9 @@ export function SaveUserToDB() {
   const { isSignedIn } = useAuth();
   const { user } = useUser();
 
+  console.log(user);
   useEffect( ()=> {
+    console.log(user);
     if (isSignedIn && user) {
         saveUser({
             clerkId: user.id,
