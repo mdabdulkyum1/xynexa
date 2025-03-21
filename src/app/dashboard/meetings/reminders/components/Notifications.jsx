@@ -7,35 +7,35 @@ import { RiCheckDoubleFill } from "react-icons/ri";
 const notifications = [
   {
     id: 1,
-    name: "Alex Standill",
+    name: "Abir Hossain",
     message: "Hey, is the design completed?",
     time: "2 hr ago",
     avatar: "https://randomuser.me/api/portraits/men/1.jpg"
   },
   {
     id: 2,
-    name: "Mona Griffin",
+    name: "Monika Roy",
     message: "What's the project report update?",
     time: "2 hr ago",
     avatar: "https://randomuser.me/api/portraits/women/1.jpg"
   },
   {
     id: 3,
-    name: "John Carter",
+    name: "Alif Mahmud",
     message: "Team meeting at 3 PM.",
     time: "1 hr ago",
     avatar: "https://randomuser.me/api/portraits/men/2.jpg"
   },
   {
     id: 4,
-    name: "Sarah Johnson",
+    name: "Sarah  Ali",
     message: "Can you review my PR?",
     time: "30 min ago",
     avatar: "https://randomuser.me/api/portraits/women/2.jpg"
   },
   {
     id: 5,
-    name: "Michael Brown",
+    name: "Mehedi Hasan",
     message: "Let's finalize the document.",
     time: "10 min ago",
     avatar: "https://randomuser.me/api/portraits/men/3.jpg"
