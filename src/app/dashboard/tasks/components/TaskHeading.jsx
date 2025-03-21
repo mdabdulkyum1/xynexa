@@ -18,7 +18,7 @@ const TaskHeading = () => {
     };
 
     return (
-        <div className="flex justify-between items-center p-4 bg-white dark:bg-[#171717]  rounded-md shadow-md">
+        <div className="flex justify-between items-center p-4 bg-white dark:bg-[#171717]   rounded-md shadow-md">
             <div className="flex items-center gap-4">
                 {isEditing ? (
                     <input
