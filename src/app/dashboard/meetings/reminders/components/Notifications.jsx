@@ -48,16 +48,16 @@ const Notifications = () => {
   return (
     <div className="max-w-md p-4 bg-white rounded-xl shadow-md">
       {/* Header Section */}
-      <h2 className="text-lg font-semibold">Notifications</h2>
+      <h2 className="text-lg font-semibold dark:text-black">Notifications</h2>
       <div className="flex justify-between items-center border-b pb-2 mb-2 mt-2">
-        <div className="flex space-x-4">
-          <h2 className="text-sm font-semibold">Today</h2>
-          <h2 className="text-sm font-semibold">Previous</h2>
+        <div className="flex space-x-4 ">
+          <h2 className="text-sm font-semibold dark:text-black">Today</h2>
+          <h2 className="text-sm font-semibold dark:text-black">Previous</h2>
         </div>
 
         <div className="flex space-x-4">
             <Select onValueChange={setSelected}>
-            <SelectTrigger className="w-28 border border-gray-300 rounded-md px-3 py-3 text-sm">
+            <SelectTrigger className="w-28 border border-gray-300  dark:text-black rounded-md px-3 py-3 text-sm">
                 <SelectValue placeholder="Select All" />
             </SelectTrigger>
             <SelectContent>
@@ -87,7 +87,7 @@ const Notifications = () => {
               <div className="h-10 w-[2px] bg-gray-300"></div>
         
               <div>
-                <p className="font-medium">{notification.name}</p>
+                <p className="font-medium dark:text-black">{notification.name}</p>
                 <p className="text-sm text-gray-500">{notification.message}</p>
               </div>
            
