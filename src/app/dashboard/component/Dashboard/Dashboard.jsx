@@ -15,22 +15,49 @@ import {
 } from "@/components/ui/sidebar"
 import { AppSidebar } from "./app-sidebar"
 import { ModeToggle } from "@/components/global/ModeToggle"
+import OverViewCard from "./OverViewCard"
+import { CalendarDemo } from "./OverViewCalender"
+import TotalTaskChart from "./TotaltaskChart"
+import TaskPercent from "./TaskParcent"
+import WorkStatus from "./WorkStatus"
+import Progress from "./Progess"
+import RecentTasks from "./RecentTasks"
+import WelcomeBanner from "./WelcomeBanner"
 
 export default function Page() {
   return (
     
    
       <SidebarInset>
-        <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
-          <div className="grid auto-rows-min gap-4 md:grid-cols-3">
-            <div className="bg-purple-600/50 rounded-xl text-center">
-              <h1 className=" text-2xl font-bold mt-12">Hello Debug Titans </h1>
-              <p>Its our XyNexa DashBoard</p>
+        <div className="flex max-w-[1600px] bg-muted/50 gap-4 p-4 rounded-md min-h-screen">
+          <div className="w-[80%]">
+            <div className="">
+              <WelcomeBanner/>
+            <OverViewCard/>
+            <div className="grid grid-cols-2 gap-6 my-12">
+            <TotalTaskChart/>
+            <TaskPercent/>
             </div>
-            <div className="aspect-video rounded-xl bg-pink-600/50" />
-            <div className="aspect-video rounded-xl bg-amber-600/50" />
+            <div className="flex items-center justify-between gap-6">
+              <div className="w-[70%]">
+                <Progress/>
+              </div>
+              <div className="w-[30%]">
+              <WorkStatus/>
+             
+              </div>
+            </div>
+            
+            </div>
+
           </div>
-          <div className="min-h-[100vh] flex-1 rounded-xl bg-muted/50 md:min-h-min" />
+          <div className=" max-w-[25%] flex  flex-col">
+          <div className="">
+          <CalendarDemo/>
+          <RecentTasks/>
+          </div>
+          <div className=""></div>
+          </div>
         </div>
       </SidebarInset>
    

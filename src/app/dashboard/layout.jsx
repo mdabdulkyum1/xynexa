@@ -36,7 +36,7 @@ export default function DashboardLayout({ children }) {
                 </div>
               </header>
             </div>
-            <div className="flex-1 p-6 w-full border overflow-y-auto">
+            <div className="flex-1 p-6 w-full border overflow-y-auto ">
               {children}
             </div>
           </div>

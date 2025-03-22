@@ -113,17 +113,6 @@ const data = {
     ],
   },
   {
-    title: "Kyummmmmmmm",
-    url: "/dashboard/meetings",
-    icon: Home,
-    items: [
-      { title: "Calendar", url: "/dashboard/meetings/calendar" },
-      { title: "Schedule", url: "/dashboard/meetings/schedule" },
-      { title: "Reminders", url: "/dashboard/meetings/reminders" },
-    ],
-  },
-  
-  {
     title: "Alerts",
     url: "/dashboard/alerts",
     icon: Settings2,
