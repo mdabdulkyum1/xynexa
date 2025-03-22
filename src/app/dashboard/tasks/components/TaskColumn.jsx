@@ -13,8 +13,8 @@ const TaskColumn = ({ title, tasks }) => {
                 <Badge color="gray" className="dark:bg-[#0A0A0A] py-1 px-2 rounded-l-full dark:text-gray-300">{tasks.length}</Badge>
             </div>
             <div className="space-y-4">
-                {tasks.map((task) => (
-                    <TaskCard key={task.id} {...task} />
+                {tasks.map((task, idx) => (
+                    <TaskCard key={idx} {...task} />
                 ))}
             </div>
             <button className="mt-4 w-full bg-white dark:bg-[#0A0A0A] text-gray-900 dark:text-gray-200 py-1 rounded-md flex items-center justify-center">
