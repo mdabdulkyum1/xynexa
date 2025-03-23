@@ -32,7 +32,7 @@ const TaskCard = () => {
                     <div className="p-1 border-2 border-gray-400 dark:border-gray-600 border-dashed rounded-full">
                         <CirclePlus size={16} className="text-gray-400 dark:text-gray-300" />
                     </div>
-                    <div className="flex flex-wrap gap-2">
+                    <div className="flex md:flex-wrap xl:flex-nowrap gap-2">
                         <p className="flex items-center gap-1 justify-center">
                             <MessageSquareText className="bg-gray-100 dark:bg-gray-700 rounded-full p-1 fill-amber-500 text-white" size={28} />
                             <span className="text-amber-500 dark:text-amber-400 font-bold">2</span>

@@ -132,6 +132,15 @@ const data = {
       { title: "Invites", url: "/dashboard/users/invites" },
     ],
   },
+  {
+    title: "Tools",
+    url: "/dashboard/tools",
+    icon: Bot,
+    items: [
+      { title: "documents", url: "/dashboard/documents" },
+      { title: "drawing", url: "/dashboard/users/drawing" },
+    ],
+  },
 ],
 projects: [
   {
