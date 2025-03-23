@@ -23,10 +23,17 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useState } from "react";
+import { useForm } from "react-hook-form";
 
 const CreateBoard = () => {
 
-    const [open, setOpen] = useState(false);
+  const {register, handleSubmit,setValue,formState: { errors }} = useForm();
+  const [open, setOpen] = useState(false);
+
+
+    const onSubmit = (data) => {
+      console.log(data);
+    }
 
     return (
         <div>
@@ -44,8 +51,9 @@ const CreateBoard = () => {
           <DialogContent className="max-h-[90vh] w-full lg:max-w-[220vh] sm:w-[95%] md:w-[85%] lg:w-[75%] overflow-y-auto p-6 md:p-8 lg:p-10">
             
             {/* Dialouge content Start */}
+          <form onSubmit={handleSubmit(onSubmit)}>
             <div className="flex flex-col lg:flex-row items-center gap-6">
-              {/*  Lottie file */}
+              {/*  Lottie Animation Section */}
               <div className="w-full flex justify-center lg:w-1/2 order-1 lg:order-2">
                 <Lottie animationData={rocketData} className="w-[250px] h-[250px] md:w-[300px] md:h-[300px] lg:w-[400px] lg:h-[350px]" />
               </div>
@@ -58,12 +66,13 @@ const CreateBoard = () => {
 
                 {/* Board Name */}
                 <Label>Board Name<span className="text-red-500">*</span></Label>
-                <Input className="w-full" />
+                <Input className="w-full" {...register("boardName",{required: 'Board Name is required'})}/>
+                <p>{errors.boardName && <p className="text-red-500">{errors.boardName.message}</p>}</p>
                 
 
                 {/* Category start  */}
                 <Label>Category<span className="text-red-500">*</span></Label>
-                <Select>
+                <Select onValueChange={(value) => setValue("category", value)}>
                   <SelectTrigger className="w-full">
                     <SelectValue placeholder="Select Level" />
                   </SelectTrigger>
@@ -80,15 +89,16 @@ const CreateBoard = () => {
 
                 {/* project Name */}
                 <Label>Project Name<span className="text-red-500">*</span></Label>
-                <Input className="w-full" />
+                <Input className="w-full" {...register('projectName', {required: 'Project Name is required'})} />
+                {errors.projectName && <p className="text-red-500">{errors.projectName.message}</p>}
 
                     {/* Admin Name */}
                 <Label>Creator Admin</Label>
-                <Input className="w-full" />
+                <Input className="w-full" {...register('adminName')} placeholder='je create korbe admin hisebe boshbe '/>
 
                 {/*  Team Members added email */}    
                 <Label>Add Team Members<span className="text-red-500">*</span></Label>
-                <Select>
+                <Select onValueChange={(value) => setValue('teamMembers', value)}>
                   <SelectTrigger className="w-full">
                     <SelectValue placeholder="Select Team Members" />
                   </SelectTrigger>
@@ -101,11 +111,12 @@ const CreateBoard = () => {
 
                 {/* Description */}
                 <Label>Description Your Board</Label>
-                <Textarea className="w-full" />
+                <Textarea className="w-full" {...register("description")} />
 
                 {/* upload Cover Photo */}
                 <Label>Cover Photo<span className="text-red-500">*</span></Label>
-                <Input type="file" className="w-full" />
+                <Input type="file" className="w-full" {...register("coverPhoto", { required: "Cover Photo is required" })} />
+                {errors.coverPhoto && <p className="text-red-500">{errors.coverPhoto.message}</p>}
 
                 {/* Buttons */}
                 <div className="flex justify-end space-x-2 mt-4">
@@ -116,7 +127,7 @@ const CreateBoard = () => {
                 </div>
               </div>
             </div>
-
+          </form>
           </DialogContent>
         </Dialog>
          </div>
