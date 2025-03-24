@@ -5,8 +5,8 @@ import React from 'react';
 const page = () => {
     return (
         <div>
-            <h2 className='text-xl lg:text-3xl font-semibold '>Start a new documents</h2>
-            <div className='border-2 p-2 inline-block'>
+            <h2 className='text-xl lg:text-3xl font-semibold mb-2'>Start a new documents</h2>
+            <div className='p-2 inline-block justify-center items-center'>
                 <Link href="/dashboard/documents/new"> 
                     <button className='p-0 border-none bg-transparent'>
                         <Image
@@ -18,6 +18,8 @@ const page = () => {
                     </button>
                 </Link>
             </div>
+            {/* dynamic document section */}
+            <div></div>
 
         </div>
     );
