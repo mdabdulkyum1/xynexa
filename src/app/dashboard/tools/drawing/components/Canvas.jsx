@@ -1,79 +1,90 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import { Eraser, Icon, Pen, Redo, RotateCcw, Save } from "lucide-react";
+import { Eraser, Pen, Redo, RotateCcw, Save, Trash2 } from "lucide-react";
 import { useRef, useState } from "react";
 import { ReactSketchCanvas, ReactSketchCanvasRef } from "react-sketch-canvas";
+
 const Canvas = () => {
   const colorInputRef = useRef(null);
   const canvasRef = useRef(null);
   const [strokeColor, setStrokeColor] = useState("#a855f7");
   const [eraseMode, setEraseMode] = useState(false);
 
-  // color fuctionality
+  // Color functionality
   const handleStrokeColorChange = (e) => {
     setStrokeColor(e.target.value);
-    console.log(strokeColor);
   };
+
   // Drawing Pen function
-  const handlePenClick = (e) => {
+  const handlePenClick = () => {
     setEraseMode(false);
     canvasRef.current?.eraseMode(false);
   };
-  // Drawaing earse Function
-  const handleEraseClick = (e) => {
+
+  // Drawing erase Function
+  const handleEraseClick = () => {
     setEraseMode(true);
     canvasRef.current?.eraseMode(true);
   };
 
   // Undo click
-  const handleUndoClick = (e) => {
+  const handleUndoClick = () => {
     canvasRef.current?.undo();
   };
 
-  //  Redo Click
-
-  const handleRedoClick = (e) => {
+  // Redo Click
+  const handleRedoClick = () => {
     canvasRef.current?.redo();
   };
 
-
-  // save 
-  const handleSave = async() => {
+  // Save
+  const handleSave = async () => {
     const dataURL = await canvasRef.current?.exportImage('png');
     if (dataURL) {
-        const link = Object.assign(document.createElement('a'), {
-          href: dataURL,
-          style: { display: 'none' },
-          download: 'xynexadocument.png'
-        });
-        document.body.appendChild(link);
-        link.click();
-        link.remove();
-  }
-}
+      const link = Object.assign(document.createElement('a'), {
+        href: dataURL,
+        style: { display: 'none' },
+        download: 'xynexadocument.png'
+      });
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+    }
+  };
+
+//    clear canvas 
+const handleClearCanvas = () => {
+    canvasRef.current.clearCanvas();
+  };
 
   return (
-    <div>
-      <hspan className="font-semibold text-[1.5rem] leading-8 sm:text-4xl  sm:leading-tight ">
-        Draw Here
-      </hspan>
+    <div className="container mx-auto px-4 py-6">
+      <h1 className="font-semibold text-[1.5rem] leading-8 sm:text-4xl sm:leading-tight mb-6">
+        Sketch Here
+      </h1>
 
-      <div className="mt-6  conatiner mx-auto">
-        <ReactSketchCanvas
-          width="100%"
-          height="500px"
-          ref={canvasRef}
-          canvasColor="transparent"
-          strokeColor={strokeColor}
-          className="!rounded-2xl !border-purple-500 dark:!border-purple-800"
-        />
 
-        <div>
+      <div className="flex flex-col lg:flex-row gap-6 lg:gap-1.5">
+        {/* Canvas Area */}
+        <div className="w-full">
+          <ReactSketchCanvas
+            width="100%"
+            height="400px"
+            ref={canvasRef}
+            canvasColor="transparent"
+            strokeColor={strokeColor}
+            className="!rounded-2xl !border-purple-500 dark:!border-purple-800 w-full"
+          />
+        </div>
+
+        {/* Controls Area */}
+        <div className="w-full lg:w-1/4 flex flex-col items-center gap-6">
           {/* Color picker */}
           <Button
             size="icon"
             onClick={() => colorInputRef.current?.click()}
             style={{ backgroundColor: strokeColor }}
+            className="w-12 h-12"
           >
             <input
               type="color"
@@ -84,13 +95,14 @@ const Canvas = () => {
             />
           </Button>
 
-          {/* Drawing Modes  */}
-          <div className="flex flex-col gap-3 pt-6">
+          {/* Drawing Modes */}
+          <div className="flex flex-row lg:flex-col gap-3">
             <Button
               size="icon"
               variant="outline"
               disabled={!eraseMode}
               onClick={handlePenClick}
+              className="w-12 h-12"
             >
               <Pen size={16} />
             </Button>
@@ -99,33 +111,45 @@ const Canvas = () => {
               variant="outline"
               disabled={eraseMode}
               onClick={handleEraseClick}
+              className="w-12 h-12"
             >
               <Eraser size={16} />
             </Button>
           </div>
 
-          {/* Actions  */}
-          <div className="flex flex-col gap-3 pt-6">
+          {/* Actions */}
+          <div className="flex flex-row lg:flex-col gap-3">
             <Button
               size="icon"
               variant="outline"
-              disabled={!eraseMode}
               onClick={handleUndoClick}
+              className="w-12 h-12"
             >
               <Redo size={16} />
             </Button>
             <Button
               size="icon"
               variant="outline"
-              disabled={eraseMode}
               onClick={handleRedoClick}
+              className="w-12 h-12"
             >
               <RotateCcw size={16} />
             </Button>
-
-            <Button size="icon" variant="outline" onClick={handleSave}>
+            <Button
+              size="icon"
+              variant="outline"
+              onClick={handleSave}
+              className="w-12 h-12"
+            >
               <Save size={16} />
             </Button>
+
+            <button
+              onClick={handleClearCanvas}
+              className="px-3 py-3  bg-red-500 hover:bg-red-600 hover:shadow-lg text-white rounded "
+            >
+              <Trash2 /> 
+            </button>
           </div>
         </div>
       </div>
