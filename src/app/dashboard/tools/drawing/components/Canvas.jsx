@@ -1,13 +1,16 @@
-"use client";
+'use client'
+
 import { Button } from "@/components/ui/button";
-import { Eraser, Pen, Redo, RotateCcw, Save, Trash2 } from "lucide-react";
+import { Eraser, Pen, Redo, RotateCcw, Save, Trash2, Pencil } from "lucide-react";
 import { useRef, useState } from "react";
-import { ReactSketchCanvas, ReactSketchCanvasRef } from "react-sketch-canvas";
+import { ReactSketchCanvas } from "react-sketch-canvas";
 
 const Canvas = () => {
   const colorInputRef = useRef(null);
   const canvasRef = useRef(null);
   const [strokeColor, setStrokeColor] = useState("#a855f7");
+  const [strokeWidth, setStrokeWidth] = useState(4);
+  const [eraserWidth, setEraserWidth] = useState(10);
   const [eraseMode, setEraseMode] = useState(false);
 
   // Color functionality
@@ -52,19 +55,48 @@ const Canvas = () => {
     }
   };
 
-//    clear canvas 
-const handleClearCanvas = () => {
-    canvasRef.current.clearCanvas();
+  // Clear canvas
+  const handleClearCanvas = () => {
+    canvasRef.current?.clearCanvas();
   };
 
   return (
     <div className="container mx-auto px-4 py-6">
       <h1 className="font-semibold text-[1.5rem] leading-8 sm:text-4xl sm:leading-tight mb-6">
-        Sketch Here
+        Draw Your Sketch Here
       </h1>
 
+      {/* Size Controls */}
+      <div className="flex justify-center mb-8">
+        <div className="flex items-center gap-2">
+          <Pencil size={20} />
+          <input
+            type="range"
+            min="1"
+            max="20"
+            step="0.5"
+            value={strokeWidth}
+            onChange={(e) => setStrokeWidth(parseFloat(e.target.value))}
+            className="w-full"
+            disabled={eraseMode}
+          />
+        </div>
+        <div className="flex items-center gap-2">
+          <Eraser size={20} />
+          <input
+            type="range"
+            min="5"
+            max="50"
+            step="1"
+            value={eraserWidth}
+            onChange={(e) => setEraserWidth(parseFloat(e.target.value))}
+            className="w-full"
+            disabled={!eraseMode}
+          />
+        </div>
+      </div>
 
-      <div className="flex flex-col lg:flex-row gap-6 lg:gap-1.5">
+      <div className="flex flex-col lg:flex-row gap-6 lg:gap-4">
         {/* Canvas Area */}
         <div className="w-full">
           <ReactSketchCanvas
@@ -72,7 +104,8 @@ const handleClearCanvas = () => {
             height="400px"
             ref={canvasRef}
             canvasColor="transparent"
-            strokeColor={strokeColor}
+            strokeColor={eraseMode ? 'white' : strokeColor}
+            strokeWidth={eraseMode ? eraserWidth : strokeWidth}
             className="!rounded-2xl !border-purple-500 dark:!border-purple-800 w-full"
           />
         </div>
@@ -85,6 +118,7 @@ const handleClearCanvas = () => {
             onClick={() => colorInputRef.current?.click()}
             style={{ backgroundColor: strokeColor }}
             className="w-12 h-12"
+            disabled={eraseMode}
           >
             <input
               type="color"
@@ -143,12 +177,11 @@ const handleClearCanvas = () => {
             >
               <Save size={16} />
             </Button>
-
             <button
               onClick={handleClearCanvas}
-              className="px-3 py-3  bg-red-500 hover:bg-red-600 hover:shadow-lg text-white rounded "
+              className="px-3 py-3 bg-red-500 hover:bg-red-600 hover:shadow-lg text-white rounded w-12 h-12 flex items-center justify-center"
             >
-              <Trash2 /> 
+              <Trash2 size={16} />
             </button>
           </div>
         </div>
