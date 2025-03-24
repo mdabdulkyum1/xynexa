@@ -1,6 +1,6 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import { Icon } from "lucide-react";
+import { Eraser, Icon, Pen } from "lucide-react";
 import { useRef, useState } from "react";
 import { ReactSketchCanvas, ReactSketchCanvasRef } from "react-sketch-canvas";
 const Canvas = () => {
@@ -11,7 +11,18 @@ const Canvas = () => {
 
 
     const handleStrokeColorChange = (e) => {
-        setStrokeColor(e.target.value)
+        setStrokeColor(e.target.value);
+        console.log(strokeColor);
+    }
+
+    const handlePenClick = (e) => {
+        setEraseMode(false);
+        canvasRef.current?.eraseMode(false)
+    }
+
+    const handleEraseClick = (e) => {
+        setEraseMode(true);
+        canvasRef.current?.eraseMode(true)
     }
   return (
     <div>
@@ -24,7 +35,7 @@ const Canvas = () => {
           height="500px"
           ref={canvasRef}
           canvasColor="transparent"
-          strokeColor="#000"
+          strokeColor={strokeColor}
           className="!rounded-2xl !border-purple-500 dark:!border-purple-800"
         />
 
@@ -43,6 +54,24 @@ const Canvas = () => {
             onChange={handleStrokeColorChange}
           />
         </Button>
+
+            {/* Drawing Modes  */}
+            <div className="flex flex-col gap-3 pt-6">
+                <Button
+                    size="icon"
+                    variant="outline"
+                    disabled={!eraseMode}
+                    onClick={handlePenClick}
+                ><Pen size={16} /></Button>
+                <Button 
+                size="icon"
+                variant="outline"
+                disabled={eraseMode}
+                onClick={handleEraseClick}
+                ><Eraser size={16} /></Button>
+            </div>
+
+
         </div>
       </div>
     </div>
