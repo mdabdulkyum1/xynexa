@@ -1,14 +1,22 @@
 "use client";
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import ReactQuill from "react-quill-new";
 import { MdOutlineSaveAlt } from "react-icons/md";
 import { FaFilePdf } from "react-icons/fa6";
 import "react-quill-new/dist/quill.snow.css"; 
+import DocumentHeading from "./DocumentHeading";
+import jsPDF from "jspdf";
+import html2canvas from "html2canvas";
 
 const TextEditor = () => {
   const [content, setContent] = useState("");
   const [title, setTitle] = useState("Untitled Document");
+  const [isBrowser, setIsBrowser] = useState(false);
   const quillRef = useRef(null);
+
+  useEffect(() => {
+    setIsBrowser(typeof window !== 'undefined');
+  }, []);
 
   // Save the document as HTML
   const saveDocument = () => {
@@ -32,14 +40,47 @@ const TextEditor = () => {
     setContent(value);
     // Extracting plain text from Quill editor
     const plainText = quillRef.current ? quillRef.current.getEditor().getText() : "";
-    console.log("Editor Content:", plainText.trim());
+    console.log("document title",title, "Editor Content:", plainText.trim());
     
   };
 
   // Save as PDF (placeholder)
   const saveAsPDF = () => {
-    alert("PDF saving requires a library like jsPDF. This is a placeholder.");
+    const input = document.querySelector(".ql-editor"); // Quill editor content
+    if (!input) {
+      alert("Error: Editor content not found.");
+      return;
+    }
+
+    html2canvas(input, {
+      backgroundColor: "#ffffff", // Ensures proper background color
+      scale: 2, // Increases resolution for better quality
+      useCORS: true, // Fixes cross-origin image issues
+    }).then((canvas) => {
+      const imgData = canvas.toDataURL("image/png");
+      const pdf = new jsPDF("p", "mm", "a4");
+      const imgWidth = 190; // Adjust image width for A4
+      const pageHeight = 297; // A4 height in mm
+      const imgHeight = (canvas.height * imgWidth) / canvas.width;
+      let heightLeft = imgHeight;
+      let position = 0;
+
+      pdf.addImage(imgData, "PNG", 10, position, imgWidth, imgHeight);
+      heightLeft -= pageHeight;
+
+      while (heightLeft > 0) {
+        position = heightLeft - imgHeight;
+        pdf.addPage();
+        pdf.addImage(imgData, "PNG", 10, position, imgWidth, imgHeight);
+        heightLeft -= pageHeight;
+      }
+
+      pdf.save(`${title}.pdf`);
+    });
   };
+
+
+
 
   // Share the document
   const shareDocument = async () => {
@@ -65,7 +106,8 @@ const TextEditor = () => {
       <div className="w-full max-w-4xl bg-white shadow-lg rounded-lg border border-gray-200">
         {/* Header */}
         <div className="flex justify-between items-center p-4 border-b border-gray-200">
-          <h1 className="text-xl lg:text-2xl font-semibold dark:text-black">{title}</h1>
+          <DocumentHeading title={title} setTitle={setTitle}></DocumentHeading>
+         
           <div className="space-x-1 lg:space-x-2">
             <button
               onClick={saveDocument}
