@@ -27,7 +27,7 @@ const AboutValue = () => {
                     >
                         <SlDiamond />
                     </motion.div>
-                    <h3 className="font-bold mb-4 text-2xl">Make an impact</h3>
+                    <h3 className="font-bold mb-4 text-2xl">Make an impact .</h3>
                     <p>
                         We’re building something big. Something that has the power to change the trajectory of any sized business for the better.
                     </p>
