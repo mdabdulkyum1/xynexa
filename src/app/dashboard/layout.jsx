@@ -9,7 +9,7 @@ import { AppSidebar } from "./component/Dashboard/app-sidebar";
 
 export default function DashboardLayout({ children }) {
   return (
-    <div className=" h-screen  " suppressHydrationWarning>
+    <div className=" h-screen" suppressHydrationWarning>
 
         <SidebarProvider>
           <AppSidebar className="w-64 h-full fixed left-0 top-0 border-r border-blue-500 border-opacity-0" />
