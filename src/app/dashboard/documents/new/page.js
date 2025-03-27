@@ -5,7 +5,7 @@ const page = () => {
     return (
         <div>
         
-        {/* <TextEditor></TextEditor> */}
+        <TextEditor></TextEditor>
         </div>
     );
 };
