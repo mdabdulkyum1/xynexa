@@ -134,7 +134,7 @@ const data = {
   },
   {
     title: "Tools",
-    url: "/dashboard/tools",
+    url: "/dashboard/documents",
     icon: Bot,
     items: [
       { title: "documents", url: "/dashboard/documents" },
