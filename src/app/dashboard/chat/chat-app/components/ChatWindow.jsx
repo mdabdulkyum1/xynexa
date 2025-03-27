@@ -10,7 +10,7 @@ import { Input } from "@/components/ui/input";
 import useAxiosPublic from "@/hooks/AxiosPublic/useAxiosPublic";
 
 const socket = io(process.env.NEXT_PUBLIC_SERVER_URL);
-
+ 
 const ChatWindow = ({ receiverId }) => {
   const axiosPublic = useAxiosPublic();
   const { user } = useUser();
