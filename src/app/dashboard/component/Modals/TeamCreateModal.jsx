@@ -14,6 +14,7 @@ const TeamCreateModal = ({ isOpen, closeModal }) => {
 
     const onSubmit = (data) => {
         console.log('Form Data:', data);
+        
     
         closeModal();
     };
