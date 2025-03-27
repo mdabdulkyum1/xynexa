@@ -55,9 +55,9 @@ const data = {
     isActive: true,
     items: [
       { title: "OverView", url: "/dashboard" },
-      { title: "Activity", url: "/dashboard/activity" },
-      { title: "Deadlines", url: "/dashboard/deadlines" },
-      { title: "Progress", url: "/dashboard/progress" },
+      { title: "Teams", url: "/dashboard/team/view" },
+      { title: "All Tasks", url: "/dashboard/tasks" },
+      
     ],
   },
   {
