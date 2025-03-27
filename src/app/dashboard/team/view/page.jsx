@@ -41,6 +41,7 @@ const bgColors = ["bg-pink-200", "bg-green-200", "bg-blue-200", "bg-purple-200" 
                 <div className='border-2 p-4 rounded-lg'>
                     <h1>Add New Board</h1>
                     <p>Click here to add new board</p>
+                    
                 </div>
                 {
                     cards.map((card, index) => {
