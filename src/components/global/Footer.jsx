@@ -9,23 +9,23 @@ const Footer = () => {
   const pathName = usePathname(); // Get the current path
   if(!pathName.includes("dashboard")) {
       return (
-        <footer className="bg-gray-900 text-gray-300 py-10">
+        <footer className="bg-gray-900 dark:bg-gray-950 text-gray-300 py-10">
             {/* gap-8 */}
           <div className="container mx-auto px-5 grid grid-cols-1 md:grid-cols-4 lg:gap-20 gap-8">
             
             {/* Left Section - Brand  */}
             <div>
-              <h2 className="text-white text-2xl font-bold"><span className="text-primary">Xy</span>nexa</h2>
+              <h2 className="text-white text-2xl font-bold"><span className="text-primary">XY</span>nexa</h2>
               <p className="text-sm mt-2">Work together & dream together</p>
               <p className="text-sm mt-2">
-                  <span className="text-primary">Xynexa</span> Improving collaboration, productivity and workflow efficiency to help your team grow.
+                  <span className="text-primary font-bold">XYnexa</span> Improving collaboration, productivity and workflow efficiency to help your team grow.
                   </p>
             </div>
     
             {/* Middle Sections Lists */}
             <div>
               <h3 className="text-white font-semibold mb-3 uppercase">Company</h3>
-              <ul className="space-y-1">
+              <ul className="space-y-1 text-sm">
                 <li><a href="#" className="hover:text-primary">About US</a></li>
                 <li><a href="#" className="hover:text-primary">Pricing</a></li>
                 <li><a href="#" className="hover:text-primary">Contact US</a></li>
@@ -35,7 +35,7 @@ const Footer = () => {
     
             <div>
               <h3 className="text-white font-semibold mb-3 uppercase">Services</h3>
-              <ul className="space-y-1">
+              <ul className="space-y-1 text-sm">
                 <li><a href="#" className="hover:text-primary">Call</a></li>
                 <li><a href="#" className="hover:text-primary">Collaborate</a></li>
                 <li><a href="#" className="hover:text-primary">Chats</a></li>
@@ -45,7 +45,7 @@ const Footer = () => {
     
             <div>
               <h3 className="text-white font-semibold mb-3 uppercase">Support</h3>
-              <ul className="space-y-1">
+              <ul className="space-y-1 text-sm">
                 <li><a href="#" className="hover:text-primary">Forum Support</a></li>
                 <li><a href="#" className="hover:text-primary">Help & FAQ</a></li>
                 <li><a href="#" className="hover:text-primary">Contact Us</a></li>
