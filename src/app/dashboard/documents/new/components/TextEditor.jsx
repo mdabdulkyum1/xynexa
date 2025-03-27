@@ -1,12 +1,15 @@
 "use client";
 import React, { useState, useRef, useEffect } from "react";
-import ReactQuill from "react-quill-new";
+// import ReactQuill from "react-quill-new";
 import { MdOutlineSaveAlt } from "react-icons/md";
 import { FaFilePdf } from "react-icons/fa6";
-import "react-quill-new/dist/quill.snow.css"; 
+// import "react-quill-new/dist/quill.snow.css"; 
 import DocumentHeading from "./DocumentHeading";
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
+
 
 const TextEditor = () => {
   const [content, setContent] = useState("");
