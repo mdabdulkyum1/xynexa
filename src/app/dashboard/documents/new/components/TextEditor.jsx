@@ -8,12 +8,14 @@ import DocumentHeading from "./DocumentHeading";
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
 
+const ReactQuill = dynamic(() => import("react-quill-new"), { ssr: false });
+
 const TextEditor = () => {
   const [content, setContent] = useState("");
   const [title, setTitle] = useState("Untitled Document");
   const [isBrowser, setIsBrowser] = useState(false);
   const quillRef = useRef(null);
-
+ 
   useEffect(() => {
     setIsBrowser(typeof window !== 'undefined');
   }, []);
