@@ -56,7 +56,7 @@ const AboutValue = () => {
                     </motion.div>
 
                     <h3 className='font-bold mb-4 text-2xl'>Have fun</h3>
-                    <p>We work hard and play harder. We believe in the importance of celebrating wins big or small, for the business.</p>
+                    <p>We work hard and play harder . We believe in the importance of celebrating wins big or small, for the business.</p>
                 </div>
                 {/* card-4 */}
                 <div className='rounded-lg bg-[#EAEEF1] dark:bg-gradient-to-r dark:from-purple-500 dark:via-purple-400 dark:to-indigo-900 dark:bg-opacity-20 dark:backdrop-blur-xl dark:border dark:border-white/20 p-6 h-[230px] lg:h-[300px]' data-aos="fade-left">
