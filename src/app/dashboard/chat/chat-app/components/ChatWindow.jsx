@@ -8,10 +8,11 @@ import { FaVideo, FaPhone, FaPaperPlane, FaEllipsisV } from "react-icons/fa";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import useAxiosPublic from "@/hooks/AxiosPublic/useAxiosPublic";
+import { useSelector } from "react-redux";
 
 const socket = io(process.env.NEXT_PUBLIC_SERVER_URL);
  
-const ChatWindow = ({ receiverId }) => {
+const ChatWindow = () => {
   const axiosPublic = useAxiosPublic();
   const { user } = useUser();
   const userId = user?.id;
@@ -21,8 +22,8 @@ const ChatWindow = ({ receiverId }) => {
   const [receiver, setReceiver] = useState(null);
   const messagesEndRef = useRef(null);
 
-
-  console.log(receiver);
+  const receiverId = useSelector((state) => state.chat.selectedUserId);
+  
 
   const fetchReceiver = async () => {
     try{
@@ -99,35 +100,45 @@ const ChatWindow = ({ receiverId }) => {
     }
   };
 
-  return (
-    <div className="flex flex-col justify-between w-full max-w-3xl mx-auto bg-white shadow-md rounded-lg">
-          <div className="flex items-center p-4 border-b border-gray-200">
-            <img src={receiver?.imageUrl} alt="User" className="w-12 h-12 rounded-full mr-3" />
-            <div className="flex-1">
-              <p className="text-sm font-medium text-gray-800">{receiver?.firstName + receiver?.lastName}</p>
-              <p className="text-xs text-gray-500">{isTyping ? "Typing..." : "Online"}</p>
-            </div>
-            <FaPhone className="text-gray-500 text-xl mx-2 cursor-pointer" />
-            <FaVideo className="text-gray-500 text-xl mx-2 cursor-pointer" />
-            <FaEllipsisV className="text-gray-500 text-xl mx-2 cursor-pointer" />
-          </div>
-          <div className="flex-1 overflow-y-auto p-4 space-y-3" style={{ maxHeight: "350px" }}>
-            {messages.map((msg, index) => (
-              <div key={index} className={`flex ${msg.senderId === userId ? "justify-end" : ""}`}>
-                <div className={`p-3 rounded-lg max-w-xs ${msg.senderId === userId ? "bg-blue-500 text-white" : "bg-gray-200 text-gray-800"}`}>
-                  {msg.text}
-                  <div className="text-xs text-right">{msg.read ? "✔️" : "⏳"}</div>
-                </div>
+  if(receiverId){
+    return (
+      <div className="flex flex-col justify-between w-full max-w-3xl mx-auto bg-white shadow-md rounded-lg">
+            <div className="flex items-center p-4 border-b border-gray-200">
+              <img src={receiver?.imageUrl} alt="User" className="w-12 h-12 rounded-full mr-3" />
+              <div className="flex-1">
+                <p className="text-sm font-medium text-gray-800">{receiver?.firstName + receiver?.lastName}</p>
+                <p className="text-xs text-gray-500">{isTyping ? "Typing..." : "Online"}</p>
               </div>
-            ))}
-            <div ref={messagesEndRef} />
-          </div>
-          <div className="flex items-center p-3 border-t border-gray-200">
-            <Input value={newMessage} onChange={(e) => { setNewMessage(e.target.value); handleTyping(); }} placeholder="Type your message..." className="flex-1" />
-            <Button onClick={sendMessage}><FaPaperPlane /></Button>
-          </div>
-        </div>
-  );
+              <FaPhone className="text-gray-500 text-xl mx-2 cursor-pointer" />
+              <FaVideo className="text-gray-500 text-xl mx-2 cursor-pointer" />
+              <FaEllipsisV className="text-gray-500 text-xl mx-2 cursor-pointer" />
+            </div>
+            <div className="flex-1 overflow-y-auto p-4 space-y-3" style={{ maxHeight: "350px" }}>
+              {messages.map((msg, index) => (
+                <div key={index} className={`flex ${msg.senderId === userId ? "justify-end" : ""}`}>
+                  <div className={`p-3 rounded-lg max-w-xs ${msg.senderId === userId ? "bg-blue-500 text-white" : "bg-gray-200 text-gray-800"}`}>
+                    {msg.text}
+                    <div className="text-xs text-right">{msg.read ? "✔️" : "⏳"}</div>
+                  </div>
+                </div>
+              ))}
+              <div ref={messagesEndRef} />
+            </div>
+            <div className="flex items-center p-3 border-t border-gray-200">
+              <Input value={newMessage} onChange={(e) => { setNewMessage(e.target.value); handleTyping(); }} placeholder="Type your message..." className="flex-1" />
+              <Button onClick={sendMessage}><FaPaperPlane /></Button>
+            </div>
+      </div>
+    );
+  }else{
+    return (
+      <div className="">
+        <h1>No user selected</h1>
+      </div>
+    )
+  }
+
+  
 };
 
 export default ChatWindow;

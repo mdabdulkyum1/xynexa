@@ -8,14 +8,18 @@ import { FaUsers } from "react-icons/fa";
 import useAxiosPublic from "@/hooks/AxiosPublic/useAxiosPublic";
 import { useEffect } from "react";
 import { useUser } from "@clerk/nextjs";
-import ChatWindow from "../chat-app/components/ChatWindow";
-
+import { setSelectedUserId } from "@/redux/features/Slice/chatSlice";
+import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 
 const ChatSidebar = () => {
   const axiosPublic = useAxiosPublic();
   const { user } = useUser();
   const [users, setUsers] = useState([]);
-  const [selectedUserId, setSelectedUserId] = useState(null);
+  // const [selectedUserId, setSelectedUserId] = useState(null);
+
+  const dispatch = useDispatch();
+  const selectedUserId = useSelector((state) => state.chat.selectedUserId);
 
   const fetchUsers = async () => {
     if (user) {
@@ -57,7 +61,7 @@ const ChatSidebar = () => {
                 <div
                   key={user._id}
                   className="flex items-center p-2 rounded-md hover:bg-gray-100 cursor-pointer transition"
-                  onClick={() => setSelectedUserId(user._id)} // Set selected user
+                  onClick={() => dispatch(setSelectedUserId(user._id)) } // Set selected user
                 >
                   <img
                     src={user.imageUrl}
@@ -105,17 +109,6 @@ const ChatSidebar = () => {
             </div>
           </ScrollArea>
         </Card>
-      </div>
-
-      {/* Chat Window */}
-      <div className="flex-1">
-        {selectedUserId ? (
-          <ChatWindow receiverId={selectedUserId} />
-        ) : (
-          <div className="flex items-center justify-center w-full h-[600px] text-gray-500">
-            Select a user to start chatting
-          </div>
-        )}
       </div>
     </div>
   );
