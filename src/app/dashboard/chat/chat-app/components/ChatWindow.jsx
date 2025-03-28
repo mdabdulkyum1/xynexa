@@ -133,7 +133,7 @@ const ChatWindow = () => {
   }else{
     return (
       <div className="">
-        <h1>No user selected</h1>
+        <h1>No user selected!</h1>
       </div>
     )
   }
