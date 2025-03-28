@@ -6,9 +6,9 @@ const AboutBanner = () => {
     return (
         <>
             <div>
-                <div className=" w-11/12 lg:w-2/3 mx-auto text-center p-4 lg:pb-16 lg:pt-16">
+                <div className=" w-11/12 lg:w-2/3 mx-auto text-center p-4 pt-20 lg:pb-16 lg:pt-16 lg:mt-14">
                     <h2 className="text-2xl md:text-3xl lg:text-7xl font-bold mb-4 lg:mb-8">About XYnexa.</h2>
-                    <p className="text-xs md:text-[20px]"> Our platform transforms teamwork with real-time updates, task management, and smart time tracking—ensuring efficiency like never before. Whether you're a startup or a growing enterprise, streamline workflows, enhance communication, and achieve goals faster. Unite. Organize. Succeed.Boost efficiency with a platform designed to streamline tasks, enhance communication, and track progress in real time.  </p>
+                    <p className="text-xs md:text-[16px] text-gray-500 dark:text-gray-300"> Our platform transforms teamwork with real-time updates, task management, and smart time tracking—ensuring efficiency like never before. Whether you're a startup or a growing enterprise, streamline workflows, enhance communication, and achieve goals faster. Unite. Organize. Succeed.Boost efficiency with a platform designed to streamline tasks, enhance communication, and track progress in real time.  </p>
                 </div>
                 <div className="px-4 lg:px-20 flex flex-col lg:flex-row gap-4 mb-8">
 
@@ -20,7 +20,7 @@ const AboutBanner = () => {
                             width={0}
                             height={0}
                             sizes="100vw"
-                            className="w-full h-full rounded-2xl transition-transform duration-500 group-hover:scale-110"
+                            className="w-full h-full rounded-lg transition-transform duration-500 group-hover:scale-110"
                         />
                     </div>
 
@@ -31,7 +31,7 @@ const AboutBanner = () => {
                             width={0}
                             height={0}
                             sizes="100vw"
-                            className="w-full h-full object-cover rounded-2xl transition-transform duration-500 group-hover:scale-110"
+                            className="w-full h-full object-cover rounded-lg transition-transform duration-500 group-hover:scale-110"
                         />
                     </div>
 

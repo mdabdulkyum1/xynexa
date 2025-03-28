@@ -1,9 +1,11 @@
-import React from 'react';
+// import CreateBoard from "./components/CreateBoard";
 
-export default function Page() {
-    return (
-        <div>
-            <h1>Hello, this is the Create Team Page</h1>
-        </div>
-    );
-}
+// export default function CreatePage() {
+
+
+//   return (
+//     <div>
+//       <CreateBoard></CreateBoard> 
+//     </div>
+//   );
+// }

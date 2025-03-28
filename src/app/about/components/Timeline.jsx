@@ -19,13 +19,13 @@ const timelineData = [
     year: "2022",
     title: "Expanded to Global Teams",
     description: "Supported over 10,000 teams worldwide with our collaboration tools.",
-    image: "https://i.ibb.co.com/mfYZCk5/timeline-01.webp",
+    image: "https://i.ibb.co.com/j9kng9gc/medium-shot-business-team-work-23-2149271746.jpg",
   },
   {
     year: "2023",
     title: "Introduced AI-Powered Features",
     description: "Integrated AI to automate tasks and improve team efficiency.",
-    image: "https://i.ibb.co.com/T32kp44/timeline-06.webp",
+    image: "https://i.ibb.co.com/N6CDNSBg/df-Flvj-B1-N7uxu-QSOBr-ISh-RNpto.png",
   },
   {
     year: "2024",
@@ -45,8 +45,8 @@ const Timeline = () => {
   const containerRef = useRef(null);
 
   return (
-    <div className="bg-primary/10 py-12 px-4">
-      <h2 className="text-center text-3xl font-bold mb-8">How we got here</h2>
+    <div className="bg-[#f6d9f2f6] dark:bg-transparent py-12 px-4 dark:mb-10">
+      <h2 className="text-center text-2xl lg:text-5xl font-bold mb-4 lg:mb-12">How we got here</h2>
       <motion.div
         ref={containerRef}
         className="relative max-w-6xl mx-auto overflow-hidden cursor-grab active:cursor-grabbing"
@@ -73,7 +73,7 @@ const Timeline = () => {
               <div className="absolute top-24 md:top-32 left-1/2 w-2 h-2 bg-black rounded-full transform -translate-x-1/2"></div>
               <div className="text-center mt-8 md:mt-12">
                 <h3 className="text-lg md:text-xl lg:text-2xl font-bold">{item.year}</h3>
-                <p className="text-gray-600 text-sm md:text-base">{item.description}</p>
+                <p className="text-gray-600 dark:text-gray-300 text-sm md:text-base">{item.description}</p>
               </div>
             </motion.div>
           ))}
