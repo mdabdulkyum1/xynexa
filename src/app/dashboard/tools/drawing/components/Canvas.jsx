@@ -130,7 +130,7 @@ const Canvas = () => {
           </Button>
 
           {/* Drawing Modes */}
-          <div className="flex flex-row lg:flex-col gap-3">
+          <div className="flex flex-row lg:flex-col  gap-3">
             <Button
               size="icon"
               variant="outline"
