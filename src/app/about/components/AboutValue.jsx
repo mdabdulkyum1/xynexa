@@ -16,7 +16,7 @@ const AboutValue = () => {
 
     return (
         <div className='my-10 lg:my-20 p-6 lg:p-16'>
-            <h2 className='font-bold text-2xl lg:text-5xl mb-4 lg:mb-12 text-center'>Our Values it’s Simple!</h2>
+            <h2 className='font-bold text-2xl lg:text-5xl mb-4 lg:mb-12 text-center'>Our Values it’s Simple !</h2>
             <div className='lg:w-1/2 mx-auto grid grid-cols-1 md:grid-cols-2 gap-8'>
                 {/* card-1 */}
                 <div className="rounded-lg bg-[#EAEEF1] dark:bg-gradient-to-r dark:from-purple-500 dark:via-purple-400 dark:to-indigo-900 dark:bg-opacity-20 dark:backdrop-blur-xl dark:border dark:border-white/20 p-6 h-[230px] lg:h-[300px]" data-aos="fade-right">
