@@ -1,49 +1,7 @@
-// "use client";
+
 // import React, { useState, useRef, useEffect } from "react";
 // import ReactQuill from "react-quill-new";
 // import { MdOutlineSaveAlt } from "react-icons/md";
-// import { FaFilePdf } from "react-icons/fa6";
-// import "react-quill-new/dist/quill.snow.css"; 
-// import DocumentHeading from "./DocumentHeading";
-// import jsPDF from "jspdf";
-// import html2canvas from "html2canvas";
-
-// const ReactQuill = dynamic(() => import("react-quill-new"), { ssr: false });
-
-// const TextEditor = () => {
-//   const [content, setContent] = useState("");
-//   const [title, setTitle] = useState("Untitled Document");
-//   const [isBrowser, setIsBrowser] = useState(false);
-//   const quillRef = useRef(null);
- 
-//   useEffect(() => {
-//     setIsBrowser(typeof window !== 'undefined');
-//   }, []);
-
-//   // Save the document as HTML
-//   const saveDocument = () => {
-//     try {
-//       const blob = new Blob([content], { type: "text/html" });
-//       const url = URL.createObjectURL(blob);
-//       const a = document.createElement("a");
-//       a.href = url;
-//       a.download = `${title}.html`;
-//       a.click();
-//       URL.revokeObjectURL(url);
-//       alert("Document saved successfully!");
-//     } catch (error) {
-//       console.error("Error saving document:", error);
-//       alert("Failed to save the document.");
-//     }
-//   };
-
-// //   show contnt in console
-//   const handleContentChange = (value) => {
-//     setContent(value);
-//     // Extracting plain text from Quill editor
-//     const plainText = quillRef.current ? quillRef.current.getEditor().getText() : "";
-//     console.log("document title",title, "Editor Content:", plainText.trim());
-    
 //   };
 
 //   // Save as PDF (placeholder)
