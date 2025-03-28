@@ -31,7 +31,6 @@
 //     console.log(data);
 //     setOpen(false); // Close the dialog after submission
 //   };
-
 //   return (
 //     <Dialog open={open} onOpenChange={setOpen}>
 //       <DialogContent className="w-full lg:max-w-5xl sm:w-[95%] md:w-[85%] lg:w-[75%] overflow-y-auto p-6 md:p-8 lg:p-10">
