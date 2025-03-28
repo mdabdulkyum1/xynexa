@@ -19,9 +19,9 @@ const AboutValue = () => {
             <h2 className='font-bold text-2xl lg:text-5xl mb-4 lg:mb-12 text-center'>Our Values it’s Simple!</h2>
             <div className='lg:w-1/2 mx-auto grid grid-cols-1 md:grid-cols-2 gap-8'>
                 {/* card-1 */}
-                <div className="rounded-lg bg-[#f6d9f2f6] dark:bg-gradient-to-r dark:from-purple-500 dark:via-purple-400 dark:to-indigo-900 dark:bg-opacity-20 dark:backdrop-blur-xl dark:border dark:border-white/20 p-6 h-[230px] lg:h-[300px]" data-aos="fade-right">
+                <div className="rounded-lg bg-[#EAEEF1] dark:bg-gradient-to-r dark:from-purple-500 dark:via-purple-400 dark:to-indigo-900 dark:bg-opacity-20 dark:backdrop-blur-xl dark:border dark:border-white/20 p-6 h-[230px] lg:h-[300px]" data-aos="fade-right">
                     <motion.div
-                        className="text-4xl mb-2"
+                        className="text-4xl mb-2 bg-[#014E4E] p-2 rounded-full text-white w-14 h-14 flex justify-center items-center"
                         animate={{ y: [0, -10, 0] }} 
                         transition={{ repeat: Infinity, duration: 1.5, ease: "easeInOut" }}
                     >
@@ -33,9 +33,9 @@ const AboutValue = () => {
                     </p>
                 </div>
                 {/* card-2 */}
-                <div className='rounded-lg bg-[#f6d9f2f6] dark:bg-gradient-to-r dark:from-purple-500 dark:via-purple-400 dark:to-indigo-900 dark:bg-opacity-20 dark:backdrop-blur-xl dark:border dark:border-white/20 p-6 h-[230px] lg:h-[300px]' data-aos="fade-left">
+                <div className='rounded-lg bg-[#EAEEF1] dark:bg-gradient-to-r dark:from-purple-500 dark:via-purple-400 dark:to-indigo-900 dark:bg-opacity-20 dark:backdrop-blur-xl dark:border dark:border-white/20 p-6 h-[230px] lg:h-[300px]' data-aos="fade-left">
                     <motion.div
-                        className="text-4xl mb-2"
+                        className="text-4xl mb-2 bg-[#014E4E] p-2 rounded-full text-white w-14 h-14 flex justify-center items-center"
                         animate={{ y: [0, -10, 0] }} 
                         transition={{ repeat: Infinity, duration: 1.5, ease: "easeInOut" }}
                     >
@@ -46,9 +46,9 @@ const AboutValue = () => {
                     <p>XYnexa team are masters of their craft. Even though we’re all experts in our respective fields.</p>
                 </div>
                 {/* card-3 */}
-                <div className='rounded-lg bg-[#f6d9f2f6] dark:bg-gradient-to-r dark:from-purple-500 dark:via-purple-400 dark:to-indigo-900 dark:bg-opacity-20 dark:backdrop-blur-xl dark:border dark:border-white/20 p-6 h-[230px] lg:h-[300px]' data-aos="fade-right">
+                <div className='rounded-lg bg-[#EAEEF1] dark:bg-gradient-to-r dark:from-purple-500 dark:via-purple-400 dark:to-indigo-900 dark:bg-opacity-20 dark:backdrop-blur-xl dark:border dark:border-white/20 p-6 h-[230px] lg:h-[300px]' data-aos="fade-right">
                     <motion.div
-                        className="text-4xl mb-2"
+                        className="text-4xl mb-2 bg-[#014E4E] p-2 rounded-full text-white w-14 h-14 flex justify-center items-center"
                         animate={{ y: [0, -10, 0] }} 
                         transition={{ repeat: Infinity, duration: 1.5, ease: "easeInOut" }}
                     >
@@ -59,9 +59,9 @@ const AboutValue = () => {
                     <p>We work hard and play harder. We believe in the importance of celebrating wins big or small, for the business.</p>
                 </div>
                 {/* card-4 */}
-                <div className='rounded-lg bg-[#f6d9f2f6] dark:bg-gradient-to-r dark:from-purple-500 dark:via-purple-400 dark:to-indigo-900 dark:bg-opacity-20 dark:backdrop-blur-xl dark:border dark:border-white/20 p-6 h-[230px] lg:h-[300px]' data-aos="fade-left">
+                <div className='rounded-lg bg-[#EAEEF1] dark:bg-gradient-to-r dark:from-purple-500 dark:via-purple-400 dark:to-indigo-900 dark:bg-opacity-20 dark:backdrop-blur-xl dark:border dark:border-white/20 p-6 h-[230px] lg:h-[300px]' data-aos="fade-left">
                     <motion.div
-                        className="text-4xl mb-2"
+                        className="text-4xl mb-2 bg-[#014E4E] p-2 rounded-full text-white w-14 h-14 flex justify-center items-center"
                         animate={{ y: [0, -10, 0] }} 
                         transition={{ repeat: Infinity, duration: 1.5, ease: "easeInOut" }}
                     >

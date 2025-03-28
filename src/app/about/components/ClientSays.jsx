@@ -19,7 +19,7 @@ const ClientSays = () => {
                 {/* Testimonial 1 */}
                 <div className="bg-white rounded-lg shadow-md xl:py-8 md:p-6 w-full md:w-1/3 border p-4">
                     <div className="flex items-center mb-4 text-2xl">
-                        <LucideCodesandbox className="mr-2 text-purple-600" size={32} />
+                        <LucideCodesandbox className="mr-2 text-[#014E4E]" size={32} />
 
                         <span className="font-bold dark:text-black">Boltshift</span>
                     </div>
@@ -38,7 +38,7 @@ const ClientSays = () => {
                 {/* Testimonial 2 **/}
                 <div className="bg-white rounded-lg shadow-md xl:py-8 md:p-6 w-full md:w-1/3 border p-4">
                     <div className="flex items-center mb-4 text-2xl">
-                        <TrelloIcon className="mr-2 text-3xl text-purple-600" size={32} />
+                        <TrelloIcon className="mr-2 text-3xl text-[#014E4E]" size={32} />
                         <span className="font-bold dark:text-black">Lightbox</span>
                     </div>
                     <p className="text-gray-600 text-xs lg:text-[16px]">
@@ -56,7 +56,7 @@ const ClientSays = () => {
                 {/* Testimonial 3 */}
                 <div className="bg-white rounded-lg shadow-md xl:py-8 md:p-6 w-full md:w-1/3 border p-4">
                     <div className="flex items-center mb-4 text-2xl">
-                        <SquareLibraryIcon className="mr-2 text-3xl text-purple-600" size={32} />
+                        <SquareLibraryIcon className="mr-2 text-3xl text-[#014E4E]" size={32} />
                         <span className="font-bold dark:text-black">Interlock</span>
                     </div>
                     <p className="text-gray-600 text-xs lg:text-[16px]">
@@ -72,7 +72,7 @@ const ClientSays = () => {
                 </div>
             </div>
             <div className="mt-8 text-center">
-                <a href="#" className="text-purple-600 hover:text-purple-700 font-bold">See all feedbacks →</a>
+                <a href="#" className="text-[#014E4E] hover:text-[#014E4E] font-bold">See all feedbacks →</a>
             </div>
         </div>
     );

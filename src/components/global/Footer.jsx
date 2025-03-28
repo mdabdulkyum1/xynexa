@@ -15,10 +15,10 @@ const Footer = () => {
             
             {/* Left Section - Brand  */}
             <div>
-              <h2 className="text-white text-2xl font-bold"><span className="text-primary">XY</span>nexa</h2>
+              <h2 className="text-white text-2xl font-bold"><span className="">XY</span>nexa</h2>
               <p className="text-sm mt-2">Work together & dream together</p>
               <p className="text-sm mt-2">
-                  <span className="text-primary font-bold">XYnexa</span> Improving collaboration, productivity and workflow efficiency to help your team grow.
+                  <span className=" font-bold">XYnexa</span> Improving collaboration, productivity and workflow efficiency to help your team grow.
                   </p>
             </div>
     
@@ -65,7 +65,7 @@ const Footer = () => {
                   placeholder="Email address..."
                   className="w-full p-2 rounded-l bg-gray-800 border border-gray-700 text-white focus:outline-none"
                 />
-                <button className="bg-primary text-black px-4 py-2 rounded-r font-semibold hover:text-white transition">
+                <button className="bg-white text-[#014E4E] px-4 py-2 rounded-r font-semibold hover:text-black transition">
                   Subscribe 
                 </button>
               </div>
@@ -73,9 +73,9 @@ const Footer = () => {
     
             {/* Social Media Icons */}
             <div className="flex justify-center md:justify-end space-x-4 text-xl ">
-              <a href="#" className="block border-2 p-3 rounded-full  hover:scale-110 transition-all duration-300 hover:text-primary"><FaFacebookF /></a>
-              <a href="#" className= "block border-2 p-3 rounded-full hover:scale-110 transition-all duration-300 hover:text-primary"><FaTwitter /></a>
-              <a href="#" className="block border-2 p-3 rounded-full  hover:scale-110 transition-all duration-300 hover:text-primary"><FaLinkedinIn /></a>
+              <a href="#" className="block border-2 p-3 rounded-full  hover:scale-110 transition-all duration-300 hover:text-white"><FaFacebookF /></a>
+              <a href="#" className= "block border-2 p-3 rounded-full hover:scale-110 transition-all duration-300 hover:text-white"><FaTwitter /></a>
+              <a href="#" className="block border-2 p-3 rounded-full  hover:scale-110 transition-all duration-300 hover:text-white"><FaLinkedinIn /></a>
             </div>
           </div>
     
