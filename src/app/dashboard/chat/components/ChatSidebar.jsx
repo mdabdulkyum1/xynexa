@@ -61,7 +61,7 @@ const ChatSidebar = () => {
                 <div
                   key={user._id}
                   className="flex items-center p-2 rounded-md hover:bg-gray-100 cursor-pointer transition"
-                  onClick={() => dispatch(setSelectedUserId(user._id)) } // Set selected user
+                  onClick={() => dispatch(setSelectedUserId(user?.clerkId)) } // Set selected user
                 >
                   <img
                     src={user.imageUrl}
