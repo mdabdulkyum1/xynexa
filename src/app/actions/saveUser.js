@@ -7,7 +7,7 @@ export async function saveUser(user) {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(user),
     });
-
+    console.log('laaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
     return await res.json();
   } catch (error) {
     console.error("Error saving user:", error);

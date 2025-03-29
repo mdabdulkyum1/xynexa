@@ -7,16 +7,15 @@ import { useSelector } from 'react-redux';
 
 const TeamCreateModal = ({ isOpen, closeModal }) => {
     const { register, handleSubmit, formState: { errors } } = useForm();
-    
-    const { isSignedIn } = useAuth();
-    // const { user } = useUser();
 
-    const user = useSelector((state) => state.user.user);
+    const { isSignedIn } = useAuth();
+    const { user } = useUser();
+    console.log(user)
 
     const onSubmit = (data) => {
         console.log('Form Data:', data);
-        
-    
+
+
         closeModal();
     };
 
