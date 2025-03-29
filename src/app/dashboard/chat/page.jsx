@@ -9,5 +9,5 @@ export default function Page() {
             <h1>Hello, this is the Chat Page</h1>
             <h1>Hello, this is the Chat Page</h1>
         </div>
-    );
+    );lop
 }
