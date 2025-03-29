@@ -18,7 +18,7 @@ const BrandSection = () => {
             <div className="flex flex-wrap justify-center lg:justify-between items-center gap-8">
                 {brands.map((brand, index) => (
                     <div key={index} className="flex flex-col items-center">
-                        <Image src={brand.logo} alt={brand.name} width={150} height={140} className="lg:grayscale hover:grayscale-0 transition-all duration-300 dark:p-4 border-2 dark:rounded-lg dark:bg-[#EAEEF1]" />
+                        <Image src={brand.logo} alt={brand.name} width={150} height={140} className="lg:grayscale hover:grayscale-0 transition-all duration-300 dark:p-4 dark:rounded-lg dark:bg-[#EAEEF1]" />
                         
                     </div>
                 ))}
