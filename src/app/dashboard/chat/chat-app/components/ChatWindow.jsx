@@ -3,7 +3,6 @@
 import { useState, useEffect, useRef } from "react";
 import { useUser } from "@clerk/clerk-react";
 import { io } from "socket.io-client";
-import axios from "axios";
 import { FaVideo, FaPhone, FaPaperPlane, FaEllipsisV } from "react-icons/fa";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -40,6 +39,7 @@ const ChatWindow = () => {
       fetchReceiver();
   } , [receiverId]);
 
+
   useEffect(() => {
     if (!userId) return;
 
@@ -56,13 +56,18 @@ const ChatWindow = () => {
     });
 
     socket.on("stopTyping", () => setIsTyping(false));
+        socket.on("messageRead", ({ messageId }) => {
+        setMessages((prev) => prev.map((msg) => (msg._id === messageId ? { ...msg, read: true } : msg)));
+    });
 
     return () => {
       socket.off("receiveMessage");
       socket.off("typing");
       socket.off("stopTyping");
+      socket.off("messageRead");
     };
   }, [userId, receiverId]);
+
 
   useEffect(() => {
     const fetchMessages = async () => {
@@ -82,23 +87,35 @@ const ChatWindow = () => {
   }, [messages]);
 
   const sendMessage = async () => {
-    if (!newMessage.trim()) return;
+  if (!newMessage.trim()) return;
 
-    const messageData = {
-      senderId: userId,
-      receiverId,
-      text: newMessage,
-    };
-
-    try {
-      const { data } = await axios.post("/messages", messageData);
-      socket.emit("sendMessage", data);
-      setMessages([...messages, { ...data, read: false }]);
-      setNewMessage("");
-    } catch (error) {
-      console.error("Error sending message:", error);
-    }
+  const messageData = {
+    senderId: userId,
+    receiverId,
+    text: newMessage,
   };
+
+  try {
+    const { data } = await axiosPublic.post("/api/messages/send", messageData);
+    
+    // Emit socket event
+    socket.emit("sendMessage", data);
+
+    // Update state safely
+    setMessages((prev) => [...prev, { ...data, read: false }]);
+    
+    // Clear input field
+    setNewMessage("");
+  } catch (error) {
+    console.error("Error sending message:", error);
+    alert("Failed to send message. Please try again.");
+  }
+};
+
+const handleTyping = () => {
+      socket.emit("typing", { senderId: userId, receiverId });
+      setTimeout(() => socket.emit("stopTyping", { receiverId }), 2000);
+    };
 
   if(receiverId){
     return (
