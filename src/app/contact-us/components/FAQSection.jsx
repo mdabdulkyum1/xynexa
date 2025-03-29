@@ -34,14 +34,14 @@ const FAQSection = () => {
     };
 
     return (
-        <section className="container mx-auto p-6 md:p-10 max-w-4xl">
+        <section className="container mx-auto p-6 md:p-10 max-w-4xl my-10">
             {/* Heading and description, only visible when not on home page */}
             {pathname !== "/" && (
                 <>
-                    <h2 className="text-3xl md:text-4xl font-bold text-center">
-                        Frequently Asked Questions
+                    <h2 className="text-2xl md:text-4xl  font-bold text-center">
+                        Do you have any questions?
                     </h2>
-                    <p className="text-center text-gray-600 mt-2">
+                    <p className="text-center text-gray-600 dark:text-gray-200 mt-2 lg:mt-6 text-xs lg:text-[16px]">
                         Find answers to the most common questions about our team management system.
                     </p>
                 </>
@@ -52,11 +52,11 @@ const FAQSection = () => {
                 {faqs.map((faq, index) => (
                     <div key={index} className="bg-gray-100 rounded-lg shadow-md">
                         <button 
-                            className="w-full text-left p-4 flex justify-between items-center font-semibold text-lg"
+                            className="w-full text-left p-4 flex justify-between items-center font-semibold text-lg dark:text-black"
                             onClick={() => toggleFAQ(index)}
                         >
                             {faq.question}
-                            <span className={`text-purple-600 transition-transform duration-300 ${openIndex === index ? "rotate-180" : ""}`}>
+                            <span className={`text-[#014E4E] transition-transform duration-300 ${openIndex === index ? "rotate-180" : ""}`}>
                                 {openIndex === index ? "▲" : "▼"}
                             </span>
                         </button>
