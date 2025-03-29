@@ -2,6 +2,7 @@
 import Image from 'next/image';
 import React from 'react';
 import Filter from './components/Filter';
+import CreateModalBtn from './components/CreateModalBtn';
 
 
 export default function Page() {
@@ -38,11 +39,7 @@ const bgColors = ["bg-pink-200", "bg-green-200", "bg-blue-200", "bg-purple-200" 
             </div>
             <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 p-4 lg:p-8 mt-5 lg:mt-10'>
                 {/* add new board */}
-                <div className='border-2 p-4 rounded-lg'>
-                    <h1>Add New Board</h1>
-                    <p>Click here to add new board</p>
-                    
-                </div>
+               <CreateModalBtn></CreateModalBtn>
                 {
                     cards.map((card, index) => {
                         return (
