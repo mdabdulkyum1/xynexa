@@ -29,10 +29,13 @@ const Service = () => {
 
     return (
         <div className="container mx-auto p-4">
+            <div className="my-4 lg:my-8 text-center">
+                <h2 className="text-2xl lg:text-4xl font-bold dark:text-white">Our Services</h2>
+            </div>
             <div className="flex flex-col lg:flex-row items-start lg:items-center gap-6 p-6 shadow rounded-lg">
                 {/* Accordion Section */}
                 <div className="w-full lg:w-1/3">
-                    <h2 className="text-2xl font-semibold mb-4 text-center lg:text-left">Our Services</h2>
+                   
                     <div className="space-y-3">
                         {services.map((service, index) => (
                             <div
@@ -41,20 +44,20 @@ const Service = () => {
                                 onClick={() => toggleAccordion(index)} // Click anywhere on the accordion
                             >
                                 <div className={`p-4 font-semibold flex justify-between items-center transition-all duration-300 
-                                    ${activeIndex === index ? "bg-primary text-black" : "bg-background "}`}
+                                    ${activeIndex === index ? "bg-primary text-white" : "bg-background "}`}
                                 >
                                     <span className="absolute left-0 top-0 bottom-0 transition-all duration-300"
-                                        style={{ width: activeIndex === index ? "4px" : "0px", backgroundColor: "#895ef7" }}
+                                        style={{ width: activeIndex === index ? "4px" : "0px", backgroundColor: "#014E4E" }}
                                     />
                                     <span className="ml-4">{service.name}</span>
                                     {/* Text-based Arrow Icon */}
-                                    <span className={`text-purple-600 transition-transform duration-300 ${activeIndex === index ? "rotate-180" : ""}`}>
+                                    <span className={`text-primary transition-transform duration-300 ${activeIndex === index ? "rotate-180" : ""}`}>
                                         {activeIndex === index ? "▲" : "▼"}
                                     </span>
                                 </div>
                                 <div
                                     className={`transition-all duration-500 ease-in-out overflow-hidden 
-                                    ${activeIndex === index ? "max-h-40 p-3 dark:bg-[#252526] dark:text-white border-l-4 border-blue-500" : "max-h-0 p-0 border-l-2 border-transparent"}`}
+                                    ${activeIndex === index ? "max-h-40 p-3 dark:bg-[#252526] dark:text-white border-l-4 border-primary" : "max-h-0 p-0 border-l-2 border-transparent"}`}
                                 >
                                     <p className="text-sm">{service.description}</p>
                                 </div>
