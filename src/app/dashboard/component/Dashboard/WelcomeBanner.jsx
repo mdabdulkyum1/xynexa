@@ -2,7 +2,7 @@ import React from 'react';
 
 const WelcomeBanner = () => {
   return (
-    <div className="bg-white rounded-lg p-8 shadow-md flex items-center justify-between">
+    <div className="bg-white dark:bg-black rounded-lg p-8 shadow-md flex items-center justify-between">
       <div className="flex-1">
         <p className="text-sm text-gray-500">Welcome To</p>
         <h2 className="text-3xl font-semibold mb-4">Your Task Management Area</h2>
@@ -17,7 +17,7 @@ const WelcomeBanner = () => {
         <img
           src="/assets/feature.jpg" 
           alt="Welcome"
-          className="max-w-md"
+          className="max-w-md rounded-2xl"
         />
       </div>
     </div>

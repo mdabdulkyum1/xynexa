@@ -55,9 +55,9 @@ const data = {
     isActive: true,
     items: [
       { title: "OverView", url: "/dashboard" },
-      { title: "Activity", url: "/dashboard/activity" },
-      { title: "Deadlines", url: "/dashboard/deadlines" },
-      { title: "Progress", url: "/dashboard/progress" },
+      { title: "Teams", url: "/dashboard/team/view" },
+      { title: "All Tasks", url: "/dashboard/tasks" },
+      
     ],
   },
   {
@@ -130,6 +130,15 @@ const data = {
       { title: "Roles", url: "/dashboard/users/roles" },
       { title: "Profile", url: "/dashboard/users/profile" },
       { title: "Invites", url: "/dashboard/users/invites" },
+    ],
+  },
+  {
+    title: "Tools",
+    url: "/dashboard/tools",
+    icon: Bot,
+    items: [
+      { title: "documents", url: "/dashboard/documents" },
+      { title: "drawing", url: "/dashboard/users/drawing" },
     ],
   },
 ],

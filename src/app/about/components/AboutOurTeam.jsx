@@ -1,7 +1,7 @@
-"use client"; // Next.js এর client-side animation এর জন্য দরকার
+"use client"; 
 
 import { motion } from "framer-motion";
-import Image from "next/image";
+
 
 const teamMembers = [
     { name: "Kim Yun Son", role: "Engineering Manager", img: "https://i.ibb.co/qLrQrj0t/team-06.webp" },
@@ -16,8 +16,8 @@ const teamMembers = [
 
 export default function AboutOurTeam() {
     return (
-        <div className="max-w-5xl mx-auto px-2 md:px-6 py-4 md:8 lg:py-12">
-            <h2 className="text-center text-3xl font-bold mb-8">Our Executive Team</h2>
+        <div className="max-w-5xl mx-auto px-2 md:px-6 py-4 lg:my-28">
+            <h2 className="text-center text-2xl lg:text-5xl font-bold mb-4 lg:mb-12">Our Executive Team</h2>
             <motion.div
                 className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8"
                 initial={{ opacity: 0, scale: 0.5 }}
@@ -35,7 +35,7 @@ export default function AboutOurTeam() {
                         <motion.img
                             src={member.img}
                             alt={member.name}
-                            className="rounded-lg w-full h-full object-cover"
+                            className="rounded-lg w-[300px] h[300px] lg:w-[400px] object-cover"
                             whileHover={{ scale: 1.05, rotate: 3 }}
                             transition={{ type: "spring", stiffness: 150 }}
                         />
