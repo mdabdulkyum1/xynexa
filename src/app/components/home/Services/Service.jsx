@@ -43,7 +43,7 @@ const Service = () => {
                                 className="relative border border-gray-300 rounded-lg overflow-hidden transition-all duration-300 cursor-pointer"
                                 onClick={() => toggleAccordion(index)} // Click anywhere on the accordion
                             >
-                                <div className={`p-4 font-semibold flex justify-between items-center transition-all duration-300 
+                                <div className={`p-4 font-semibold flex justify-between items-center transition-all duration-300 dark:text-white dark:bg-teal-600 
                                     ${activeIndex === index ? "bg-primary text-white" : "bg-background "}`}
                                 >
                                     <span className="absolute left-0 top-0 bottom-0 transition-all duration-300"
