@@ -11,7 +11,7 @@ import { motion } from "framer-motion";
 const AboutValue = () => {
 
     useEffect(() => {
-        AOS.init({ duration: 1000 }); 
+        AOS.init({ duration: 1000 });
     }, []);
 
     return (

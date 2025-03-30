@@ -1,7 +1,7 @@
-"use client"; // Next.js এর client-side animation এর জন্য দরকার
+"use client"; 
 
 import { motion } from "framer-motion";
-import Image from "next/image";
+
 
 const teamMembers = [
     { name: "Kim Yun Son", role: "Engineering Manager", img: "https://i.ibb.co/qLrQrj0t/team-06.webp" },
