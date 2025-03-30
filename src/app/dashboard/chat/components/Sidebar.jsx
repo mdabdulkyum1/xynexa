@@ -15,14 +15,14 @@ const Sidebar = () => {
   ];
 
   return (
-    <aside className="w-20 bg-purple-700 flex flex-col items-center py-5 rounded">
+    <aside className="w-20 bg-teal-700 flex flex-col items-center py-5 rounded">
       <img src="https://placehold.co/40x40" alt="User" className="w-10 h-10 rounded-full mb-5" />
 
       {links.map((link) => (
         <Link key={link.href} href={link.href} className="w-full">
           <div
             className={`text-white text-2xl my-5 p-3 w-full flex justify-center ${
-              pathname === link.href ? "border-r-4 border-white bg-purple-800" : ""
+              pathname === link.href ? "border-r-4 border-white bg-teal-400" : ""
             }`}
           >
             {link.icon}
