@@ -37,7 +37,7 @@ const TrackProgress = () => {
         </p>
 
         <div className="flex items-center gap-3">
-          <div className="p-3 rounded-lg bg-gray-100">
+          <div className="p-3 rounded-lg bg-gray-100 dark:bg-gray-600">
             <small>
               <FaBahai />
             </small>
@@ -54,7 +54,7 @@ const TrackProgress = () => {
         </div>
 
         <div className="flex items-center gap-3">
-          <div className="p-3 rounded-lg bg-gray-100">
+          <div className="p-3 rounded-lg bg-gray-100 dark:bg-gray-600">
             <small>
               <FaBahai />
             </small>
@@ -69,11 +69,11 @@ const TrackProgress = () => {
         </div>
 
         <div className="flex items-center gap-3 mt-10">
-          <button className="btn btn-sm bg-[#c5ff41] border-none">
+          <button className="btn btn-sm bg-teal-600 text-white border-none">
             Subscribe <FaLongArrowAltRight />
           </button>
           <button className="btn btn-sm btn-ghost">
-            <FaArrowTrendUp className=" text-[#c5ff41] text-xl bg-gray-500 p-1 rounded-full" />
+            <FaArrowTrendUp className=" text-white  text-xl bg-gray-500 p-1 rounded-full" />
             Learn More
           </button>
         </div>

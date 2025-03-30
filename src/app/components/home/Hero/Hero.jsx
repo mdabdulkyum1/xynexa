@@ -17,9 +17,9 @@ const Hero = () => {
             <div className="absolute inset-0 bg-gray-500 opacity-20 text-white"></div>
             <div className="container mx-auto px-6 lg:px-32 flex flex-col lg:flex-row items-center justify-between gap-10 h-full">
                 {/* Text Container */}
-                <div className="w-full lg:w-3/5 mx-auto text-white lg:space-y-5 md:pt-12">
-                    <h2 className="text-2xl lg:text-5xl text-center uppercase lg:leading-[70px] font-bold pt-4">
-                    Boost collaboration, <span className="text-teal-500 hidden lg:flex">efficiency, growth </span>
+                <div className="w-full lg:w-1/2 mx-auto text-white lg:space-y-3 md:pt-12">
+                    <h2 className="text-2xl lg:text-5xl text-center uppercase lg:leading-[60px] font-bold pt-4">
+                    Boost <span className="text-teal-600">collaboration,</span>
                          <span className="text-teal-600">profits</span> like an expert
                     </h2>
 

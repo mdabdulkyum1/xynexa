@@ -1,6 +1,6 @@
 "use client";
-import './reviewCard.css'
-import { motion } from 'framer-motion'
+import './reviewCard.css';
+import { motion } from 'framer-motion';
 
 const Reviews = () => {
     const allReviews = [
@@ -35,30 +35,30 @@ const Reviews = () => {
     ];
 
     return (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 p-10 bg-gradient-to-t from-purple-100/80 to-gray-100 my-10 lg:my-28">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 p-10 dark:bg-[#232323] my-10 lg:my-28 text-white">
             {allReviews.map((review) => (
                 <motion.div
                     key={review.id}
-                    className="p-5 text-center reviews-card rounded-xl border border-white/30 bg-white/10 backdrop-blur-lg shadow-lg"
+                    className="p-5 text-center reviews-card rounded-xl border border-gray-700 bg-gray-100 shadow-lg"
                     initial={{ opacity: 0, y: 50 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.6, ease: "easeOut" }}
                     whileHover={{
                         scale: 1.05,
-                        boxShadow: "0px 10px 20px rgba(0, 0, 0, 0.2)",
+                        boxShadow: "0px 10px 20px rgba(255, 255, 255, 0.2)",
                     }}
                     whileTap={{ scale: 0.98 }}
                 >
-                    <p className="text-gray-700">"{review.text}"</p>
+                    <p className="text-gray-600 dark:text-gray-200">"{review.text}"</p>
                     <div className="mt-4 flex items-center justify-center gap-3">
                         <img
                             src={review.image}
                             alt={review.name}
-                            className="w-12 h-12 rounded-full object-cover"
+                            className="w-12 h-12 rounded-full object-cover border border-gray-600"
                         />
                         <div className="text-left">
-                            <h4 className="text-lg font-semibold text-primary">{review.name}</h4>
-                            <p className="text-sm text-gray-700">{review.role}</p>
+                            <h4 className="text-lg font-semibold text-teal-600">{review.name}</h4>
+                            <p className="text-sm text-gray-600 dark:text-gray-200">{review.role}</p>
                         </div>
                     </div>
                 </motion.div>
