@@ -110,6 +110,7 @@ const data = {
       { title: "Calendar", url: "/dashboard/meetings/calendar" },
       { title: "Schedule", url: "/dashboard/meetings/schedule" },
       { title: "Reminders", url: "/dashboard/meetings/reminders" },
+      { title: "Team Meet", url: "/dashboard/meetings/meet" },
     ],
   },
   {
