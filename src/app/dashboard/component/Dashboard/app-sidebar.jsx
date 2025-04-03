@@ -138,8 +138,8 @@ const data = {
     url: "/dashboard/tools",
     icon: Bot,
     items: [
-      { title: "documents", url: "/dashboard/documents" },
-      { title: "drawing", url: "/dashboard/users/drawing" },
+      { title: "documents", url: "/dashboard/tools/documents" },
+      { title: "drawing", url: "/dashboard/tools/drawing" },
     ],
   },
 ],
