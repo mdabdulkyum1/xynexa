@@ -6,6 +6,7 @@ import Footer from "@/components/global/Footer";
 import { ClerkProvider } from "@clerk/nextjs";
 import { SaveUserToDB } from "@/lib/saveUserToDB";
 import Providers from "@/providers/Providers"; 
+import { Toaster } from "sonner";
 
 export const metadata = {
   title: "XyNexa",
@@ -39,6 +40,7 @@ export default function RootLayout({ children }) {
             <main className="min-h-screen">
               <SaveUserToDB />
               <Providers>
+              <Toaster  position="top-right" />
                 
                 {children}</Providers> 
             </main>

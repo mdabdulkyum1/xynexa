@@ -1,11 +1,11 @@
-import CreateBoard from "./components/CreateBoard";
+// import CreateBoard from "./components/CreateBoard";
 
-export default function CreatePage() {
+// export default function CreatePage() {
 
 
-  return (
-    <div>
-      <CreateBoard></CreateBoard> 
-    </div>
-  );
-}
+//   return (
+//     <div>
+//       <CreateBoard></CreateBoard> 
+//     </div>
+//   );
+// }
