@@ -40,34 +40,70 @@ const ChatWindow = () => {
   } , [receiverId]);
 
 
+  // useEffect(() => {
+  //   if (!userId) return;
+
+  //   socket.emit("join", { userId });
+
+  //   socket.on("receiveMessage", (message) => {
+  //     setMessages((prev) => [...prev, message]);
+  //   });
+
+  //   socket.on("typing", ({ senderId }) => {
+  //     if (senderId === receiverId) {
+  //       setIsTyping(true);
+  //     }
+  //   });
+
+  //   socket.on("stopTyping", () => setIsTyping(false));
+  //       socket.on("messageRead", ({ messageId }) => {
+  //       setMessages((prev) => prev.map((msg) => (msg._id === messageId ? { ...msg, read: true } : msg)));
+  //   });
+
+  //   return () => {
+  //     socket.off("receiveMessage");
+  //     socket.off("typing");
+  //     socket.off("stopTyping");
+  //     socket.off("messageRead");
+  //   };
+  // }, [userId, receiverId]);
+
   useEffect(() => {
     if (!userId) return;
-
+  
+    // Join room when user connects
     socket.emit("join", { userId });
-
+  
+    // Listen for new messages
     socket.on("receiveMessage", (message) => {
       setMessages((prev) => [...prev, message]);
     });
-
+  
+    // Listen for typing events
     socket.on("typing", ({ senderId }) => {
       if (senderId === receiverId) {
         setIsTyping(true);
       }
     });
-
+  
     socket.on("stopTyping", () => setIsTyping(false));
-        socket.on("messageRead", ({ messageId }) => {
-        setMessages((prev) => prev.map((msg) => (msg._id === messageId ? { ...msg, read: true } : msg)));
+  
+    // Listen for message read event
+    socket.on("messageRead", ({ id }) => {
+      console.log("Message read:", id, "<<<<test>>>>");
+      setMessages((prev) =>
+        prev.map((msg) => (msg._id === id ? { ...msg, read: true } : msg)) // Fixed issue
+      );
     });
-
+  
     return () => {
       socket.off("receiveMessage");
       socket.off("typing");
       socket.off("stopTyping");
       socket.off("messageRead");
     };
-  }, [userId, receiverId]);
-
+  }, [userId, receiverId]); // Dependencies are correctly set
+  
 
   useEffect(() => {
     const fetchMessages = async () => {
@@ -85,6 +121,17 @@ const ChatWindow = () => {
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
+
+  useEffect(() => {
+    if (receiverId) {
+      messages.forEach((message) => {
+        if (!message.read) {
+          handleMessageRead(message._id);
+        }
+      });
+    }
+  }, [receiverId, messages]);
+  
 
   const sendMessage = async () => {
   if (!newMessage.trim()) return;
@@ -117,6 +164,18 @@ const handleTyping = () => {
       setTimeout(() => socket.emit("stopTyping", { receiverId }), 2000);
     };
 
+    const handleMessageRead = (messageId) => {
+      if (!messageId || !receiverId) return;
+    
+      socket.emit("messageRead", { _id: messageId, receiverId });
+    
+      // Update local state to mark message as read instantly
+      setMessages((prev) =>
+        prev.map((msg) => (msg._id === messageId ? { ...msg, read: true } : msg))
+      );
+    };
+    
+
   if(receiverId){
     return (
       <div className="flex flex-col justify-between w-full max-w-3xl mx-auto bg-white shadow-md rounded-lg">
@@ -132,7 +191,7 @@ const handleTyping = () => {
             </div>
             <div className="flex-1 overflow-y-auto p-4 space-y-3" style={{ maxHeight: "350px" }}>
               {messages.map((msg, index) => (
-                <div key={index} className={`flex ${msg.senderId === userId ? "justify-end" : ""}`}>
+                <div onClick={()=> handleMessageRead(msg._id)} key={index} className={`flex ${msg.senderId === userId ? "justify-end" : ""}`}>
                   <div className={`p-3 rounded-lg max-w-xs ${msg.senderId === userId ? "bg-blue-500 text-white" : "bg-gray-200 text-gray-800"}`}>
                     {msg.text}
                     <div className="text-xs text-right">{msg.read ? "✔️" : "⏳"}</div>
