@@ -151,6 +151,7 @@ const Canvas = () => {
       className="w-8 h-8 sm:w-10 sm:h-10"
     >
       <Eraser size={16} />
+
     </Button>
   </div>
 
@@ -184,7 +185,9 @@ const Canvas = () => {
       onClick={handleClearCanvas}
       className="px-3 py-3 bg-red-500 hover:bg-red-600 hover:shadow-lg text-white rounded w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center"
     >
+      {/* Delete branch added */}
       <Trash2 size={16} />
+
     </button>
   </div>
 </div>
