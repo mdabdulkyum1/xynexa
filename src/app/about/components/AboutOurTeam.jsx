@@ -10,16 +10,16 @@ const teamMembers = [
     { name: "Henry Matt", role: "Customer Success", img: "https://i.ibb.co/cSS6VYFV/team-04.webp" },
     { name: "John Zellers", role: "Lead of Fun", img: "https://i.ibb.co/rfkdKCKg/team-05.webp" },
     { name: "Mark Zellers", role: "Director of Joy", img: "https://i.ibb.co/qMmksH0v/team-01.webp" },
-    { name: "Natalia", role: "Founder & CEO", img: "https://i.ibb.co/FGHM5V0/team-07.webp" },
-    { name: "Larry", role: "Co-Founder", img: "https://i.ibb.co/jvjypsGg/team-08.webp" },
+    { name: "Natalia", role: "Founder & CEO", img: "https://i.ibb.co.com/k2kbjWxF/young-beautiful-girl-posing-black-leather-jacket-park-1153-8104.jpg" },
+    { name: "Larry", role: "Co-Founder", img: "https://i.ibb.co.com/7d6VDp63/young-beautiful-woman-pink-warm-sweater-natural-look-smiling-portrait-isolated-long-hair-285396-896.jpg" },
 ];
 
 export default function AboutOurTeam() {
     return (
-        <div className="max-w-5xl mx-auto px-2 md:px-6 py-4 lg:my-28">
-            <h2 className="text-center text-2xl lg:text-5xl font-bold mb-4 lg:mb-12">Our Executive Team</h2>
+        <div className="max-w-5xl mx-auto px-2 md:px-6 py-8 md:8 lg:py-20">
+            <h2 className="font-bold text-2xl lg:text-5xl mb-4 lg:mb-12 text-center">Our Executive Team</h2>
             <motion.div
-                className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8"
+                className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 p-4"
                 initial={{ opacity: 0, scale: 0.5 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.5, ease: "easeInOut" }}
@@ -35,7 +35,7 @@ export default function AboutOurTeam() {
                         <motion.img
                             src={member.img}
                             alt={member.name}
-                            className="rounded-lg w-[300px] h[300px] lg:w-[400px] object-cover"
+                            className="rounded-lg w-[212px] h-[212px] object-cover"
                             whileHover={{ scale: 1.05, rotate: 3 }}
                             transition={{ type: "spring", stiffness: 150 }}
                         />

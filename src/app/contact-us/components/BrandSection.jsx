@@ -10,15 +10,15 @@ const BrandSection = () => {
     ];
 
     return (
-        <section className="container mx-auto p-6 md:p-10  ">
-            <h2 className="text-center text-lg md:py-12 font-semibold text-gray-800 mb-6">
+        <section className="container mx-auto p-6 md:p-10 my-10 lg:my-20">
+            <h2 className="text-center text-2xl md:text-4xl font-bold md:py-12 text-gray-800 dark:text-gray-200 mb-6">
                 Trusted by well-known brands.
             </h2>
 
-            <div className="flex  flex-wrap justify-between items-center gap-10">
+            <div className="flex flex-wrap justify-center lg:justify-between items-center gap-8">
                 {brands.map((brand, index) => (
                     <div key={index} className="flex flex-col items-center">
-                        <Image src={brand.logo} alt={brand.name} width={150} height={140} className="grayscale hover:grayscale-0 transition-all duration-300" />
+                        <Image src={brand.logo} alt={brand.name} width={150} height={140} className="lg:grayscale hover:grayscale-0 transition-all duration-300 dark:p-4 dark:rounded-lg dark:bg-[#EAEEF1]" />
                         
                     </div>
                 ))}

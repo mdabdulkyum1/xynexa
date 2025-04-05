@@ -24,7 +24,13 @@ const geistMono = Geist_Mono({
 
 export default function RootLayout({ children }) {
   return (
-    <ClerkProvider>
+    <ClerkProvider
+    appearance={{
+      layout: {
+        unsafe_disableDevelopmentModeWarnings: true,
+      },
+    }}
+    >
       <html lang="en">
         <body
           className={`${geistSans.variable} ${geistMono.variable} antialiased`}
