@@ -19,7 +19,7 @@ const ClientSays = () => {
                 {/* Testimonial 1 */}
                 <div className="bg-white rounded-lg shadow-md xl:py-8 md:p-6 w-full md:w-1/3 border p-4">
                     <div className="flex items-center mb-4 text-2xl">
-                        <LucideCodesandbox className="mr-2 text-purple-600" size={32} />
+                        <LucideCodesandbox className="mr-2 text-[#014E4E]" size={32} />
 
                         <span className="font-bold dark:text-black">Boltshift</span>
                     </div>
@@ -29,7 +29,7 @@ const ClientSays = () => {
                     <div className="mt-6 flex items-center">
                         <img src={clientImg.img1} alt="Mark Zellers Avatar" width={40} height={40} className="rounded-full mr-2" />
                         <div>
-                            <span className="font-bold dark:text-purple-600">Mark Zellers</span><br />
+                            <span className="font-bold dark:text-[#014E4E]">Mark Zellers</span><br />
                             <span className="text-xs text-gray-600">CEO, Co-Founder.</span>
                         </div>
                     </div>
@@ -38,7 +38,7 @@ const ClientSays = () => {
                 {/* Testimonial 2 **/}
                 <div className="bg-white rounded-lg shadow-md xl:py-8 md:p-6 w-full md:w-1/3 border p-4">
                     <div className="flex items-center mb-4 text-2xl">
-                        <TrelloIcon className="mr-2 text-3xl text-purple-600" size={32} />
+                        <TrelloIcon className="mr-2 text-3xl text-[#014E4E]" size={32} />
                         <span className="font-bold dark:text-black">Lightbox</span>
                     </div>
                     <p className="text-gray-600 text-xs lg:text-[16px]">
@@ -47,7 +47,7 @@ const ClientSays = () => {
                     <div className="mt-6 flex items-center">
                         <img src={clientImg.img2} alt="Natalia Larsson Avatar" width={40} height={40} className="rounded-full mr-2" />
                         <div>
-                            <span className="font-bold dark:text-purple-600">Natalia Larsson</span><br />
+                            <span className="font-bold dark:text-[#014E4E]">Natalia Larsson</span><br />
                             <span className="text-xs text-gray-600">Director Of Sales</span>
                         </div>
                     </div>
@@ -56,23 +56,23 @@ const ClientSays = () => {
                 {/* Testimonial 3 */}
                 <div className="bg-white rounded-lg shadow-md xl:py-8 md:p-6 w-full md:w-1/3 border p-4">
                     <div className="flex items-center mb-4 text-2xl">
-                        <SquareLibraryIcon className="mr-2 text-3xl text-purple-600" size={32} />
+                        <SquareLibraryIcon className="mr-2 text-3xl text-[#014E4E]" size={32} />
                         <span className="font-bold dark:text-black">Interlock</span>
                     </div>
                     <p className="text-gray-600 text-xs lg:text-[16px]">
-                        "We are based in Europe and the latest Data Protection Regulation forces us to look for service suppliers than comply with this regulation and as we look to create our website and this builder just outstanding!"
+                        "We are based in Europe and the latest Data Protection Regulation forces us to look for service suppliers than comply with this regulation and as we look to create our website."
                     </p>
                     <div className="mt-6 flex items-center">
                         <img src={clientImg.img3} alt="Sarah Edrissi Avatar" width={40} height={40} className="rounded-full mr-2" />
                         <div>
-                            <span className="font-bold dark:text-purple-600">Sarah Edrissi</span><br />
+                            <span className="font-bold dark:text-[#014E4E]">Sarah Edrissi</span><br />
                             <span className="text-xs text-gray-600">Lead Marketing</span>
                         </div>
                     </div>
                 </div>
             </div>
             <div className="mt-8 text-center">
-                <a href="#" className="text-purple-600 hover:text-purple-700 font-bold">See all feedbacks →</a>
+                <a href="#" className="text-[#014E4E] hover:text-[#014E4E] dark:text-white text-xl font-bold">See all feedbacks →</a>
             </div>
         </div>
     );

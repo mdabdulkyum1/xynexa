@@ -45,8 +45,8 @@ const Timeline = () => {
   const containerRef = useRef(null);
 
   return (
-    <div className="bg-[#f6d9f2f6] dark:bg-transparent py-12 px-4 dark:mb-10">
-      <h2 className="text-center text-2xl lg:text-5xl font-bold mb-4 lg:mb-12">How we got here</h2>
+    <div className="bg-[#014E4E] dark:bg-transparent py-12 px-4 dark:my-20">
+      <h2 className="text-center text-2xl lg:text-5xl font-bold mb-4 lg:mb-12 text-white">How we got here</h2>
       <motion.div
         ref={containerRef}
         className="relative max-w-6xl mx-auto overflow-hidden cursor-grab active:cursor-grabbing"
@@ -70,15 +70,15 @@ const Timeline = () => {
                 alt={item.title}
                 className="rounded-lg w-24 h-24 md:w-32 md:h-32"
               />
-              <div className="absolute top-24 md:top-32 left-1/2 w-2 h-2 bg-black rounded-full transform -translate-x-1/2"></div>
+              <div className="absolute top-24 md:top-32 left-1/2 w-2 h-2 bg-white rounded-full transform -translate-x-1/2"></div>
               <div className="text-center mt-8 md:mt-12">
-                <h3 className="text-lg md:text-xl lg:text-2xl font-bold">{item.year}</h3>
-                <p className="text-gray-600 dark:text-gray-300 text-sm md:text-base">{item.description}</p>
+                <h3 className="text-lg md:text-xl lg:text-2xl font-bold text-white">{item.year}</h3>
+                <p className="text-gray-300 dark:text-gray-200 text-sm md:text-base">{item.description}</p>
               </div>
             </motion.div>
           ))}
         </motion.div>
-        <div className="absolute top-[100px] md:top-[132px] left-0 right-0 h-[1px] bg-gray-600 w-full"></div>
+        <div className="absolute top-[100px] md:top-[132px] left-0 right-0 h-[1px] bg-white w-full"></div>
       </motion.div>
     </div>
   );
