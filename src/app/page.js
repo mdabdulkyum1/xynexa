@@ -6,10 +6,12 @@ import Pricing from './components/home/Pricing/Pricing';
 import Reviews from './components/home/Reviews/Reviews';
 import Service from './components/home/Services/Service';
 import TrackProgress from './components/home/TrackProgress/TrackProgress';
+import Welcome from './components/home/WellcomeMsg/Welcome';
 
 export default function Home() {
   return (
     <>
+    <Welcome></Welcome>
       <Hero></Hero>
       <LeastStressed></LeastStressed>
       <Features></Features>
