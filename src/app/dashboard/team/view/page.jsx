@@ -1,4 +1,4 @@
-'use client'
+"use client"
 import Image from 'next/image';
 import React from 'react';
 import Filter from './components/Filter';
@@ -39,11 +39,11 @@ export default function TeamView() {
         <div>
             <div className=' flex lg:pl-20  border-b-2 border-gray-600 mb-4'>
                 <div className='mt-2'>
-                    <Image src="/assets/images/logo-xynexa.png" alt='logo-img' width={100} height={100}></Image>
+                <Image src="/assets/images/logo-xynexa.png" alt='logo-img' width={100} height={100}></Image>
                 </div>
                 <div className='flex flex-col justify-center items-center'>
-                    <h2 className='font-bold text-xl lg:text-3xl'>XY<span className='text-purple-500'>nexa</span></h2>
-
+                <h2 className='font-bold text-xl lg:text-3xl'>XY<span className='text-purple-500'>nexa</span></h2>
+                
                 </div>
             </div>
             <div className=''>
