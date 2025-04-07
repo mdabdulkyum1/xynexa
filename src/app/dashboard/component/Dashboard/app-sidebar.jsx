@@ -110,6 +110,7 @@ const data = {
       { title: "Calendar", url: "/dashboard/meetings/calendar" },
       { title: "Schedule", url: "/dashboard/meetings/schedule" },
       { title: "Reminders", url: "/dashboard/meetings/reminders" },
+      { title: "Team Meet", url: "/dashboard/meetings/meet" },
     ],
   },
   {
@@ -137,8 +138,8 @@ const data = {
     url: "/dashboard/tools",
     icon: Bot,
     items: [
-      { title: "documents", url: "/dashboard/documents" },
-      { title: "drawing", url: "/dashboard/users/drawing" },
+      { title: "documents", url: "/dashboard/tools/documents" },
+      { title: "drawing", url: "/dashboard/tools/drawing" },
     ],
   },
 ],
