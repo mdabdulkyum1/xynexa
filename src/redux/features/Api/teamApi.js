@@ -37,7 +37,7 @@ export const teamApi = baseApi.injectEndpoints({
             }),
             invalidatesTags: ['Team'],
         }),
-        getUseTeams: builder.query({
+        getTeamsByCurrentUser: builder.query({
             query: (userId) => `/teams/user/teams/${userId}`,
             providesTags: ['Team'],
         }),
@@ -50,5 +50,5 @@ export const {
     useUpdateTeamMutation,
     useDeleteTeamMutation,
     useAddMemberToTeamMutation,
-    useGetUseTeamsQuery,
+    useGetTeamsByCurrentUserQuery,
 } = teamApi;
