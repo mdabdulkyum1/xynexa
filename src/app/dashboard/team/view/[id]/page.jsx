@@ -64,7 +64,9 @@
 
 'use client'; // ক্লায়েন্ট-সাইড রেন্ডারিংয়ের জন্য
 
+import { useGetTeamQuery } from '@/redux/features/Api/teamApi';
 import { Users, Mail, Hammer } from 'lucide-react'; // Lucide আইকন
+import { useParams } from 'next/navigation';
 
 const teamData = {
   _id: '67f43572e3de1699202964b7',
@@ -77,8 +79,7 @@ const teamData = {
     firstName: 'Ashraful',
     lastName: 'Hossain',
     email: 'ahmeadashraful@gmail.com',
-    imageUrl:
-      'https://img.clerk.com/eyJ0eXBlIjoicHJveHkiLCJzcmMiOiJodHRwczovL2ltYWdlcy5jbGVyay5kZXYvb2F1dGhfZ29vZ2xlL2ltZ18ydXliNDhYMU9kZzI2UkMyM3zVM1BmaHRpekIifQ',
+    imageUrl: 'https://i.ibb.co.com/103M16B/man-outside-091318-800x450.jpg',
     role: 'member',
     status: 'Online',
     lastActive: '2025-04-07T19:59:21.676Z',
@@ -92,7 +93,7 @@ const teamData = {
       firstName: 'Digonto',
       lastName: 'Doe',
       email: 'digonto@gmail.com',
-      imageUrl: 'https://example.com/profile.jpg',
+      imageUrl: 'https://i.ibb.co.com/103M16B/man-outside-091318-800x450.jpg',
       role: 'member',
       status: 'Online',
       lastActive: '2025-04-07T20:36:44.785Z',
@@ -105,7 +106,7 @@ const teamData = {
       firstName: 'John',
       lastName: 'Doe',
       email: 'jannatjui414@gmail.com',
-      imageUrl: 'https://example.com/profile.jpg',
+      imageUrl: 'https://i.ibb.co.com/103M16B/man-outside-091318-800x450.jpg',
       role: 'member',
       status: 'Online',
       lastActive: '2025-03-29T10:29:13.180Z',
@@ -118,6 +119,11 @@ const teamData = {
 };
 
 const TeamDetails = () => {
+  const { id: teamId } = useParams()
+
+  const { data: team, isLoading, isError, error } = useGetTeamQuery(teamId);
+  console.log(team);
+
   return (
     <div className="min-h-screen p-4 bg-white dark:bg-[#171717] text-gray-900 dark:text-gray-100 transition-colors duration-300">
       {/* টিমের তথ্য */}
@@ -127,15 +133,15 @@ const TeamDetails = () => {
             <div className="flex items-center gap-3">
               <Users className="h-8 w-8 text-blue-500 dark:text-blue-400" />
               <div>
-                <h1 className="text-3xl font-bold">{teamData.name}</h1>
-                <p className="text-gray-600 dark:text-gray-400 italic mt-1">{teamData.description}</p>
+                <h1 className="text-3xl font-bold">{team?.name}</h1>
+                <p className="text-gray-600 dark:text-gray-400 italic mt-1">{team?.description}</p>
                 <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
                   Created by:{' '}
-                  <span className="font-medium">{`${teamData.creator.firstName} ${teamData.creator.lastName}`}</span> (
-                  {teamData.creator.email})
+                  <span className="font-medium">{`${teamData?.creator?.firstName} ${teamData?.creator?.lastName}`}</span> (
+                  {teamData?.creator?.email})
                 </p>
                 <p className="text-sm text-gray-500 dark:text-gray-400">
-                  Created on: {new Date(teamData.createdAt).toLocaleDateString()}
+                  Created on: {new Date(team?.createdAt).toLocaleDateString()}
                 </p>
               </div>
             </div>
@@ -160,7 +166,7 @@ const TeamDetails = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {teamData.members.map((member, index) => (
+                  {team?.members?.map((member, index) => (
                     <tr
                       key={member._id}
                       className="border-b border-gray-200 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-black/30"
