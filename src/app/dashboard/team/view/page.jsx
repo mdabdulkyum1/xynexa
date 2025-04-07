@@ -1,5 +1,5 @@
 
-import Image from 'next/image';
+// import Image from 'next/image';
 import React from 'react';
 import Filter from './components/Filter';
 import CreateModalBtn from './components/CreateModalBtn';
@@ -20,11 +20,11 @@ const bgColors = ["bg-pink-200", "bg-green-200", "bg-blue-200", "bg-purple-200" 
     return (
         <div>
             <div className=' flex lg:pl-20  border-b-2 border-gray-600 mb-4'>
-                <div className='mt-2'>
+                {/* <div className='mt-2'>
                 <Image src="/assets/images/logo-xynexa.png" alt='logo-img' width={100} height={100}></Image>
-                </div>
+                </div> */}
                 <div className='flex flex-col justify-center items-center'>
-                <h2 className='font-bold text-xl lg:text-3xl'>XY<span className='text-purple-500'>nexa</span></h2>
+                <h2 className='font-extrabold text-xl lg:text-3xl text-[#014E4E]'>XY<span className='text-gray-500'>nexa</span></h2>
                 
                 </div>
             </div>
