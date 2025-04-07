@@ -3,11 +3,9 @@ import Image from 'next/image';
 import React from 'react';
 import Filter from './components/Filter';
 import CreateModalBtn from './components/CreateModalBtn';
-import { useUser } from '@clerk/nextjs';
-import { useGetUserByEmailQuery } from '@/redux/features/Api/userApi';
 import { useUserDataFromClerk } from '@/hooks/useUserDataFromClerk';
-import { useGetUseTeamsQuery } from '@/redux/features/Api/teamApi';
-import { LucideIcon, Users, Calendar, Type, User } from 'lucide-react'; // Import Lucide Icons
+import { useGetTeamsByCurrentUserQuery } from '@/redux/features/Api/teamApi';
+import { Users, Calendar, Type, User } from 'lucide-react'; // Import Lucide Icons
 import Link from 'next/link';
 
 export default function TeamView() {
@@ -17,7 +15,8 @@ export default function TeamView() {
     const userId = userData?.user?._id
     console.log(userId);
 
-    const { data: teamData } = useGetUseTeamsQuery(userId);
+    // const { data: teamData } = useGetUseTeamsQuery(userId);
+    const { data: teamData } = useGetTeamsByCurrentUserQuery(userId);
 
     if (isLoading) {
         return <div>Loading...</div>; 
