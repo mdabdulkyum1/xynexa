@@ -19,8 +19,10 @@ const DocsEditor = () => {
   const [fontFamily, setFontFamily] = useState('Sans Serif');
 
   const { userData, isLoading, isError, error } = useUserDataFromClerk();
-  
- const docCreatorEmail =userData?.user?.email
+
+  const docCreator_id = userData?.user?._id
+  const docCreatorEmail = userData?.user?.email
+  console.log(docCreator_id, docCreatorEmail);
 
   const editor = useEditor({
     extensions: [
@@ -40,11 +42,18 @@ const DocsEditor = () => {
     const newDoc = {
       title,
       content: html,
+      docCreator_id,
       docCreatorEmail
     }
 
+    axios.post('http://localhost:5000/api/documents/create', newDoc)
+      .then((response) => {
+        console.log('Document saved successfully:', response.data);
+      })
+      .catch((error) => {
+        console.error('Error saving document:', error);
+      })
     console.log(newDoc);
-
 
   };
 

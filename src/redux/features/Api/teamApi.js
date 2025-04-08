@@ -2,9 +2,6 @@ import { baseApi } from "./baseApi";
 
 export const teamApi = baseApi.injectEndpoints({
     endpoints: (builder) => ({
-
-
-
         // single team get
         getTeam: builder.query({
             query: (id) => `/teams/${id}`,
