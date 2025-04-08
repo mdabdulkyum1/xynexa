@@ -2,10 +2,15 @@ import { baseApi } from "./baseApi";
 
 export const teamApi = baseApi.injectEndpoints({
     endpoints: (builder) => ({
+
+
+
+        // single team get
         getTeam: builder.query({
             query: (id) => `/teams/${id}`,
             providesTags: ['Team'],
         }),
+        // create team
         createTeam: builder.mutation({
             query: (teamData) => ({
                 url: "/teams/create",
@@ -41,6 +46,10 @@ export const teamApi = baseApi.injectEndpoints({
             query: (userId) => `/teams/user/teams/${userId}`,
             providesTags: ['Team'],
         }),
+
+
+
+        
     }),
 });
 
