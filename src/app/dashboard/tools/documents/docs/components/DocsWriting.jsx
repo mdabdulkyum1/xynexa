@@ -8,6 +8,8 @@ import TextStyle from '@tiptap/extension-text-style';
 import Color from '@tiptap/extension-color';
 import Highlight from '@tiptap/extension-highlight';
 import TextAlign from '@tiptap/extension-text-align';
+import axios from 'axios';
+import { useUserDataFromClerk } from '@/hooks/useUserDataFromClerk';
 
 const DocsEditor = () => {
   const [title, setTitle] = useState('Untitled Document');
@@ -15,6 +17,10 @@ const DocsEditor = () => {
   const [bgColor, setBgColor] = useState('#ffff00');
   const [fontSize, setFontSize] = useState('16px');
   const [fontFamily, setFontFamily] = useState('Sans Serif');
+
+  const { userData, isLoading, isError, error } = useUserDataFromClerk();
+  
+ const docCreatorEmail =userData?.user?.email
 
   const editor = useEditor({
     extensions: [
@@ -28,10 +34,20 @@ const DocsEditor = () => {
     content: '<p>Start writing your document...</p>',
   });
 
-  const handleSave = () => {
+  const handleSave = async () => {
     const html = editor?.getHTML();
-    console.log('Saved Content:', html);
+
+    const newDoc = {
+      title,
+      content: html,
+      docCreatorEmail
+    }
+
+    console.log(newDoc);
+
+
   };
+
 
   const applyStyles = () => {
     if (!editor) return;
