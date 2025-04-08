@@ -1,4 +1,4 @@
-'use client'; 
+'use client';
 
 import { useDeleteTeamMutation, useGetTeamQuery } from '@/redux/features/Api/teamApi';
 import { Users, Mail, Hammer, MoreVertical } from 'lucide-react';
@@ -6,21 +6,20 @@ import { useParams } from 'next/navigation';
 import AddMember from '../components/AddMember';
 import { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
-import axios from 'axios';
 import Swal from 'sweetalert2';
 import { useRouter } from 'next/navigation';
+import UpdateButton from '../components/UpdateButton';
 
 const TeamDetails = () => {
   const { id: teamId } = useParams();
   const [isOpen, setIsOpen] = useState(false); // For AddMember modal
   const [isMenuOpen, setIsMenuOpen] = useState(false); // For dropdown menu
+  const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false); // For Update modal
   const menuRef = useRef(null); // Ref to track the menu element
-  const router = useRouter(); // useRouter hook
-
+  const router = useRouter();
 
   const { data: team, isLoading, isError, error } = useGetTeamQuery(teamId);
-  
-  const [deleteTeam, { isLoading: isDeleting }] = useDeleteTeamMutation(); 
+  const [deleteTeam, { isLoading: isDeleting }] = useDeleteTeamMutation();
 
   // Close menu when clicking outside
   useEffect(() => {
@@ -55,35 +54,27 @@ const TeamDetails = () => {
     setIsMenuOpen(!isMenuOpen);
   };
 
-  const handleUpdate = () => {
-    console.log('Update team:', team?.name);
-    // const { data: team, isLoading, isError, error } = useUpdateTeamMutation(teamId);
-
-
-    setIsMenuOpen(false);
-  };
-
-
   const handleDelete = () => {
-
     Swal.fire({
-      title: "Are you sure?",
+      title: 'Are you sure?',
       text: "You won't be able to revert this!",
-      icon: "warning",
+      icon: 'warning',
       showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, delete it!"
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!',
     }).then((result) => {
       if (result.isConfirmed) {
-      //  
-      deleteTeam(teamId)
-      router.push('/dashboard/team/view')
+        deleteTeam(teamId);
+        router.push('/dashboard/team/view');
       }
     });
   };
 
-
+  const handleUpdateClick = () => {
+    setIsUpdateModalOpen(true);
+    setIsMenuOpen(false); // Close the menu after clicking Update
+  };
 
   return (
     <div className="min-h-screen p-2 md:p-4 bg-white dark:bg-[#171717] text-gray-900 dark:text-gray-100 transition-colors duration-300">
@@ -92,10 +83,21 @@ const TeamDetails = () => {
         <div className="container mx-auto">
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
             <div className="flex flex-col md:flex-row items-start md:items-center gap-3">
-              <Image src={team?.creator?.imageUrl} alt="Team Image" width={50} height={50} className="h-24 w-24 rounded-md" onError={(e) => (e.target.src = 'https://via.placeholder.com/50')} />
+              <Image
+                src={team?.creator?.imageUrl}
+                alt="Team Image"
+                width={50}
+                height={50}
+                className="h-24 w-24 rounded-md"
+                onError={(e) => (e.target.src = 'https://via.placeholder.com/50')}
+              />
               <div>
                 <h1 className="text-3xl font-bold uppercase">{team?.name}</h1>
-                <p className="text-gray-600 dark:text-gray-400 italic mt-1 capitalize">{team?.description} Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptates, sapiente. Lorem ipsum dolor sit, amet consectetur adipisicing elit. Molestiae ullam rem deleniti sed, et vero adipisci eum enim distinctio cumque!</p>
+                <p className="text-gray-600 dark:text-gray-400 italic mt-1 capitalize">
+                  {team?.description} Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptates, sapiente.
+                  Lorem ipsum dolor sit, amet consectetur adipisicing elit. Molestiae ullam rem deleniti sed, et vero
+                  adipisci eum enim distinctio cumque!
+                </p>
                 <h1 className="text-xl font-bold capitalize">Type: {team?.type}</h1>
                 <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
                   Created by:{' '}
@@ -119,17 +121,17 @@ const TeamDetails = () => {
                     <ul className="py-1">
                       <li
                         className="px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer"
-                        onClick={handleUpdate}
-                      >
-                        Update
-                      </li>
-                      <li
-                        className="px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer"
                         onClick={handleDelete}
                       >
                         Delete
                       </li>
-                    </ul>
+                      <li
+                        className="px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer"
+                        onClick={handleUpdateClick}
+                      >
+                        Update
+                      </li>
+                    </ul> 
                   </div>
                 )}
               </div>
@@ -189,6 +191,9 @@ const TeamDetails = () => {
           </div>
         </div>
       </section>
+
+      {/* Update Modal */}
+      <UpdateButton team={team} isOpen={isUpdateModalOpen} setIsOpen={setIsUpdateModalOpen} />
     </div>
   );
 };
