@@ -119,18 +119,17 @@ const DocsEditor = () => {
           <option>Times New Roman</option>
         </select>
 
-        {/* <button onClick={() => editor?.chain().focus().toggleBulletList().run()} className="btn">•</button> */}
-        {/* <button onClick={() => editor?.chain().focus().toggleOrderedList().run()} className="btn">1.</button> */}
-        <button onClick={() => editor?.chain().focus().toggleBold().run()} className="btn font-bold bg-white text-black dark:text-white dark:bg-black">B</button>
-        <button onClick={() => editor?.chain().focus().toggleItalic().run()} className="btn italic bg-white text-black dark:text-white dark:bg-black">I</button>
-        <button onClick={() => editor?.chain().focus().toggleUnderline().run()} className="btn underline bg-white text-black dark:text-white dark:bg-black">U</button>
+        
+        <button onClick={() => editor?.chain().focus().toggleBold().run()} className="btn font-bold">B</button>
+        <button onClick={() => editor?.chain().focus().toggleItalic().run()} className="btn italic">I</button>
+        <button onClick={() => editor?.chain().focus().toggleUnderline().run()} className="btn underline">U</button>
 
         <input type="color" value={fontColor} onChange={(e) => setFontColor(e.target.value)} />
         <input type="color" value={bgColor} onChange={(e) => setBgColor(e.target.value)} />
 
-        <button onClick={applyStyles} className="btn bg-white text-black dark:text-white dark:bg-black">Apply Style</button>
-        <button onClick={applyHighlight} className="btn bg-white text-black dark:text-white dark:bg-black">Highlight</button>
-        <button onClick={() => editor?.chain().focus().undo().run()} className="btn bg-white text-black dark:text-white dark:bg-black">Undo</button>
+        <button onClick={applyStyles} className="btn">Apply Style</button>
+        <button onClick={applyHighlight} className="btn">Highlight</button>
+        <button onClick={() => editor?.chain().focus().undo().run()} className="btn">Undo</button>
       </div>
 
       {/* Editor Content */}

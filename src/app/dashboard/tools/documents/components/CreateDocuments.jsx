@@ -4,7 +4,7 @@ import Link from 'next/link';
 
 const CreateDocuments = () => {
     return (
-        <div className='border-2 p-4 lg:p-8 flex flex-col items-center justify-center lg:items-start'>
+        <div className='p-4 lg:p-8 flex flex-col items-center justify-center lg:items-start'>
             <h2 className='text-xl font-bold lg:text-3xl text-gray-700 dark:text-white'>Write A Document</h2>
             <div>
       <Link href="/dashboard/tools/documents/docs">
