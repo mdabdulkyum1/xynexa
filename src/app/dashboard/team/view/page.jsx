@@ -1,13 +1,11 @@
-'use client'
+"use client"
 import Image from 'next/image';
 import React from 'react';
 import Filter from './components/Filter';
 import CreateModalBtn from './components/CreateModalBtn';
-import { useUser } from '@clerk/nextjs';
-import { useGetUserByEmailQuery } from '@/redux/features/Api/userApi';
 import { useUserDataFromClerk } from '@/hooks/useUserDataFromClerk';
-import { useGetUseTeamsQuery } from '@/redux/features/Api/teamApi';
-import { LucideIcon, Users, Calendar, Type, User } from 'lucide-react'; // Import Lucide Icons
+import { useGetTeamsByCurrentUserQuery } from '@/redux/features/Api/teamApi';
+import { Users, Calendar, Type, User } from 'lucide-react'; // Import Lucide Icons
 import Link from 'next/link';
 
 export default function TeamView() {
@@ -17,7 +15,8 @@ export default function TeamView() {
     const userId = userData?.user?._id
     console.log(userId);
 
-    const { data: teamData } = useGetUseTeamsQuery(userId);
+    // const { data: teamData } = useGetUseTeamsQuery(userId);
+    const { data: teamData } = useGetTeamsByCurrentUserQuery(userId);
 
     if (isLoading) {
         return <div>Loading...</div>; 
@@ -39,11 +38,11 @@ export default function TeamView() {
         <div>
             <div className=' flex lg:pl-20  border-b-2 border-gray-600 mb-4'>
                 <div className='mt-2'>
-                    <Image src="/assets/images/logo-xynexa.png" alt='logo-img' width={100} height={100}></Image>
+                <Image src="/assets/images/logo-xynexa.png" alt='logo-img' width={100} height={100}></Image>
                 </div>
                 <div className='flex flex-col justify-center items-center'>
-                    <h2 className='font-bold text-xl lg:text-3xl'>XY<span className='text-purple-500'>nexa</span></h2>
-
+                <h2 className='font-bold text-xl lg:text-3xl'>XY<span className='text-purple-500'>nexa</span></h2>
+                
                 </div>
             </div>
             <div className=''>
