@@ -4,9 +4,9 @@ import { useGetUserByEmailQuery } from '@/redux/features/Api/userApi';
 import { toast } from 'sonner';
 import { useAddMemberToTeamMutation } from '@/redux/features/Api/teamApi';
 
-const AddMember = ({ teamId, isOpen, setIsOpen }) => {
-    const closeModal = () => setIsOpen(false);
-    const openModal = () => setIsOpen(true);
+const AddMember = ({ teamId, isOpenAdd,  setIsOpenAdd }) => {
+    const closeModal = () => setIsOpenAdd(false);
+    const openModal = () => setIsOpenAdd(true);
     const [userEmail, setEmail] = useState('');
 
     const { data: userData, isLoading, isError, error } = useGetUserByEmailQuery(userEmail, { skip: !userEmail });
@@ -44,7 +44,7 @@ const AddMember = ({ teamId, isOpen, setIsOpen }) => {
 
     return (
         <>
-            <Transition appear show={isOpen} as={Fragment}>
+            <Transition appear show={isOpenAdd} as={Fragment}>
                 <Dialog as="div" className="relative z-999" onClose={closeModal}>
                     <Transition.Child
                         as={Fragment}
