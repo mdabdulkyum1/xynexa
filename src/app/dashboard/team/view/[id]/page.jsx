@@ -12,9 +12,12 @@ import UpdateButton from '../components/UpdateButton';
 
 const TeamDetails = () => {
   const { id: teamId } = useParams();
-  const [isOpen, setIsOpen] = useState(false); // For AddMember modal
+  const [isOpenAdd, setIsOpenAdd] = useState(false); // For AddMember modal
+
   const [isMenuOpen, setIsMenuOpen] = useState(false); // For dropdown menu
-  const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false); // For Update modal
+
+  const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false); 
+  
   const menuRef = useRef(null); // Ref to track the menu element
   const router = useRouter();
 
@@ -148,11 +151,11 @@ const TeamDetails = () => {
               <h2 className="text-xl font-semibold">Team Members</h2>
               <button
                 className="rounded-md bg-gradient-to-r from-[#8B5CF6] to-[#6366F1] px-4 py-2 text-sm font-medium text-white hover:from-[#6366F1] hover:to-[#8B5CF6] focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
-                onClick={() => setIsOpen(true)}
+                onClick={() => setIsOpenAdd(true)}
               >
                 Add Member
               </button>
-              <AddMember teamId={teamId} isOpen={isOpen} setIsOpen={setIsOpen} />
+              <AddMember teamId={teamId} isOpenAdd={isOpenAdd} setIsOpenAdd={setIsOpenAdd} />
             </div>
             <div className="overflow-x-auto">
               <table className="w-full text-left">
