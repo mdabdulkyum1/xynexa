@@ -14,14 +14,14 @@ import {
   
   const PackageFeature = () => {
     return (
-      <div className="container mx-auto p-6">
-        <h1 className="text-xl md:text-4xl lg:text-5xl font-bold text-center mb-3">
+      <div className="w-11/12 mx-auto my-10 lg:my-20">
+        <h1 className="text-xl md:text-4xl font-bold text-center mb-6 lg:mb-12">
           Smart solutions, unbeatable prices
         </h1>
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead className="font-bold">Key Features</TableHead>
+              <TableHead className="font-bold uppercase">Key Features</TableHead>
               <TableHead className="text-center font-bold uppercase">Free</TableHead>
               <TableHead className="text-center font-bold uppercase">Diamond</TableHead>
               <TableHead className="text-center font-bold uppercase">Platinum</TableHead>

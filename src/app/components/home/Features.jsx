@@ -24,6 +24,9 @@ const Features = () => {
 
     return (
         <div className="my-10 lg:my-28">
+            <div className="my-4 lg:my-8 text-center">
+                <h2 className="text-2xl lg:text-4xl font-bold dark:text-white">Our Exclusive Features</h2>
+            </div>
             <Carousel
                 responsive={responsive}
                 infinite
@@ -39,7 +42,7 @@ const Features = () => {
                 {/* carosol-1 */}
                 <div
                     className="relative group p-4 shadow-lg rounded-lg bg-blue-200 mx-4 h-48 lg:h-[350px] overflow-hidden cursor-pointer"
-                    onClick={() => setIsVisible(!isVisible)}  // Toggles content on click (for mobile)
+                    onClick={() => setIsVisible(!isVisible)}  
                 >
                     {/* Default Content */}
                     <div className={`transition-opacity duration-300 ${isVisible ? "opacity-0" : "opacity-100"} group-hover:opacity-0`}>
@@ -54,7 +57,7 @@ const Features = () => {
                         <p className="mt-2">Explore Task Management features.</p>
                         <button
                             className="mt-4 px-4 py-2 bg-white text-pink-600 rounded-lg font-semibold shadow-md"
-                            onClick={(e) => { e.stopPropagation(); setIsVisible(false); }} // Prevents hiding the card on button click
+                            onClick={(e) => { e.stopPropagation(); setIsVisible(false); }} 
                         >
                             Close
                         </button>
@@ -63,7 +66,7 @@ const Features = () => {
                 {/* carosol-2 */}
                 <div
                     className="relative group p-4 shadow-lg rounded-lg bg-pink-200 mx-4 h-48 lg:h-[350px] overflow-hidden cursor-pointer"
-                    onClick={() => setIsVisible(!isVisible)}  // Toggles content on click (for mobile)
+                    onClick={() => setIsVisible(!isVisible)}  
                 >
                     {/* Default Content */}
                     <div className={`transition-opacity duration-300 ${isVisible ? "opacity-0" : "opacity-100"} group-hover:opacity-0`}>
@@ -78,7 +81,7 @@ const Features = () => {
                         <p className="mt-2">Explore real-time messaging features.</p>
                         <button
                             className="mt-4 px-4 py-2 bg-white text-pink-600 rounded-lg font-semibold shadow-md"
-                            onClick={(e) => { e.stopPropagation(); setIsVisible(false); }} // Prevents hiding the card on button click
+                            onClick={(e) => { e.stopPropagation(); setIsVisible(false); }} 
                         >
                             Close
                         </button>
@@ -87,7 +90,7 @@ const Features = () => {
                 {/* carosol-3 */}
                 <div
                     className="relative group p-4 shadow-lg rounded-lg bg-green-200 mx-4 h-48 lg:h-[350px] overflow-hidden cursor-pointer"
-                    onClick={() => setIsVisible(!isVisible)}  // Toggles content on click (for mobile)
+                    onClick={() => setIsVisible(!isVisible)} 
                 >
                     {/* Default Content */}
                     <div className={`transition-opacity duration-300 ${isVisible ? "opacity-0" : "opacity-100"} group-hover:opacity-0`}>
@@ -102,7 +105,7 @@ const Features = () => {
                         <p className="mt-2">Explore File Sharing & Storage features.</p>
                         <button
                             className="mt-4 px-4 py-2 bg-white text-pink-600 rounded-lg font-semibold shadow-md"
-                            onClick={(e) => { e.stopPropagation(); setIsVisible(false); }} // Prevents hiding the card on button click
+                            onClick={(e) => { e.stopPropagation(); setIsVisible(false); }} 
                         >
                             Close
                         </button>
@@ -111,7 +114,7 @@ const Features = () => {
                 {/* carosol-4 */}
                 <div
                     className="relative group p-4 shadow-lg rounded-lg bg-red-200 mx-4 h-48 lg:h-[350px] overflow-hidden cursor-pointer"
-                    onClick={() => setIsVisible(!isVisible)}  // Toggles content on click (for mobile)
+                    onClick={() => setIsVisible(!isVisible)}  
                 >
                     {/* Default Content */}
                     <div className={`transition-opacity duration-300 ${isVisible ? "opacity-0" : "opacity-100"} group-hover:opacity-0`}>
@@ -126,7 +129,7 @@ const Features = () => {
                         <p className="mt-2">Explore Project Dashboard features.</p>
                         <button
                             className="mt-4 px-4 py-2 bg-white text-pink-600 rounded-lg font-semibold shadow-md"
-                            onClick={(e) => { e.stopPropagation(); setIsVisible(false); }} // Prevents hiding the card on button click
+                            onClick={(e) => { e.stopPropagation(); setIsVisible(false); }} 
                         >
                             Close
                         </button>
@@ -135,7 +138,7 @@ const Features = () => {
                 {/* carosol-5 */}
                 <div
                     className="relative group p-4 shadow-lg rounded-lg bg-amber-200 mx-4 h-48 lg:h-[350px] overflow-hidden cursor-pointer"
-                    onClick={() => setIsVisible(!isVisible)}  // Toggles content on click (for mobile)
+                    onClick={() => setIsVisible(!isVisible)} 
                 >
                     {/* Default Content */}
                     <div className={`transition-opacity duration-300 ${isVisible ? "opacity-0" : "opacity-100"} group-hover:opacity-0`}>
@@ -150,7 +153,7 @@ const Features = () => {
                         <p className="mt-2">Explore Time Tracking features.</p>
                         <button
                             className="mt-4 px-4 py-2 bg-white text-pink-600 rounded-lg font-semibold shadow-md"
-                            onClick={(e) => { e.stopPropagation(); setIsVisible(false); }} // Prevents hiding the card on button click
+                            onClick={(e) => { e.stopPropagation(); setIsVisible(false); }} 
                         >
                             Close
                         </button>
@@ -159,7 +162,7 @@ const Features = () => {
                 {/* carosol-6 */}
                 <div
                     className="relative group p-4 shadow-lg rounded-lg bg-pink-200 mx-4 h-48 lg:h-[350px] overflow-hidden cursor-pointer"
-                    onClick={() => setIsVisible(!isVisible)}  // Toggles content on click (for mobile)
+                    onClick={() => setIsVisible(!isVisible)}  
                 >
                     {/* Default Content */}
                     <div className={`transition-opacity duration-300 ${isVisible ? "opacity-0" : "opacity-100"} group-hover:opacity-0`}>
@@ -174,7 +177,7 @@ const Features = () => {
                         <p className="mt-2">Explore Discussion Boards features.</p>
                         <button
                             className="mt-4 px-4 py-2 bg-white text-pink-600 rounded-lg font-semibold shadow-md"
-                            onClick={(e) => { e.stopPropagation(); setIsVisible(false); }} // Prevents hiding the card on button click
+                            onClick={(e) => { e.stopPropagation(); setIsVisible(false); }} 
                         >
                             Close
                         </button>
@@ -183,7 +186,7 @@ const Features = () => {
                 {/* carosol-7 */}
                 <div
                     className="relative group p-4 shadow-lg rounded-lg bg-indigo-200 mx-4 h-48 lg:h-[350px] overflow-hidden cursor-pointer"
-                    onClick={() => setIsVisible(!isVisible)}  // Toggles content on click (for mobile)
+                    onClick={() => setIsVisible(!isVisible)}  
                 >
                     {/* Default Content */}
                     <div className={`transition-opacity duration-300 ${isVisible ? "opacity-0" : "opacity-100"} group-hover:opacity-0`}>
@@ -198,7 +201,7 @@ const Features = () => {
                         <p className="mt-2">Explore Discussion Boards features.</p>
                         <button
                             className="mt-4 px-4 py-2 bg-white text-pink-600 rounded-lg font-semibold shadow-md"
-                            onClick={(e) => { e.stopPropagation(); setIsVisible(false); }} // Prevents hiding the card on button click
+                            onClick={(e) => { e.stopPropagation(); setIsVisible(false); }} 
                         >
                             Close
                         </button>
@@ -207,7 +210,7 @@ const Features = () => {
                 {/* carosol-8 */}
                 <div
                     className="relative group p-4 shadow-lg rounded-lg bg-orange-200 mx-4 h-48 lg:h-[350px] overflow-hidden cursor-pointer"
-                    onClick={() => setIsVisible(!isVisible)}  // Toggles content on click (for mobile)
+                    onClick={() => setIsVisible(!isVisible)}  
                 >
                     {/* Default Content */}
                     <div className={`transition-opacity duration-300 ${isVisible ? "opacity-0" : "opacity-100"} group-hover:opacity-0`}>
@@ -222,7 +225,7 @@ const Features = () => {
                         <p className="mt-2">Explore Task Notifications & Reminders features.</p>
                         <button
                             className="mt-4 px-4 py-2 bg-white text-pink-600 rounded-lg font-semibold shadow-md"
-                            onClick={(e) => { e.stopPropagation(); setIsVisible(false); }} // Prevents hiding the card on button click
+                            onClick={(e) => { e.stopPropagation(); setIsVisible(false); }} 
                         >
                             Close
                         </button>
