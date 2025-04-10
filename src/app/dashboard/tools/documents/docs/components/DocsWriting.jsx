@@ -1,27 +1,27 @@
-'use client';
+"use client";
 
-import React, { useState } from 'react';
-import { useEditor, EditorContent } from '@tiptap/react';
-import StarterKit from '@tiptap/starter-kit';
-import Underline from '@tiptap/extension-underline';
-import TextStyle from '@tiptap/extension-text-style';
-import Color from '@tiptap/extension-color';
-import Highlight from '@tiptap/extension-highlight';
-import TextAlign from '@tiptap/extension-text-align';
-import axios from 'axios';
-import { useUserDataFromClerk } from '@/hooks/useUserDataFromClerk';
+import React, { useState } from "react";
+import { useEditor, EditorContent } from "@tiptap/react";
+import StarterKit from "@tiptap/starter-kit";
+import Underline from "@tiptap/extension-underline";
+import TextStyle from "@tiptap/extension-text-style";
+import Color from "@tiptap/extension-color";
+import Highlight from "@tiptap/extension-highlight";
+import TextAlign from "@tiptap/extension-text-align";
+import axios from "axios";
+import { useUserDataFromClerk } from "@/hooks/useUserDataFromClerk";
 
 const DocsEditor = () => {
-  const [title, setTitle] = useState('Untitled Document');
-  const [fontColor, setFontColor] = useState('#000000');
-  const [bgColor, setBgColor] = useState('#ffff00');
-  const [fontSize, setFontSize] = useState('16px');
-  const [fontFamily, setFontFamily] = useState('Sans Serif');
+  const [title, setTitle] = useState("Untitled Document");
+  const [fontColor, setFontColor] = useState("#000000");
+  const [bgColor, setBgColor] = useState("#ffff00");
+  const [fontSize, setFontSize] = useState("16px");
+  const [fontFamily, setFontFamily] = useState("Sans Serif");
 
   const { userData, isLoading, isError, error } = useUserDataFromClerk();
 
-  const docCreator_id = userData?.user?._id
-  const docCreatorEmail = userData?.user?.email
+  const docCreator_id = userData?.user?._id;
+  const docCreatorEmail = userData?.user?.email;
   console.log(docCreator_id, docCreatorEmail);
 
   const editor = useEditor({
@@ -31,9 +31,9 @@ const DocsEditor = () => {
       TextStyle,
       Color,
       Highlight,
-      TextAlign.configure({ types: ['heading', 'paragraph'] }),
+      TextAlign.configure({ types: ["heading", "paragraph"] }),
     ],
-    content: '<p>Start writing your document...</p>',
+    content: "<p>Start writing your document...</p>",
   });
 
   const handleSave = async () => {
@@ -43,26 +43,27 @@ const DocsEditor = () => {
       title,
       content: html,
       docCreator_id,
-      docCreatorEmail
-    }
+      docCreatorEmail,
+    };
 
-    axios.post('http://localhost:5000/api/documents/create', newDoc)
+    axios
+      .post("http://localhost:5000/api/documents/create", newDoc)
       .then((response) => {
-        console.log('Document saved successfully:', response.data);
+        console.log("Document saved successfully:", response.data);
       })
       .catch((error) => {
-        console.error('Error saving document:', error);
-      })
+        console.error("Error saving document:", error);
+      });
     console.log(newDoc);
-
   };
-
 
   const applyStyles = () => {
     if (!editor) return;
-    editor.chain().focus()
+    editor
+      .chain()
+      .focus()
       .setColor(fontColor)
-      .updateAttributes('textStyle', {
+      .updateAttributes("textStyle", {
         fontSize,
         fontFamily,
       })
@@ -119,17 +120,48 @@ const DocsEditor = () => {
           <option>Times New Roman</option>
         </select>
 
-        
-        <button onClick={() => editor?.chain().focus().toggleBold().run()} className="btn font-bold">B</button>
-        <button onClick={() => editor?.chain().focus().toggleItalic().run()} className="btn italic">I</button>
-        <button onClick={() => editor?.chain().focus().toggleUnderline().run()} className="btn underline">U</button>
+        <button
+          onClick={() => editor?.chain().focus().toggleBold().run()}
+          className="btn font-bold"
+        >
+          B
+        </button>
+        <button
+          onClick={() => editor?.chain().focus().toggleItalic().run()}
+          className="btn italic"
+        >
+          I
+        </button>
+        <button
+          onClick={() => editor?.chain().focus().toggleUnderline().run()}
+          className="btn underline"
+        >
+          U
+        </button>
 
-        <input type="color" value={fontColor} onChange={(e) => setFontColor(e.target.value)} />
-        <input type="color" value={bgColor} onChange={(e) => setBgColor(e.target.value)} />
+        <input
+          type="color"
+          value={fontColor}
+          onChange={(e) => setFontColor(e.target.value)}
+        />
+        <input
+          type="color"
+          value={bgColor}
+          onChange={(e) => setBgColor(e.target.value)}
+        />
 
-        <button onClick={applyStyles} className="btn">Apply Style</button>
-        <button onClick={applyHighlight} className="btn">Highlight</button>
-        <button onClick={() => editor?.chain().focus().undo().run()} className="btn">Undo</button>
+        <button onClick={applyStyles} className="btn">
+          Apply Style
+        </button>
+        <button onClick={applyHighlight} className="btn">
+          Highlight
+        </button>
+        <button
+          onClick={() => editor?.chain().focus().undo().run()}
+          className="btn"
+        >
+          Undo
+        </button>
       </div>
 
       {/* Editor Content */}
