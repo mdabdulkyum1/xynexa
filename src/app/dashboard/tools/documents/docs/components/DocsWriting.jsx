@@ -11,8 +11,11 @@ import TextAlign from '@tiptap/extension-text-align';
 import axios from 'axios';
 import html2pdf from 'html2pdf.js';
 import { useUserDataFromClerk } from '@/hooks/useUserDataFromClerk';
+import { useRouter } from 'next/navigation';
 
 const DocsEditor = () => {
+  const [loaing, setLoading] = useState(false);
+  const router = useRouter();
   const editorWrapperRef = useRef(null);
   const [title, setTitle] = useState('Untitled Document');
   const [fontColor, setFontColor] = useState('#000000');
@@ -37,11 +40,13 @@ const DocsEditor = () => {
   });
 
   const handleSave = async () => {
+
     const html = editor?.getHTML();
     const newDoc = { title, content: html, docCreator_id, docCreatorEmail };
 
     try {
       const response = await axios.post('http://localhost:5000/api/documents/create', newDoc);
+      router.push(`/dashboard/tools/documents`);
       console.log('Document saved successfully:', response.data);
     } catch (error) {
       console.error('Error saving document:', error);
@@ -51,40 +56,7 @@ const DocsEditor = () => {
  
 
 
-  // const handleSavePDF = () => {
-  //   if (!editor) {
-  //     console.error('Editor instance not available');
-  //     return;
-  //   }
   
-  //   console.log('Download started...');
-  
-  //   const editorElement = document.createElement('div');
-  //   editorElement.innerHTML = editor.getHTML() || '<p>No content available</p>';
-  
-  //   // Apply consistent styles
-  //   editorElement.style.padding = '20px';
-  //   editorElement.style.fontFamily = fontFamily;
-  //   editorElement.style.fontSize = fontSize;
-  //   editorElement.style.color = fontColor;
-  //   editorElement.style.backgroundColor = '#ffffff';
-  
-  //   const opt = {
-  //     margin: 0.5,
-  //     filename: `${title || 'Untitled'}.pdf`,
-  //     image: { type: 'jpeg', quality: 0.98 },
-  //     html2canvas: { scale: 2, useCORS: true },
-  //     jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' },
-  //   };
-  
-  //   try {
-  //     html2pdf().set(opt).from(editorElement).save().then(() => {
-  //       console.log('✅ PDF has been saved to your downloads folder.');
-  //     });
-  //   } catch (error) {
-  //     console.error('❌ Error generating PDF:', error);
-  //   }
-  // };
   
  
   
