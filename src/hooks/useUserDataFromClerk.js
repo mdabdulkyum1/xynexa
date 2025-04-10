@@ -1,3 +1,4 @@
+'use client'
 import { useUser } from "@clerk/nextjs";
 import { useGetUserByEmailQuery } from "@/redux/features/Api/userApi";
 
