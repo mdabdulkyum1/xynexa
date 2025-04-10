@@ -18,17 +18,17 @@ const DocumentsContainer = () => {
         //   console.log(response.data.
         //     documents
         //     );
-          // Check the response structure here before setting the state
+         
           if (response.data.documents.length > 0) {
             setAvailableDocuments(response.data.documents);
             console.log('Documents fetched successfully:', response.data);
           } else {
             console.error('Expected an array of documents, but got:', response.data);
-            setAvailableDocuments([]);  // Fallback to an empty array
+            setAvailableDocuments([]);  
           }
         } catch (error) {
           console.error('Error fetching documents:', error);
-          setAvailableDocuments([]);  // Fallback to an empty array
+          setAvailableDocuments([]); 
         }
       };
 
@@ -39,18 +39,19 @@ const DocumentsContainer = () => {
   console.log(availableDocuments)
 
   return (
-    <div className="p-4 lg:p-8 border-2">
+    <div className="p-4 lg:p-8">
       <h2 className="text-xl font-bold lg:text-3xl text-gray-700 dark:text-white">Your Documents</h2>
       {/* Render available documents here */}
-      <ul>
+      <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-4'>
         {availableDocuments.length > 0 ? (
           availableDocuments.map((doc) => (
-            <li key={doc.id}>{doc.title}</li>
+           
+           <div className='border-2 p-4' key={doc.id}>{doc.title}</div>
           ))
         ) : (
-          <li>No documents available</li>
+          <div className='text-xl font-bold text-gray-700 my-4'>No documents available</div>
         )}
-      </ul>
+      </div>
     </div>
   );
 };

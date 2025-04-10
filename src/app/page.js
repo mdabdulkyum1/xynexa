@@ -1,3 +1,4 @@
+import Loading from '@/components/loading/Loading';
 import Faq from './components/home/Faq/Faq';
 import Features from './components/home/Features';
 import Hero from './components/home/Hero/Hero';
@@ -13,6 +14,7 @@ export default function Home() {
     <>
     <Welcome></Welcome>
       <Hero></Hero>
+      <Loading></Loading>
       <LeastStressed></LeastStressed>
       <Features></Features>
       <Service></Service>
