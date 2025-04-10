@@ -18,6 +18,8 @@ export function SaveUserToDB() {
             email: user.primaryEmailAddress.emailAddress,
             imageUrl: user.imageUrl,
           });
+
+          
     }
   } ,[isSignedIn, user]);
 

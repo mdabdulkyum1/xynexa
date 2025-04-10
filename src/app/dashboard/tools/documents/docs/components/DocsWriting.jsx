@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import React, { useRef, useState } from 'react';
 import { useEditor, EditorContent } from '@tiptap/react';
@@ -31,9 +31,9 @@ const DocsEditor = () => {
       TextStyle,
       Color,
       Highlight,
-      TextAlign.configure({ types: ['heading', 'paragraph'] }),
+      TextAlign.configure({ types: ["heading", "paragraph"] }),
     ],
-    content: '<p>Start writing your document...</p>',
+    content: "<p>Start writing your document...</p>",
   });
 
   const handleSave = async () => {
@@ -115,9 +115,11 @@ const DocsEditor = () => {
 
   const applyStyles = () => {
     if (!editor) return;
-    editor.chain().focus()
+    editor
+      .chain()
+      .focus()
       .setColor(fontColor)
-      .updateAttributes('textStyle', {
+      .updateAttributes("textStyle", {
         fontSize,
         fontFamily,
       })
@@ -169,16 +171,33 @@ const DocsEditor = () => {
           <option>Times New Roman</option>
         </select>
 
-        <button onClick={() => editor?.chain().focus().toggleBold().run()} className="btn font-bold">B</button>
+        {/* <button onClick={() => editor?.chain().focus().toggleBold().run()} className="btn font-bold">B</button>
         <button onClick={() => editor?.chain().focus().toggleItalic().run()} className="btn italic">I</button>
-        <button onClick={() => editor?.chain().focus().toggleUnderline().run()} className="btn underline">U</button>
+        <button onClick={() => editor?.chain().focus().toggleUnderline().run()} className="btn underline">U</button> */}
 
-        <input type="color" value={fontColor} onChange={(e) => setFontColor(e.target.value)} />
-        <input type="color" value={bgColor} onChange={(e) => setBgColor(e.target.value)} />
+        <input
+          type="color"
+          value={fontColor}
+          onChange={(e) => setFontColor(e.target.value)}
+        />
+        <input
+          type="color"
+          value={bgColor}
+          onChange={(e) => setBgColor(e.target.value)}
+        />
 
-        <button onClick={applyStyles} className="btn">Apply Style</button>
-        <button onClick={applyHighlight} className="btn">Highlight</button>
-        <button onClick={() => editor?.chain().focus().undo().run()} className="btn">Undo</button>
+        <button onClick={applyStyles} className="btn">
+          Apply Style
+        </button>
+        <button onClick={applyHighlight} className="btn">
+          Highlight
+        </button>
+        <button
+          onClick={() => editor?.chain().focus().undo().run()}
+          className="btn"
+        >
+          Undo
+        </button>
       </div>
 
       {/* Editor Content */}
