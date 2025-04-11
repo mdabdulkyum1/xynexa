@@ -9,9 +9,11 @@ import Color from '@tiptap/extension-color';
 import Highlight from '@tiptap/extension-highlight';
 import TextAlign from '@tiptap/extension-text-align';
 import axios from 'axios';
-import html2pdf from 'html2pdf.js';
+
 import { useUserDataFromClerk } from '@/hooks/useUserDataFromClerk';
 import { useRouter } from 'next/navigation';
+import { useDocumentCreateMutation } from '@/redux/features/Api/documentApi';
+import toast from 'react-hot-toast';
 
 const DocsEditor = () => {
   const [loaing, setLoading] = useState(false);
@@ -26,6 +28,9 @@ const DocsEditor = () => {
   const { userData } = useUserDataFromClerk();
   const docCreator_id = userData?.user?._id;
   const docCreatorEmail = userData?.user?.email;
+
+
+  const [documentCreate] = useDocumentCreateMutation()
 
   const editor = useEditor({
     extensions: [
@@ -44,13 +49,17 @@ const DocsEditor = () => {
     const html = editor?.getHTML();
     const newDoc = { title, content: html, docCreator_id, docCreatorEmail };
 
-    try {
-      const response = await axios.post('http://localhost:5000/api/documents/create', newDoc);
-      router.push(`/dashboard/tools/documents`);
-      console.log('Document saved successfully:', response.data);
-    } catch (error) {
-      console.error('Error saving document:', error);
-    }
+  
+
+  try{
+    const result = await documentCreate(newDoc).unwrap()
+    console.log('Document created successfully:', result);
+    toast.success('Document created successfully!')
+    router.push(`/dashboard/tools/documents`);
+  }catch (error){
+    console.error('Error creating document:', error);
+    toast.error('Error creating document. Please try again.');
+  }
   };
 
  
