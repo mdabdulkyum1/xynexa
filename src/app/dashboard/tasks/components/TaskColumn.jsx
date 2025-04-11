@@ -18,7 +18,7 @@ const TaskColumn = ({ title, tasks }) => {
                 ))}
             </div>
             <button className="mt-4 w-full bg-white dark:bg-[#0A0A0A] text-gray-900 dark:text-gray-200 py-1 rounded-md flex items-center justify-center">
-                <CirclePlus size={28} className="text-gray-500 dark:text-gray-300" />
+                <CirclePlus size={28} className="text-gray-500 dark:text-gray-300" /> 
             </button>
         </div>
     );
