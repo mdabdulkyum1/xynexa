@@ -8,7 +8,7 @@ import TaskCreateModal from "./TaskCreateModal";
 const TaskHeading = () => {
     const [boardName, setBoardName] = useState("Task Board");
     const [isEditing, setIsEditing] = useState(false);
-    const [isModalOpen, setIsModalOpen] = useState(false);
+
 
     // Handle input change
     const handleChange = (e) => {
@@ -55,12 +55,9 @@ const TaskHeading = () => {
                 </AvatarGroup>
 
             
-                <CirclePlus onClick={() => setIsModalOpen(true)} size={40} className="text-gray-400 dark:text-gray-300 cursor-pointer hover:text-purple-600 dark:hover:text-purple-400" /> 
+                <CirclePlus size={40} className="text-gray-400 dark:text-gray-300 cursor-pointer hover:text-purple-600 dark:hover:text-purple-400" /> 
 
-            <TaskCreateModal
-                isOpen={isModalOpen}
-                closeModal={()=>setIsModalOpen(false)}
-            ></TaskCreateModal>
+
             </div>
         </div>
     );
