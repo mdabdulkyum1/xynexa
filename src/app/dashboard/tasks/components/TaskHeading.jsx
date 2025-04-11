@@ -3,10 +3,12 @@ import React, { useState } from "react";
 import Avatar from "@mui/material/Avatar";
 import AvatarGroup from "@mui/material/AvatarGroup";
 import { CirclePlus, Pencil } from "lucide-react";
+import TaskCreateModal from "./TaskCreateModal";
 
 const TaskHeading = () => {
     const [boardName, setBoardName] = useState("Task Board");
     const [isEditing, setIsEditing] = useState(false);
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
     // Handle input change
     const handleChange = (e) => {
@@ -52,7 +54,13 @@ const TaskHeading = () => {
                     <Avatar alt="Trevor Henderson" src="https://i.ibb.co/rfkdKCKg/team-05.webp" />
                 </AvatarGroup>
 
-                <CirclePlus size={40} className="text-gray-400 dark:text-gray-300 cursor-pointer hover:text-purple-600 dark:hover:text-purple-400" />
+            
+                <CirclePlus onClick={() => setIsModalOpen(true)} size={40} className="text-gray-400 dark:text-gray-300 cursor-pointer hover:text-purple-600 dark:hover:text-purple-400" /> 
+
+            <TaskCreateModal
+                isOpen={isModalOpen}
+                closeModal={()=>setIsModalOpen(false)}
+            ></TaskCreateModal>
             </div>
         </div>
     );
