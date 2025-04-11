@@ -14,7 +14,7 @@ export default function Home() {
     <>
     <Welcome></Welcome>
       <Hero></Hero>
-      <Loading></Loading>
+      
       <LeastStressed></LeastStressed>
       <Features></Features>
       <Service></Service>

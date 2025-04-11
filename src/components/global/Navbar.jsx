@@ -37,7 +37,7 @@ const Navbar = () => {
           <ul className="hidden lg:flex space-x-6 text-lg font-medium">
             <li>
               <Link href="/" className="hover:text-primary">
-                Tasks
+               Home
               </Link>
             </li>
             <li>
