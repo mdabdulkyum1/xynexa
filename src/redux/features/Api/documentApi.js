@@ -11,7 +11,7 @@ export const documentApi = baseApi.injectEndpoints({
       invalidatesTags: ["Document"], 
     }),
     documentUpdate: builder.mutation({
-      query: ({ id, updatedDocument }) => ({
+      query: ({ id, ...updatedDocument }) => ({
         url: `/documents/update/${id}`,
         method: "PUT",
         body: updatedDocument,

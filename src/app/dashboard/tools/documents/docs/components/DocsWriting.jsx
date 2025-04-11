@@ -1,28 +1,36 @@
 "use client";
 
-import React, { useState } from "react";
-import { useEditor, EditorContent } from "@tiptap/react";
-import StarterKit from "@tiptap/starter-kit";
-import Underline from "@tiptap/extension-underline";
-import TextStyle from "@tiptap/extension-text-style";
-import Color from "@tiptap/extension-color";
-import Highlight from "@tiptap/extension-highlight";
-import TextAlign from "@tiptap/extension-text-align";
-import axios from "axios";
-import { useUserDataFromClerk } from "@/hooks/useUserDataFromClerk";
+import React, { useRef, useState } from 'react';
+import { useEditor, EditorContent } from '@tiptap/react';
+import StarterKit from '@tiptap/starter-kit';
+import Underline from '@tiptap/extension-underline';
+import TextStyle from '@tiptap/extension-text-style';
+import Color from '@tiptap/extension-color';
+import Highlight from '@tiptap/extension-highlight';
+import TextAlign from '@tiptap/extension-text-align';
+
+
+import { useUserDataFromClerk } from '@/hooks/useUserDataFromClerk';
+import { useRouter } from 'next/navigation';
+import { useDocumentCreateMutation } from '@/redux/features/Api/documentApi';
+import toast from 'react-hot-toast';
 
 const DocsEditor = () => {
-  const [title, setTitle] = useState("Untitled Document");
-  const [fontColor, setFontColor] = useState("#000000");
-  const [bgColor, setBgColor] = useState("#ffff00");
-  const [fontSize, setFontSize] = useState("16px");
-  const [fontFamily, setFontFamily] = useState("Sans Serif");
+  
+  const router = useRouter();
+  const editorWrapperRef = useRef(null);
+  const [title, setTitle] = useState('Untitled Document');
+  const [fontColor, setFontColor] = useState('#000000');
+  const [bgColor, setBgColor] = useState('#ffff00');
+  const [fontSize, setFontSize] = useState('16px');
+  const [fontFamily, setFontFamily] = useState('Sans Serif');
 
-  const { userData, isLoading, isError, error } = useUserDataFromClerk();
-
+  const { userData } = useUserDataFromClerk();
   const docCreator_id = userData?.user?._id;
   const docCreatorEmail = userData?.user?.email;
-  console.log(docCreator_id, docCreatorEmail);
+
+
+  const [documentCreate] = useDocumentCreateMutation()
 
   const editor = useEditor({
     extensions: [
@@ -37,25 +45,54 @@ const DocsEditor = () => {
   });
 
   const handleSave = async () => {
+
     const html = editor?.getHTML();
+    const newDoc = { title, content: html, docCreator_id, docCreatorEmail };
 
-    const newDoc = {
-      title,
-      content: html,
-      docCreator_id,
-      docCreatorEmail,
-    };
+  
 
-    axios
-      .post("http://localhost:5000/api/documents/create", newDoc)
-      .then((response) => {
-        console.log("Document saved successfully:", response.data);
-      })
-      .catch((error) => {
-        console.error("Error saving document:", error);
-      });
-    console.log(newDoc);
+  try{
+    const result = await documentCreate(newDoc).unwrap()
+    console.log('Document created successfully:', result);
+    toast.success('Document created successfully!')
+    router.push(`/dashboard/tools/documents`);
+  }catch (error){
+    console.error('Error creating document:', error);
+    toast.error('Error creating document. Please try again.');
+  }
   };
+
+ 
+
+
+  
+  
+ 
+  
+  const handleShare = () => {
+    const documentSlug = title.trim().replace(/\s+/g, '-').toLowerCase();
+    const shareableLink = `${window.location.origin}/documents/${documentSlug}`;
+  
+    if (navigator.share) {
+      navigator.share({
+        title: title || 'Untitled Document',
+        text: 'Check out this document!',
+        url: shareableLink,
+      })
+      .then(() => console.log('✅ Shared successfully!'))
+      .catch((err) => console.error('❌ Error sharing:', err));
+    } else {
+      navigator.clipboard.writeText(shareableLink)
+        .then(() => {
+          alert('🔗 Shareable link copied to clipboard!');
+        })
+        .catch((err) => {
+          console.error('❌ Failed to copy link:', err);
+        });
+    }
+  };
+  
+
 
   const applyStyles = () => {
     if (!editor) return;
@@ -80,23 +117,18 @@ const DocsEditor = () => {
       <div className="flex justify-between items-center mb-4">
         <input
           className="text-xl font-semibold border px-4 py-2 rounded-md w-1/3"
-          value={title}
+          defaultValue={title}
           onChange={(e) => setTitle(e.target.value)}
         />
 
         <div className="flex gap-3">
-          <button
-            className="bg-[#014E4E] text-white dark:text-[#014E4E] dark:bg-white px-1 py-1 lg:px-4 lg:py-2 rounded-md"
-            onClick={handleSave}
-          >
+          <button onClick={handleSave} className="bg-[#014E4E] text-white px-4 py-2 rounded-md">
             Save
           </button>
-          <button className="bg-[#014E4E] text-white dark:text-[#014E4E] dark:bg-white px-1 py-1 lg:px-4 lg:py-2 rounded-md">
+          <button  className="bg-[#014E4E] text-white px-4 py-2 rounded-md">
             Save PDF
           </button>
-          <button className=" bg-[#014E4E] px-1 py-1 lg:px-4 lg:py-2 rounded-md text-white dark:text-[#014E4E] dark:bg-white">
-            Share ➤
-          </button>
+          <button onClick={handleShare}  className="bg-[#014E4E] text-white px-4 py-2 rounded-md">Share ➤</button>
         </div>
       </div>
 
@@ -120,24 +152,9 @@ const DocsEditor = () => {
           <option>Times New Roman</option>
         </select>
 
-        <button
-          onClick={() => editor?.chain().focus().toggleBold().run()}
-          className="btn font-bold"
-        >
-          B
-        </button>
-        <button
-          onClick={() => editor?.chain().focus().toggleItalic().run()}
-          className="btn italic"
-        >
-          I
-        </button>
-        <button
-          onClick={() => editor?.chain().focus().toggleUnderline().run()}
-          className="btn underline"
-        >
-          U
-        </button>
+        <button onClick={() => editor?.chain().focus().toggleBold().run()} className="btn font-bold">B</button>
+        <button onClick={() => editor?.chain().focus().toggleItalic().run()} className="btn italic">I</button>
+        <button onClick={() => editor?.chain().focus().toggleUnderline().run()} className="btn underline">U</button>
 
         <input
           type="color"
@@ -165,7 +182,10 @@ const DocsEditor = () => {
       </div>
 
       {/* Editor Content */}
-      <div className="min-h-[400px] p-6 bg-white border rounded-md shadow">
+      <div
+        ref={editorWrapperRef}
+        className="min-h-[400px] p-6 bg-white border rounded-md shadow"
+      >
         <EditorContent editor={editor} />
       </div>
 
