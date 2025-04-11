@@ -8,7 +8,7 @@ import TextStyle from '@tiptap/extension-text-style';
 import Color from '@tiptap/extension-color';
 import Highlight from '@tiptap/extension-highlight';
 import TextAlign from '@tiptap/extension-text-align';
-import axios from 'axios';
+
 
 import { useUserDataFromClerk } from '@/hooks/useUserDataFromClerk';
 import { useRouter } from 'next/navigation';
@@ -16,7 +16,7 @@ import { useDocumentCreateMutation } from '@/redux/features/Api/documentApi';
 import toast from 'react-hot-toast';
 
 const DocsEditor = () => {
-  const [loaing, setLoading] = useState(false);
+  
   const router = useRouter();
   const editorWrapperRef = useRef(null);
   const [title, setTitle] = useState('Untitled Document');
@@ -117,7 +117,7 @@ const DocsEditor = () => {
       <div className="flex justify-between items-center mb-4">
         <input
           className="text-xl font-semibold border px-4 py-2 rounded-md w-1/3"
-          value={title}
+          defaultValue={title}
           onChange={(e) => setTitle(e.target.value)}
         />
 
@@ -152,9 +152,9 @@ const DocsEditor = () => {
           <option>Times New Roman</option>
         </select>
 
-        {/* <button onClick={() => editor?.chain().focus().toggleBold().run()} className="btn font-bold">B</button>
+        <button onClick={() => editor?.chain().focus().toggleBold().run()} className="btn font-bold">B</button>
         <button onClick={() => editor?.chain().focus().toggleItalic().run()} className="btn italic">I</button>
-        <button onClick={() => editor?.chain().focus().toggleUnderline().run()} className="btn underline">U</button> */}
+        <button onClick={() => editor?.chain().focus().toggleUnderline().run()} className="btn underline">U</button>
 
         <input
           type="color"
