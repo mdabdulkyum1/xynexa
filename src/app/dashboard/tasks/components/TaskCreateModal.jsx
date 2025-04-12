@@ -1,42 +1,80 @@
 "use client";
 
 import { Dialog, Transition } from "@headlessui/react";
-import { Fragment } from "react";
+import { Fragment, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { useUser } from "@clerk/nextjs";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
-import {Select,SelectContent,SelectItem,SelectTrigger,SelectValue} from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
+import { Calendar } from "@/components/ui/calendar";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { cn } from "@/lib/utils";
+import { useCreateBoardMutation } from "@/redux/features/Api/boardapi";
 
-const TaskCreateModal = ({ isOpen, closeModal, createTaskHandler }) => {
+const TaskCreateModal = ({ isOpen, closeModal, team = {} }) => {
+  console.log(team);
+  const { members } = team || { members: [] };
+  console.log(team?.team?._id);
+
   const {
     register,
     handleSubmit,
     setValue,
     formState: { errors },
-  } = useForm();
+  } = useForm({
+    defaultValues: {
+      status: "todo",
+    },
+  });
 
   const { user } = useUser();
   const userEmail = user?.emailAddresses[0]?.emailAddress;
+  const [date, setDate] = useState(undefined);
+  const [selectedMembers, setSelectedMembers] = useState([]);
+  const [createBoard,{isLoading}] = useCreateBoardMutation();
+
+  if (!team) {
+    return <p>Loading....</p>;
+  }
 
   const onSubmit = async (data) => {
     try {
-      const taskData = {
+      const boardData = {
         ...data,
-        teamCreatorEmail: userEmail,
-        timeStrap: {
-          assignDate: new Date().toISOString(),
-        },
+        teamId: team?.team?._id,
+        targetDate: date ? date.toISOString() : null,
+        members: selectedMembers,
       };
 
-      await createTaskHandler(taskData);
-      toast.success("Task Board created!");
-      closeModal();
+      const result = await createBoard(boardData);
+
+      if (result.data) {
+        toast.success("Task Board created!");
+        closeModal();
+      } else if (result.error) {
+        console.error("Error creating task:", result.error);
+        toast.error("Error creating task. Please try again.", {
+          position: "bottom-right",
+        });
+      }
     } catch (error) {
       console.error("Error creating task:", error);
-      toast.error("Error creating task. Please try again.");
+      toast.error("Error creating task. Please try again.", {
+        position: "bottom-right",
+      });
     }
   };
 
@@ -91,6 +129,51 @@ const TaskCreateModal = ({ isOpen, closeModal, createTaskHandler }) => {
                   </div>
 
                   <div className="space-y-2">
+                    <Label htmlFor="description">Description (Optional)</Label>
+                    <textarea
+                      id="description"
+                      {...register("description")}
+                      placeholder="Enter board description"
+                      className="w-full border rounded p-2"
+                    />
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="members">Members</Label>
+                    <Select
+                      onValueChange={(value) => setSelectedMembers(value)}
+                      multiple
+                    >
+                      <SelectTrigger className="w-full">
+                        <SelectValue placeholder="Select members" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {team?.team?.members.map((member) => (
+                          <SelectItem
+                            key={member._id}
+                            value={member._id}
+                            className="flex items-center space-x-2"
+                          >
+                            <img
+                              src={member?.imageUrl || "/placeholder-image.jpg"}
+                              alt={member?.firstName}
+                              className="w-8 h-8 rounded-full"
+                            />
+                            <div>
+                              <p className="font-medium">
+                                {member?.firstName} {member?.lastName}
+                              </p>
+                              <p className="text-sm text-gray-500">
+                                {member?.email}
+                              </p>
+                            </div>
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+
+                  <div className="space-y-2">
                     <Label htmlFor="status">Status</Label>
                     <Select
                       onValueChange={(value) => setValue("status", value)}
@@ -100,9 +183,9 @@ const TaskCreateModal = ({ isOpen, closeModal, createTaskHandler }) => {
                       </SelectTrigger>
                       <SelectContent>
                         <SelectItem value="todo">Todo</SelectItem>
-                        <SelectItem value="inprogress">In Progress</SelectItem>
+                        <SelectItem value="in-progress">In Progress</SelectItem>
                         <SelectItem value="done">Done</SelectItem>
-                        <SelectItem value="done"></SelectItem>
+                        <SelectItem value="blocked">Blocked</SelectItem>
                       </SelectContent>
                     </Select>
                     {errors.status && (
@@ -113,34 +196,43 @@ const TaskCreateModal = ({ isOpen, closeModal, createTaskHandler }) => {
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="membersEmail">Selected Member Email</Label>
-                    <Select
-                      onValueChange={(value) => setValue("membersEmail", value)}
-                    >
-                      <SelectTrigger className="w-full">
-                        <SelectValue placeholder="Select a member email" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="member1@example.com">
-                          member1@example.com
-                        </SelectItem>
-                        <SelectItem value="member2@example.com">
-                          member2@example.com
-                        </SelectItem>
-                        <SelectItem value="member3@example.com">
-                          member3@example.com
-                        </SelectItem>
-                      </SelectContent>
-                    </Select>
-                    {errors.membersEmail && (
-                      <p className="text-red-500 text-sm mt-1">
-                        {errors.membersEmail.message}
-                      </p>
-                    )}
+                    <Label htmlFor="targetDate">Target Date</Label>
+                    <Popover>
+                      <PopoverTrigger asChild>
+                        <Button
+                          variant={"outline"}
+                          className={cn(
+                            "w-full justify-start text-left font-normal",
+                            !date && "text-muted-foreground"
+                          )}
+                        >
+                          {date ? (
+                            new Date(date).toLocaleDateString()
+                          ) : (
+                            <span>Pick a date</span>
+                          )}
+                        </Button>
+                      </PopoverTrigger>
+                      <PopoverContent className="w-auto p-0" align="start">
+                        <Calendar
+                          mode="single"
+                          selected={date}
+                          onSelect={setDate}
+                          initialFocus
+                        />
+                      </PopoverContent>
+                    </Popover>
                   </div>
 
-                  <Button type="submit" className="w-full mt-4">
-                    Create Board
+                  <Button
+                    type="submit"
+                    className="w-full mt-4"
+                    disabled={isLoading}
+                  >
+                    {" "}
+                    
+                    {isLoading ? "Creating..." : "Create Board"}{" "}
+                    
                   </Button>
                 </form>
               </Dialog.Panel>

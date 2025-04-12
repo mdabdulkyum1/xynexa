@@ -17,7 +17,7 @@ const tasksData = [
     { id: "10", title: "Product Design, Figma, Sketch", taskType: "Done", tags: ["Done"], avatars: ["https://randomuser.me/api/portraits/men/34.jpg"] },
 ];
 
-const TaskBoard = () => {
+const TaskBoard = (team) => {
     const [tasksType] = useState(["To Do", "In Progress", "Done","Backlog"]);
 
     return (
@@ -27,6 +27,7 @@ const TaskBoard = () => {
                     key={category} 
                     title={category} 
                     tasks={tasksData.filter(task => task.taskType === category)} 
+                    team={team}
                 />
             ))}
         </div>
