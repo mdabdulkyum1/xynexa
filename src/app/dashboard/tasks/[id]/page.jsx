@@ -15,8 +15,8 @@ const TaskSingleBoard = () => {
   return (
     <div>
       <TaskHeading team={team}/>
-      <TaskControl></TaskControl>
-      <TaskBoard></TaskBoard>
+      <TaskControl team={team}></TaskControl>
+      <TaskBoard team={team}></TaskBoard>
     </div>
   );
 };
