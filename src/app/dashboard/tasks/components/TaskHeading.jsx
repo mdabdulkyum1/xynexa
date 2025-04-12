@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import Avatar from "@mui/material/Avatar";
 import AvatarGroup from "@mui/material/AvatarGroup";
 import { CirclePlus, Pencil } from "lucide-react";
+import TaskCreateModal from "./TaskCreateModal";
 
 const TaskHeading = ({ team }) => {
   const [boardName, setBoardName] = useState("Task Board");
