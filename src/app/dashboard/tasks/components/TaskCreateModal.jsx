@@ -24,10 +24,11 @@ import {
 import { cn } from "@/lib/utils";
 import { useCreateBoardMutation } from "@/redux/features/Api/boardapi";
 
+
 const TaskCreateModal = ({ isOpen, closeModal, team = {} }) => {
   console.log(team);
   const { members } = team || { members: [] };
-  console.log(team?.team?._id);
+ 
 
   const {
     register,
