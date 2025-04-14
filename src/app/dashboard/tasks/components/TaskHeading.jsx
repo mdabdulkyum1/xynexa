@@ -4,10 +4,14 @@ import Avatar from "@mui/material/Avatar";
 import AvatarGroup from "@mui/material/AvatarGroup";
 import { CirclePlus, Pencil } from "lucide-react";
 import TaskCreateModal from "./TaskCreateModal";
+import AddMember from "../../team/view/components/AddMember";
 
 const TaskHeading = ({ team }) => {
   const [boardName, setBoardName] = useState("Task Board");
   const [isEditing, setIsEditing] = useState(false);
+  const [isOpenAdd, setIsOpenAdd] = useState(false);
+
+  const teamId= team?._id
 
   // Handle input change
   const handleChange = (e) => {
@@ -52,8 +56,10 @@ const TaskHeading = ({ team }) => {
         </AvatarGroup>
         <CirclePlus
           size={40}
+          onClick={() => setIsOpenAdd(true)}
           className="text-gray-400 dark:text-gray-300 cursor-pointer hover:text-purple-600 dark:hover:text-purple-400"
         />
+        <AddMember teamId={teamId} isOpenAdd={isOpenAdd} setIsOpenAdd={setIsOpenAdd} />
       </div>
     </div>
   );
