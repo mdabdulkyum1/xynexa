@@ -1,10 +1,11 @@
-import Meeting from "./components/Meeting";
+import ClientWrapper from "./components/ClientWrapper";
+
 
 
 export default function Page() {
   return (
     <div>
-       <Meeting></Meeting>
+         <ClientWrapper />
     </div>
   )
 }
