@@ -1,7 +1,6 @@
 'use client';
 
 import  { useEffect, useState } from 'react';
-import Slider from 'react-slick';
 import Lottie from 'lottie-react';
 import { MdOutlineVideoCall } from "react-icons/md";
 import { BsCassette } from "react-icons/bs";
