@@ -1,12 +1,12 @@
-'use client';
+ "use client"
 
-import  { useEffect, useState } from 'react';
-import Lottie from 'lottie-react';
+import { useEffect, useState } from 'react';
 import { MdOutlineVideoCall } from "react-icons/md";
 import { BsCassette } from "react-icons/bs";
 import dynamic from 'next/dynamic';
 
 const Slider = dynamic(() => import('react-slick'), { ssr: false });
+const Lottie = dynamic(() => import('lottie-react'), { ssr: false }); 
 
 
 const Meeting = () => {
