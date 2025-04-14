@@ -5,6 +5,10 @@ import Slider from 'react-slick';
 import Lottie from 'lottie-react';
 import { MdOutlineVideoCall } from "react-icons/md";
 import { BsCassette } from "react-icons/bs";
+import dynamic from 'next/dynamic';
+
+const Slider = dynamic(() => import('react-slick'), { ssr: false });
+
 
 const Meeting = () => {
 
