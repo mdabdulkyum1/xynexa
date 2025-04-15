@@ -1,9 +1,13 @@
+'use client'
+
 import { Avatar, AvatarGroup } from '@mui/material';
 import { CirclePlus, FileCheck, MessageSquareText, Paperclip } from 'lucide-react';
-import React from 'react';
+import React, { useState } from 'react';
 import './taskcard.css'
+import TaskCreateModal from './TaskCreateModal';
 
 const TaskCard = () => {
+   
     return (
         <div className="bg-white dark:bg-[#0A0A0A] p-4 rounded-lg shadow-md purple-shadow">
             <div className="flex justify-between items-center">
@@ -30,7 +34,9 @@ const TaskCard = () => {
                         <Avatar sx={{ width: 24, height: 24 }} alt="Cindy Baker" src="https://i.ibb.co/DMRpJqg/IMG-20220410-223356.jpg" />
                     </AvatarGroup>
                     <div className="p-1 border-2 border-gray-400 dark:border-gray-600 border-dashed rounded-full">
-                        <CirclePlus size={16} className="text-gray-400 dark:text-gray-300" />
+                        <CirclePlus  size={16} className="text-gray-400 dark:text-gray-300" />
+                        
+                                   
                     </div>
                     <div className="flex md:flex-wrap xl:flex-nowrap gap-2">
                         <p className="flex items-center gap-1 justify-center">
