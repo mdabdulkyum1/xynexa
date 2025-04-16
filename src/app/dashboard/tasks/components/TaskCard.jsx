@@ -9,10 +9,10 @@ import SingleTaskDeleteModal from './SingleTaskDeleteModal';
 import { useDeleteSingleTaskMutation, useGetBoardByTeamIdQuery } from '@/redux/features/Api/boardApi';
 
 
+
 const TaskCard = ({ task, teamId }) => {
 
     let [isOpen, setIsOpen] = useState(false);
-    // console.log("task", task);
 
 
 
