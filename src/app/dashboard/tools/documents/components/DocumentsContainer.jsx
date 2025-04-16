@@ -28,7 +28,7 @@ console.log(availableDocumentsData.documents)
           setTimeout(() => {
             if (response.data.documents.length > 0) {
               setAvailableDocuments(response.data.documents);
-              console.log('Documents fetched successfully:', response.data);
+              // console.log('Documents fetched successfully:', response.data);
             } else {
               console.error('Expected an array of documents, but got:', response.data);
               setAvailableDocuments([]);
@@ -48,7 +48,7 @@ console.log(availableDocumentsData.documents)
     }
   }, [userEmail]);
 
-  console.log(availableDocuments)
+  // console.log(availableDocuments)
 
 const [documentDelete, {isLoading:isDeleting}] =  useDocumentDeleteMutation()
 
