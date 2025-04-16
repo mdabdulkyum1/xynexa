@@ -8,8 +8,6 @@ const TaskBoard = ({ team, allTasks ,teamId}) => {
 
     const [tasksTypes] = useState(['todo', 'in-progress', 'done', 'blocked']);
 
-
-
     return (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3  xl:grid-cols-4 gap-4 p-4 bg-gray-100 dark:bg-[#171717]">
             {tasksTypes.map((category) => (
