@@ -6,7 +6,7 @@ import { CirclePlus, FileCheck, MessageSquareText, Paperclip } from 'lucide-reac
 import React, { useState } from 'react';
 import './taskcard.css'
 import SingleTaskDeleteModal from './SingleTaskDeleteModal';
-import { useDeleteSingleTaskMutation, useGetBoardByTeamIdQuery } from '@/redux/features/Api/boardApi';
+import { useDeleteSingleTaskMutation } from '@/redux/features/Api/boardApi';
 
 
 
