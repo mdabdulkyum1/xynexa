@@ -5,7 +5,8 @@ import TaskControl from "../components/TaskControl";
 import TaskBoard from "../components/TaskBoard ";
 import { useParams } from "next/navigation";
 import { useGetTeamQuery } from "@/redux/features/Api/teamApi";
-import { useGetBoardByTeamIdQuery } from "@/redux/features/Api/boardApi";
+import { useGetBoardByTeamIdQuery } from "@/redux/features/Api/TaskApi";
+
 
 
 
