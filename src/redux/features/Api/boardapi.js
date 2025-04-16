@@ -23,14 +23,6 @@ export const boardApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ['Board'],
     }),
-    // delete
-    // deleteSingleTask: builder.mutation({
-    //   query: (taskId) => ({
-    //     url: `/boards/${taskId}`,
-    //     method: 'DELETE',
-    //   }),
-    //   invalidatesTags: ['Board'],
-    // }),
     deleteSingleTask: builder.mutation({
       query: (id) => ({
           url: `/boards/${id}`,

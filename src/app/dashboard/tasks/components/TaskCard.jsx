@@ -25,15 +25,15 @@ const TaskCard = ({ task, teamId }) => {
     }
 
     const [deleteSingleTask, { isLoading: isDeleting }] = useDeleteSingleTaskMutation();
-    const { data, refetch } = useGetBoardByTeamIdQuery(teamId);
 
-    const taskDelete = async (id) => {
+
+    const taskDelete = (id) => {
         try {
-            const response = await deleteSingleTask(id).unwrap(); // Unwrap the response to get the actual data
-            refetch();
+            const response = deleteSingleTask(id).unwrap(); // Unwrap the response to get the actual data
+            // refetch();
             console.log("Deleting task with ID:", id, response); // Log the task ID to be deleted
 
-            // Refetch the data after deletion
+            closeModal()
 
         } catch (error) {
             console.error("Delete failed:", error);
@@ -92,7 +92,7 @@ const TaskCard = ({ task, teamId }) => {
                 </div>
             </div>
 
-            <SingleTaskDeleteModal isOpen={isOpen} closeModal={closeModal} taskDelete={taskDelete} task={task}/>
+            <SingleTaskDeleteModal isOpen={isOpen} closeModal={closeModal} taskDelete={taskDelete} task={task} />
         </div>
     );
 };
