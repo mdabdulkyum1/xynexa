@@ -22,7 +22,7 @@ export default function PaymentForm() {
     }, []);
 
     const onSubmit = (data) => {
-        console.log(data); // Handle form submission
+        // console.log(data); 
     };
 
     return (

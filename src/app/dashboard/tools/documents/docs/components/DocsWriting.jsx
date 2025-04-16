@@ -53,7 +53,7 @@ const DocsEditor = () => {
 
   try{
     const result = await documentCreate(newDoc).unwrap()
-    console.log('Document created successfully:', result);
+    // console.log('Document created successfully:', result);
     toast.success('Document created successfully!')
     router.push(`/dashboard/tools/documents`);
   }catch (error){
@@ -79,7 +79,7 @@ const DocsEditor = () => {
         text: 'Check out this document!',
         url: shareableLink,
       })
-      .then(() => console.log('✅ Shared successfully!'))
+      // .then(() => console.log('✅ Shared successfully!'))
       .catch((err) => console.error('❌ Error sharing:', err));
     } else {
       navigator.clipboard.writeText(shareableLink)

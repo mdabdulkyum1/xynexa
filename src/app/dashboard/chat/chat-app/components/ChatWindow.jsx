@@ -90,7 +90,7 @@ const ChatWindow = () => {
   
     // Listen for message read event
     socket.on("messageRead", ({ id }) => {
-      console.log("Message read:", id, "<<<<test>>>>");
+      // console.log("Message read:", id, "<<<<test>>>>");
       setMessages((prev) =>
         prev.map((msg) => (msg._id === id ? { ...msg, read: true } : msg)) // Fixed issue
       );
