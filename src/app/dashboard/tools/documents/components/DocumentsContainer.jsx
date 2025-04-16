@@ -24,7 +24,7 @@ console.log(availableDocumentsData.documents)
       const fetchDocuments = async () => {
         setLoading(true);
         try {
-          const response = await axios.get(`http://localhost:5000/api/documents/getAllDoc?email=${userEmail}`);
+          const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/documents/getAllDoc?email=${userEmail}`);
           setTimeout(() => {
             if (response.data.documents.length > 0) {
               setAvailableDocuments(response.data.documents);
