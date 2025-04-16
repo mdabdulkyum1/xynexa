@@ -21,12 +21,22 @@ const ChatSidebar = () => {
 
   const dispatch = useDispatch();
   const selectedUserId = useSelector((state) => state.chat.selectedUserId);
-
+  
   const fetchUsers = async () => {
     if (user) {
       try {
         const res = await axiosPublic.get("/api/online/users");
-        setUsers(res.data.onlineUsers);
+        const fetchedUsers = res.data.onlineUsers;
+
+        // Sort: Online users first, then offline; both sorted by lastActive DESC
+        const sortedUsers = fetchedUsers.sort((a, b) => {
+          if (a.status === b.status) {
+            return new Date(b.lastActive) - new Date(a.lastActive);
+          }
+          return a.status === "Online" ? -1 : 1;
+        });
+
+        setUsers(sortedUsers);
       } catch (error) {
         console.error("Error fetching users:", error);
       }
