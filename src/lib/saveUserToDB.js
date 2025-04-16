@@ -1,6 +1,5 @@
 "use client";
 
-
 import { saveUser } from "@/app/actions/saveUser";
 import { useAuth, useUser } from "@clerk/nextjs";
 import { useEffect } from "react";
