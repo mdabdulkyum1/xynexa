@@ -1,11 +1,14 @@
 "use client";
 
+import { useUser } from "@clerk/nextjs";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { FaHome, FaComments, FaCog, FaVideo } from "react-icons/fa";
 
+
 const Sidebar = () => {
   const pathname = usePathname(); // Get the current route
+  const user = useUser();
 
   const links = [
     { href: "/dashboard/chat", icon: <FaHome />, name: "Home" },
@@ -16,7 +19,7 @@ const Sidebar = () => {
 
   return (
     <aside className="w-20 bg-teal-700 flex flex-col items-center py-5 rounded">
-      <img src="https://placehold.co/40x40" alt="User" className="w-10 h-10 rounded-full mb-5" />
+      <img src={user?.user?.imageUrl} alt="User" className="w-10 h-10 rounded-full mb-5" />
 
       {links.map((link) => (
         <Link key={link.href} href={link.href} className="w-full">
