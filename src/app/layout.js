@@ -9,6 +9,7 @@ import { SaveUserToDB } from "@/lib/saveUserToDB";
 import Providers from "@/providers/Providers"; 
 import { Toaster } from "sonner";
 import { usePathname } from "next/navigation";
+import { OfflineUserToDB } from "@/lib/offlineUserToDB";
 
 // export const metadata = {
 //   title: "XyNexa",
@@ -54,6 +55,7 @@ export default function RootLayout({ children }) {
             {shouldShowNavbarFooter && <Navbar />}{" "}
             <main className="min-h-screen">
               <SaveUserToDB />
+              <OfflineUserToDB />
               <Providers>
               <Toaster  position="top-right" />
                 
