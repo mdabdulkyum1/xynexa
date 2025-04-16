@@ -2,6 +2,7 @@
 
 import React from "react";
 import { BadgeCheck, Bell, ChevronsUpDown, CreditCard, LogOut, Sparkles, Home } from "lucide-react";
+import { useClerk } from "@clerk/nextjs";
 
 import {
   Avatar,
@@ -27,6 +28,7 @@ import Link from "next/link";
 
 export function NavUser({ user }) {
   const { isMobile } = useSidebar();
+  const { signOut } = useClerk();
 
   return (
     <SidebarMenu>
@@ -69,7 +71,9 @@ export function NavUser({ user }) {
             <DropdownMenuSeparator />
             <DropdownMenuItem>
               <LogOut />
-              Log out
+              <button onClick={() => signOut()}  className="px-4 py-2  rounded cursor-pointer">
+               Logout
+              </button>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
