@@ -84,13 +84,13 @@ const DetailsPage = () => {
     //   toast.error("No changes made to the document.");
     //   return;
     // }
-console.log(updatedContent, title, id)
+// console.log(updatedContent, title, id)
     try {
       await documentUpdate({ id, title, content: updatedContent });
       toast.success("Document updated successfully!");
       router.push(`/dashboard/tools/documents/${id}`);
     } catch (err) {
-      console.error(err);
+      // console.error(err);
       toast.error("Failed to update document.");
     }
   };

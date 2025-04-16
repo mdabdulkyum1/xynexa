@@ -12,7 +12,7 @@ import Welcome from './components/home/WellcomeMsg/Welcome';
 export default function Home() {
   return (
     <>
-    <Welcome></Welcome>
+    {/* <Welcome></Welcome> */}
       <Hero></Hero>
       
       <LeastStressed></LeastStressed>

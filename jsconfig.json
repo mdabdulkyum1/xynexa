@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "baseUrl": ".",               // এটা যোগ করতে হবে
     "paths": {
       "@/*": ["./src/*"]
     }
