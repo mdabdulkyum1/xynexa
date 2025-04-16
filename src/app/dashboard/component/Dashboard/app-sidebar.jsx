@@ -45,9 +45,9 @@ export function AppSidebar(props) {
   
   const data = {
     user: {
-      name: "harun",
-      email: "harun@.com",
-      avatar: "/avatars/shadcn.jpg",
+      name: user?.fullName || "Guest",
+      email: user?.emailAddresses[0]?.emailAddress || "No email",
+      avatar: user?.imageUrl || "/default-avatar.png",
     },
     teams: [
       {
