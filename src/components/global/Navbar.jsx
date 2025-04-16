@@ -11,13 +11,14 @@ import { usePathname } from "next/navigation";
 import {
   SignedIn,
   SignedOut,
-  SignInButton,
-  SignUpButton,
   UserButton,
+  useUser,
 } from "@clerk/nextjs";
+
 
 const Navbar = () => {
   const isVisible = useScrollDirection(); // Get the visibility status
+  const { user } = useUser(); 
 
   const pathName = usePathname(); // Get the current path
   if (!pathName.includes("dashboard")) {
@@ -50,11 +51,15 @@ const Navbar = () => {
                 Pricing
               </Link>
             </li>
+            {
+              user && 
             <li>
               <Link href="/dashboard" className="hover:text-primary">
                 Dashboard
               </Link>
             </li>
+            }
+
             <li>
               <Link href="/contact-us" className="hover:text-primary">
                 Contact Us
