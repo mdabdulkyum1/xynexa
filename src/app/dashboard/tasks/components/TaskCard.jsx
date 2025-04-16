@@ -6,7 +6,7 @@ import { CirclePlus, FileCheck, MessageSquareText, Paperclip } from 'lucide-reac
 import React, { useState } from 'react';
 import './taskcard.css'
 import SingleTaskDeleteModal from './SingleTaskDeleteModal';
-import { useDeleteSingleTaskMutation } from '@/redux/features/Api/boardApi';
+// import { useDeleteSingleTaskMutation } from '@/redux/features/Api/boardApi';
 
 
 
@@ -24,20 +24,20 @@ const TaskCard = ({ task }) => {
         setIsOpen(false);
     }
 
-    const [deleteSingleTask, { isLoading: isDeleting }] = useDeleteSingleTaskMutation();
+    // const [deleteSingleTask, { isLoading: isDeleting }] = useDeleteSingleTaskMutation();
 
 
     const taskDelete = () => {
-        try {
-            const response = deleteSingleTask(task?._id).unwrap(); // Unwrap the response to get the actual data
-            // refetch();
-            console.log("Deleting task with ID:", task._id, response); // Log the task ID to be deleted
+        // try {
+        //     const response = deleteSingleTask(task?._id).unwrap(); // Unwrap the response to get the actual data
+        //     // refetch();
+        //     console.log("Deleting task with ID:", task._id, response); // Log the task ID to be deleted
 
-            closeModal()
+        //     closeModal()
 
-        } catch (error) {
-            console.error("Delete failed:", error);
-        }
+        // } catch (error) {
+        //     console.error("Delete failed:", error);
+        // }
     };
 
 
