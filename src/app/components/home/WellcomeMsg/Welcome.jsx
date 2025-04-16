@@ -11,7 +11,7 @@ const Welcome = () => {
     useEffect(() => {
         const timer = setTimeout(() => {
             setOpen(false);
-        }, 2000);
+        }, 1000);
 
          
 
