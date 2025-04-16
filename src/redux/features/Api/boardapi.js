@@ -25,11 +25,11 @@ export const boardApi = baseApi.injectEndpoints({
     }),
     deleteSingleTask: builder.mutation({
       query: (id) => ({
-          url: `/boards/${id}`,
-          method: "DELETE",
+        url: `/boards/${id}`,
+        method: "DELETE",
       }),
       invalidatesTags: ['Board'],
-  }),
+    }),
     addMemberToBoard: builder.mutation({
       query: (memberData) => ({
         url: '/boards/members',
@@ -66,12 +66,7 @@ export const boardApi = baseApi.injectEndpoints({
 });
 
 export const {
-  useCreateBoardMutation,
-  useGetBoardByTeamIdQuery,
-  useUpdateBoardMutation,
   useDeleteSingleTaskMutation,
-  useAddMemberToBoardMutation,
-  useAddCommentToBoardMutation,
-  useUpdateBoardStatusMutation,
-  useAddAttachmentToBoardMutation,
+  useGetBoardByTeamIdQuery,
+  useCreateBoardMutation
 } = boardApi;
