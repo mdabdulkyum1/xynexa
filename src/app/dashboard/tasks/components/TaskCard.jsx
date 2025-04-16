@@ -10,7 +10,7 @@ import { useDeleteSingleTaskMutation } from '@/redux/features/Api/boardApi';
 
 
 
-const TaskCard = ({ task, teamId }) => {
+const TaskCard = ({ task }) => {
 
     let [isOpen, setIsOpen] = useState(false);
 
@@ -27,11 +27,11 @@ const TaskCard = ({ task, teamId }) => {
     const [deleteSingleTask, { isLoading: isDeleting }] = useDeleteSingleTaskMutation();
 
 
-    const taskDelete = (id) => {
+    const taskDelete = () => {
         try {
-            const response = deleteSingleTask(id).unwrap(); // Unwrap the response to get the actual data
+            const response = deleteSingleTask(task?._id).unwrap(); // Unwrap the response to get the actual data
             // refetch();
-            console.log("Deleting task with ID:", id, response); // Log the task ID to be deleted
+            console.log("Deleting task with ID:", task._id, response); // Log the task ID to be deleted
 
             closeModal()
 

@@ -49,7 +49,7 @@ const SingleTaskDeleteModal = ({ closeModal, isOpen, taskDelete ,task}) => {
                             <div className='mt-6 flex justify-center gap-4'>
                                 <button
                                     type='button'
-                                    onClick={()=>taskDelete(task?._id)}
+                                    onClick={taskDelete}
                                     className='px-5 cursor-pointer py-2 rounded-lg font-medium text-black bg-[#c98b9b] hover:bg-[#c98b9b] transition duration-300 shadow-md'
                                 >
                                     Yes
