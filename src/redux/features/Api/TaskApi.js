@@ -10,9 +10,10 @@ export const boardApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ['Board'],
     }),
-    getBoardById: builder.query({
-      query: (boardId) => `/${boardId}`,
-      providesTags: (result, error, id) => [{ type: 'Board', id }], 
+    // get all boards by team id
+    getBoardByTeamId: builder.query({
+      query: (TeamId) => `/boards/team/${TeamId}`,
+      providesTags: ['Board'],
     }),
     updateBoard: builder.mutation({
       query: ({ boardId, boardData }) => ({
@@ -22,10 +23,10 @@ export const boardApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ['Board'],
     }),
-    deleteBoard: builder.mutation({
-      query: (boardId) => ({
-        url: `/boards/${boardId}`,
-        method: 'DELETE',
+    deleteSingleTask: builder.mutation({
+      query: (id) => ({
+        url: `/boards/${id}`,
+        method: "DELETE",
       }),
       invalidatesTags: ['Board'],
     }),
@@ -43,7 +44,7 @@ export const boardApi = baseApi.injectEndpoints({
         method: 'POST',
         body: commentData,
       }),
-      invalidatesTags: (result, error, { boardId }) => [{ type: 'Board', id: boardId }],
+      invalidatesTags: ['Board'],
     }),
     updateBoardStatus: builder.mutation({
       query: (statusData) => ({
@@ -64,16 +65,11 @@ export const boardApi = baseApi.injectEndpoints({
   }),
 });
 
-// hello
+// hello hay
 
 
 export const {
-  useCreateBoardMutation,
-  useGetBoardByIdQuery,
-  useUpdateBoardMutation,
-  useDeleteBoardMutation,
-  useAddMemberToBoardMutation,
-  useAddCommentToBoardMutation,
-  useUpdateBoardStatusMutation,
-  useAddAttachmentToBoardMutation,
+  useDeleteSingleTaskMutation,
+  useGetBoardByTeamIdQuery,
+  useCreateBoardMutation
 } = boardApi;

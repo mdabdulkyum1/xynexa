@@ -11,6 +11,7 @@ import { useUser } from "@clerk/nextjs";
 import { setSelectedUserId } from "@/redux/features/Slice/chatSlice";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
+import Link from "next/link";
 
 const ChatSidebar = () => {
   const axiosPublic = useAxiosPublic();
@@ -58,8 +59,11 @@ const ChatSidebar = () => {
             <h3 className="text-lg font-medium text-gray-800 mb-3">People</h3>
             <div className="mb-4 space-y-3">
               {users.map((user) => (
+                
+                <Link href="/dashboard/chat/chat-app" key={user._id}>
+
                 <div
-                  key={user._id}
+                  
                   className="flex items-center p-2 rounded-md hover:bg-gray-100 cursor-pointer transition"
                   onClick={() => dispatch(setSelectedUserId(user?.clerkId)) } // Set selected user
                 >
@@ -83,6 +87,9 @@ const ChatSidebar = () => {
                     </p>
                   </div>
                 </div>
+
+                </Link>
+
               ))}
             </div>
 

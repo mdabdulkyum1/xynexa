@@ -1,14 +1,15 @@
 'use client'
 import { Badge } from "@mui/material";
-
 import { CirclePlus } from "lucide-react";
 import TaskCard from "./TaskCard";
 import React, { useState } from "react";
 import TaskCreateModal from "./TaskCreateModal";
 
-const TaskColumn = ({ title, tasks,team }) => {
-    
-    const [isModalOpen, setIsModalOpen] = useState(false);
+const TaskColumn = ({ title, taskCategory, team ,teamId}) => {
+  
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+
   return (
     <div
       className="bg-gray-100 dark:bg-[#171717] p-4 rounded-lg 
@@ -23,22 +24,23 @@ const TaskColumn = ({ title, tasks,team }) => {
           color="gray"
           className="dark:bg-[#0A0A0A] py-1 px-2 rounded-l-full dark:text-gray-300"
         >
-          {tasks.length}
+          {taskCategory?.length}
         </Badge>
       </div>
       <div className="space-y-4">
-        {tasks.map((task, idx) => (
-          <TaskCard key={idx} {...task} />
+        {taskCategory?.map((task, idx) => (
+          
+          <TaskCard key={idx} task={task} teamId={teamId}/>
         ))}
       </div>
-      <button onClick={() => setIsModalOpen(true)}  className="mt-4 w-full bg-white dark:bg-[#0A0A0A] text-gray-900 dark:text-gray-200 py-1 rounded-md flex items-center justify-center">
+      <button onClick={() => setIsModalOpen(true)} className="mt-4 w-full bg-white dark:bg-[#0A0A0A] text-gray-900 dark:text-gray-200 py-1 rounded-md flex items-center justify-center">
         <CirclePlus size={28} className="text-gray-500 dark:text-gray-300" />
       </button>
+
       <TaskCreateModal
         isOpen={isModalOpen}
         closeModal={() => setIsModalOpen(false)}
         team={team}
-
       ></TaskCreateModal>
     </div>
   );

@@ -22,13 +22,16 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
-import { useCreateBoardMutation } from "@/redux/features/Api/boardapi";
+import { useCreateBoardMutation } from "@/redux/features/Api/TaskApi";
+
+
 
 
 const TaskCreateModal = ({ isOpen, closeModal, team = {} }) => {
-  console.log(team);
+  // console.log(team);
+
   const { members } = team || { members: [] };
- 
+
 
   const {
     register,
@@ -55,7 +58,7 @@ const TaskCreateModal = ({ isOpen, closeModal, team = {} }) => {
     try {
       const boardData = {
         ...data,
-        teamId: team?.team?._id,
+        teamId: team?._id,
         targetDate: date ? date.toISOString() : null,
         members: selectedMembers,
       };
@@ -149,7 +152,7 @@ const TaskCreateModal = ({ isOpen, closeModal, team = {} }) => {
                         <SelectValue placeholder="Select members" />
                       </SelectTrigger>
                       <SelectContent>
-                        {team?.team?.members.map((member) => (
+                        {team?.members?.map((member) => (
                           <SelectItem
                             key={member._id}
                             value={member._id}
@@ -174,27 +177,7 @@ const TaskCreateModal = ({ isOpen, closeModal, team = {} }) => {
                     </Select>
                   </div>
 
-                  <div className="space-y-2">
-                    <Label htmlFor="status">Status</Label>
-                    <Select
-                      onValueChange={(value) => setValue("status", value)}
-                    >
-                      <SelectTrigger className="w-full">
-                        <SelectValue placeholder="Select status" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="todo">Todo</SelectItem>
-                        <SelectItem value="in-progress">In Progress</SelectItem>
-                        <SelectItem value="done">Done</SelectItem>
-                        <SelectItem value="blocked">Blocked</SelectItem>
-                      </SelectContent>
-                    </Select>
-                    {errors.status && (
-                      <p className="text-red-500 text-sm mt-1">
-                        {errors.status.message}
-                      </p>
-                    )}
-                  </div>
+               
 
                   <div className="space-y-2">
                     <Label htmlFor="targetDate">Target Date</Label>
