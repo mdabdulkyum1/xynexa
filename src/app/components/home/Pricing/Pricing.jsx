@@ -37,7 +37,7 @@ const Pricing = () => {
                             <path d="M240 0H0a240 240 0 0 0 240 240h240A240 240 0 0 0 240 0ZM240 240H0a240 240 0 0 0 240 240h240a240 240 0 0 0-240-240Z" fill="#808"></path>
                         </svg>
                         <div className="relative z-10">
-                            <h3 className="text-2xl font-bold mb-2 text-gray-700">Boost</h3>
+                            <h3 className="text-2xl font-bold mb-2 text-gray-700">Diamond</h3>
                             <p className="text-gray-500 text-left">For Mid-level teams needing essential collaboration tools.</p>
                             <button className="getstart block border text-black border-gray-500 w-full mt-6 py-2 px-3 text-sm font-semibold leading-6 text-center rounded-md hover:shadow-purple-200 dark:hover:shadow-purple-800  hover:scale-105 duration-300 cursor-pointer">
                                 <Link href="/pricing">View Details</Link>
@@ -57,7 +57,7 @@ const Pricing = () => {
                             <path d="M480 0H120v120h120v120h120v120h120V0zM0 480h360V360H240V240H120V120H0v360z" fill="#808"></path>
                         </svg>
                         <div className="relative z-10">
-                            <h3 className="text-2xl font-bold mb-2 text-gray-700">Power</h3>
+                            <h3 className="text-2xl font-bold mb-2 text-gray-700">Platinum</h3>
                             <p className="text-gray-500 text-left">Comprehensive plan for large, feature-demanding teams.</p>
                             <button className="getstart block border text-black border-gray-500 w-full mt-6 py-2 px-3 text-sm font-semibold leading-6 text-center rounded-md hover:shadow-purple-200 dark:hover:shadow-purple-800  hover:scale-105 duration-300 cursor-pointer">
                             <Link href="/pricing">View Details</Link>
