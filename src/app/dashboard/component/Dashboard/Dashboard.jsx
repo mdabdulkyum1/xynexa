@@ -29,7 +29,7 @@ export default function Page() {
     <SidebarInset>
       <div className="max-w-[1600px] mx-auto bg-muted/50 gap-4 p-4 rounded-md min-h-screen">
         <div className="flex   gap-10 ">
-          <div className="w-[75%]">
+          <div className="w-[100%]">
             <div className="">
               <WelcomeBanner />
               {/* <OverViewCard/> */}
@@ -48,13 +48,7 @@ export default function Page() {
             </div> */}
             </div>
           </div>
-          <div className=" max-w-[25%] w-full flex  flex-col">
-            <div className="">
-              <CalendarDemo />
-              {/* <ScratchToRevealDemo/> */}
-              {/* <RecentTasks/> */}
-            </div>
-          </div>
+          
         </div>
         <div className="flex gap-10 ">
           <div className="w-[75%]">
