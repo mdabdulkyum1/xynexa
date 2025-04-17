@@ -5,16 +5,21 @@ import {
   AudioWaveform,
   BookOpen,
   Bot,
+  Calendar,
   Command,
+  File,
   Frame,
   GalleryVerticalEnd,
   GalleryVerticalEndIcon,
   HelpCircle,
   Home,
   Map,
+  MessageSquare,
   PieChart,
   Settings2,
   SquareTerminal,
+  Users,
+  Wrench,
 } from "lucide-react";
 
 import {
@@ -38,11 +43,8 @@ export function AppSidebar(props) {
   const { user } = useUser();
   const userEmail = user?.emailAddresses[0]?.emailAddress;
 
-  const { data:items } = useGetTeamsByCurrentUserEmailQuery(userEmail);
+  const { data: items } = useGetTeamsByCurrentUserEmailQuery(userEmail);
 
-  
-  
-  
   const data = {
     user: {
       name: user?.fullName || "Guest",
@@ -60,7 +62,7 @@ export function AppSidebar(props) {
       {
         title: "Dashboard",
         url: "/dashboard",
-        icon: SquareTerminal,
+        icon: SquareTerminal, 
         isActive: true,
         items: [
           { title: "OverView", url: "/dashboard" },
@@ -71,71 +73,71 @@ export function AppSidebar(props) {
       {
         title: "Your Board",
         url: "/dashboard/team",
-        icon: Command,
-        items
+        isActive: true,
+        icon: Command, 
+        items,
       },
       {
         title: "Chat",
         url: "/dashboard/chat",
-        icon: AudioWaveform,
+        icon: MessageSquare, // Standard Chat/Message Icon
         items: [{ title: "Messages", url: "/dashboard/chat" }],
       },
-      {
-        title: "Tasks",
-        url: "/dashboard/tasks",
-        icon: Frame,
-        items: [
-          { title: "All Task", url: "/dashboard/tasks" },
-          { title: "Kanban", url: "/dashboard/tasks/kanban" },
-          { title: "Assign", url: "/dashboard/tasks/assign" },
-          { title: "Tracking", url: "/dashboard/tasks/tracking" },
-        ],
-      },
+      // {
+      //   title: "Tasks",
+      //   url: "/dashboard/tasks",
+      //   icon: Frame,
+      //   items: [
+      //     { title: "All Task", url: "/dashboard/tasks" },
+      //     { title: "Kanban", url: "/dashboard/tasks/kanban" },
+      //     { title: "Assign", url: "/dashboard/tasks/assign" },
+      //     { title: "Tracking", url: "/dashboard/tasks/tracking" },
+      //   ],
+      // },
       {
         title: "Files",
         url: "/dashboard/files",
-        icon: GalleryVerticalEnd,
+        icon: File, // Standard File Icon
         items: [
           { title: "Share File", url: "/dashboard/files" },
-          { title: "Upload", url: "/dashboard/files/upload" },
-          { title: "Cloud Sync", url: "/dashboard/files/sync" },
+          // { title: "Upload", url: "/dashboard/files/upload" },
+          // { title: "Cloud Sync", url: "/dashboard/files/sync" },
         ],
       },
       {
         title: "Meetings",
         url: "/dashboard/meetings",
-        icon: Map,
+        icon: Calendar, // Standard Calendar/Meeting Icon
         items: [
           { title: "Calendar", url: "/dashboard/meetings/calendar" },
-          { title: "Schedule", url: "/dashboard/meetings/schedule" },
-          { title: "Reminders", url: "/dashboard/meetings/reminders" },
+          // { title: "Schedule", url: "/dashboard/meetings/schedule" },
+          // { title: "Reminders", url: "/dashboard/meetings/reminders" },
           { title: "Team Meet", url: "/dashboard/meetings/meet" },
         ],
       },
       {
         title: "Alerts",
         url: "/dashboard/alerts",
-        icon: Settings2,
+        icon: Settings2, // Standard Settings/Alerts Icon
         items: [
           { title: "Notifications", url: "/dashboard/alerts/notifications" },
-          { title: "Emails", url: "/dashboard/alerts/emails" },
         ],
       },
-      {
-        title: "Member",
-        url: "/dashboard/users",
-        icon: Bot,
-        items: [
-          { title: "Team Member", url: "/dashboard/users" },
-          { title: "Roles", url: "/dashboard/users/roles" },
-          { title: "Profile", url: "/dashboard/users/profile" },
-          { title: "Invites", url: "/dashboard/users/invites" },
-        ],
-      },
+      // {
+      //   title: "Member",
+      //   url: "/dashboard/users",
+      //   icon: Users, // Standard Users/Members Icon
+      //   items: [
+      //     { title: "Team Member", url: "/dashboard/users" },
+      //     { title: "Roles", url: "/dashboard/users/roles" },
+      //     { title: "Profile", url: "/dashboard/users/profile" },
+      //     { title: "Invites", url: "/dashboard/users/invites" },
+      //   ],
+      // },
       {
         title: "Tools",
         url: "/dashboard/tools",
-        icon: Bot,
+        icon: Wrench, // Standard Tools Icon
         items: [
           { title: "documents", url: "/dashboard/tools/documents" },
           { title: "drawing", url: "/dashboard/tools/drawing" },
@@ -146,7 +148,7 @@ export function AppSidebar(props) {
       {
         name: "Help & Support ",
         url: "#",
-        icon: HelpCircle,
+        icon: HelpCircle, // Standard Help Icon
       },
     ],
   };
