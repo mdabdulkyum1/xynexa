@@ -1,9 +1,13 @@
 import React from 'react';
+import Uploadfile from './components/UploadFile';
+import AllDocuments from './components/AllDocuments';
+
 
 export default function Page() {
     return (
         <div>
-            <h1>Hello, this is the File Upload Page</h1>
+            <Uploadfile/>
+            <AllDocuments/>
         </div>
     );
 }
