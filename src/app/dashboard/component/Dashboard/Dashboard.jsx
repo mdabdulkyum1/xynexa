@@ -31,6 +31,7 @@ export default function Page() {
         <div className="flex   gap-10 ">
           <div className="w-[100%]">
             <div className="">
+              {/* hello bro */}
               <WelcomeBanner />
               {/* <OverViewCard/> */}
               {/* <div className="grid grid-cols-2 gap-6 my-12">
