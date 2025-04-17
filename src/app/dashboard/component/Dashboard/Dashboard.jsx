@@ -22,6 +22,7 @@ import WorkStatus from "./WorkStatus";
 import Progress from "./Progess";
 import RecentTasks from "./RecentTasks";
 import WelcomeBanner from "./WelcomeBanner";
+import { ScratchToRevealDemo } from "./ScratchToRevealDemo";
 
 export default function Page() {
   return (
@@ -47,9 +48,10 @@ export default function Page() {
             </div> */}
             </div>
           </div>
-          <div className=" max-w-[25%] flex  flex-col">
+          <div className=" max-w-[25%] w-full flex  flex-col">
             <div className="">
               <CalendarDemo />
+              {/* <ScratchToRevealDemo/> */}
               {/* <RecentTasks/> */}
             </div>
           </div>
