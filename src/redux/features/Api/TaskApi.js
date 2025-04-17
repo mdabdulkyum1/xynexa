@@ -47,10 +47,10 @@ export const boardApi = baseApi.injectEndpoints({
       invalidatesTags: ['Board'],
     }),
     updateBoardStatus: builder.mutation({
-      query: (statusData) => ({
-        url: '/boards/status',
+      query: ({ boardId, status }) => ({
+        url: `/boards/${boardId}/status`,
         method: 'PUT',
-        body: statusData,
+        body: { status },
       }),
       invalidatesTags: ['Board'],
     }),
@@ -71,5 +71,8 @@ export const boardApi = baseApi.injectEndpoints({
 export const {
   useDeleteSingleTaskMutation,
   useGetBoardByTeamIdQuery,
-  useCreateBoardMutation
+  useCreateBoardMutation,
+  useAddCommentToBoardMutation,
+  useAddAttachmentToBoardMutation,
+  useUpdateBoardStatusMutation
 } = boardApi;
