@@ -9,7 +9,7 @@ const PricingCards = () => {
                 <button className='btn p-2 lg:p-4 bg-[#EAEEF1] border-none rounded-lg mb-3'>Pricing Plans</button>
                 <h2 className='text-2xl lg:text-4xl font-bold'>Choose the Plan Right for You</h2>
             </div>
-            <PricingToggle></PricingToggle>
+           
             <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8'>
                 {/* card-1 */}
                 <div className='bg-[#EAEEF1] p-8 rounded-lg'>
@@ -34,7 +34,7 @@ const PricingCards = () => {
 
                 {/* card-2 */}
                 <div className='bg-[#014E4E] dark:bg-teal-600 text-white p-8 rounded-lg'>
-                    <h3 className='font-bold  text-xl lg:text-3xl'>Boost</h3>
+                    <h3 className='font-bold  text-xl lg:text-3xl'>Diamond</h3>
                     <p className='mb-4'>Best for mid-sized teams</p>
                     <h3 className='font-extrabold text-2xl lg:text-4xl mb-4'>$ 12</h3>
                     <div className='text-left'>
@@ -52,7 +52,7 @@ const PricingCards = () => {
                 </div>
                 {/* card-3 */}
                 <div className='bg-[#EAEEF1] p-8 rounded-lg'>
-                    <h3 className='font-bold text-[#014E4E] text-xl lg:text-3xl'>Power</h3>
+                    <h3 className='font-bold text-[#014E4E] text-xl lg:text-3xl'>Platinum</h3>
                     <p className='text-gray-600 mb-4'>Best for many large teams</p>
                     <h3 className='font-extrabold text-[#014E4E] text-2xl lg:text-4xl mb-4'>$ 25</h3>
                     <div className='text-gray-600 text-left lg:h-[183px]'>
