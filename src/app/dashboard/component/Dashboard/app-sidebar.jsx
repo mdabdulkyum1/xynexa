@@ -96,9 +96,9 @@ export function AppSidebar(props) {
         url: "/dashboard/files",
         icon: GalleryVerticalEnd,
         items: [
-          { title: "Share File", url: "/dashboard/files" },
+          // { title: "Share File", url: "/dashboard/files" },
           { title: "Upload", url: "/dashboard/files/upload" },
-          { title: "Cloud Sync", url: "/dashboard/files/sync" },
+          // { title: "Cloud Sync", url: "/dashboard/files/sync" },
         ],
       },
       {
