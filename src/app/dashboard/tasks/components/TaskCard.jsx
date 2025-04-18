@@ -191,7 +191,7 @@ const TaskCard = ({ task }) => {
             size={20}
           />
         </div>
-        <h3 className="font-medium dark:font-normal text-sm md:text-base text-gray-900 dark:text-gray-100">
+        <h3 className="font-medium dark:font-normal text-sm md:text-base text-gray-900 dark:text-white">
           {task?.title}
         </h3>
         <div className="relative">
@@ -236,7 +236,7 @@ const TaskCard = ({ task }) => {
         </div>
       </div>
       <div>
-        <p className="text-[12px] text-gray-600 line-clamp-2">
+        <p className="text-[12px] text-gray-600 dark:text-white line-clamp-2">
           {task?.description}
         </p>
       </div>
