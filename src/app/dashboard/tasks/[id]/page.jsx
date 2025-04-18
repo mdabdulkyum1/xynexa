@@ -25,6 +25,7 @@ const TaskSingleBoard = () => {
       <TaskBoard 
       team={team}
       allTasks={allTasks}
+      teamId={teamId}
       ></TaskBoard>
     </div>
   );

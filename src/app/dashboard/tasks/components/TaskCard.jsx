@@ -24,6 +24,9 @@ import moment from "moment";
 import Comment from "./Comment";
 import Attachment from "./Atachment";
 
+import { useDraggable } from "@dnd-kit/core";
+import { useMemo } from "react";
+
 const TaskCard = ({ task }) => {
   let [isOpen, setIsOpen] = useState(false);
   const [status, setStatus] = useState();
@@ -34,7 +37,21 @@ const TaskCard = ({ task }) => {
   const [isUpdatingStatus, setIsUpdatingStatus] = useState(false);
   const [isUpdatingStatusPre, setIsUpdatingStatusPre] = useState(false);
 
-  console.log(task);
+  const { attributes, listeners, setNodeRef, transform } = useDraggable({
+    id: task._id,
+  });
+
+  const style = useMemo(
+    () =>
+      transform
+        ? {
+            transform: `translate3d(${transform.x}px, ${transform.y}px, 0)`,
+          }
+        : {},
+    [transform]
+  );
+
+  // console.log(task);
 
   useEffect(() => {
     if (task?.targetDate) {
@@ -157,7 +174,12 @@ const TaskCard = ({ task }) => {
   };
 
   return (
-    <div className="bg-white dark:bg-[#0A0A0A] p-4 rounded-lg shadow-md purple-shadow relative">
+    <div 
+      ref={setNodeRef}
+      style={style}
+      {...listeners}
+      {...attributes}
+     className="bg-white dark:bg-[#0A0A0A] p-4 rounded-lg shadow-md purple-shadow relative cursor-grab">
       <div className="flex justify-between items-center">
         <h3 className="font-medium dark:font-normal text-sm md:text-base text-gray-900 dark:text-gray-100">
           {task?.title}
