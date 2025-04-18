@@ -1,8 +1,13 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap');
+
 @import "tailwindcss";
 @plugin "daisyui";
 
 @import 'slick-carousel/slick/slick.css';
 @import 'slick-carousel/slick/slick-theme.css';
+
+
+
 
 
 @plugin "tailwindcss-animate";
@@ -137,4 +142,8 @@ background: rgba(6, 0, 0, 0.15);
 box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
 backdrop-filter: blur(9.2px);
 -webkit-backdrop-filter: blur(9.2px);
+}
+
+.dm-font {
+  font-family: "DM Sans", sans-serif;
 }
