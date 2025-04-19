@@ -4,14 +4,18 @@ import { CirclePlus } from "lucide-react";
 import TaskCard from "./TaskCard";
 import React, { useState } from "react";
 import TaskCreateModal from "./TaskCreateModal";
+import { useDroppable } from "@dnd-kit/core";
 
 const TaskColumn = ({ title, taskCategory, team ,teamId}) => {
+
+  const { setNodeRef } = useDroppable({ id: title });
   
   const [isModalOpen, setIsModalOpen] = useState(false);
 
 
   return (
     <div
+      ref={setNodeRef}
       className="bg-gray-100 dark:bg-[#171717] p-4 rounded-lg 
         task-column-shadow-white
         dark:border border-gray-800 min-h-[400px] w-full"

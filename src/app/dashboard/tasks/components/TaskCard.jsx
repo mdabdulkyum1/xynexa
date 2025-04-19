@@ -12,6 +12,7 @@ import {
   ArrowLeft,
   ArrowRight,
   Loader2,
+  GripVertical, // Added for drag handle
 } from "lucide-react";
 import React, { useState, useRef, useEffect } from "react";
 import "./taskcard.css";
@@ -23,10 +24,11 @@ import {
 import moment from "moment";
 import Comment from "./Comment";
 import Attachment from "./Atachment";
+import { useDraggable } from "@dnd-kit/core";
+import { useMemo } from "react";
 
 const TaskCard = ({ task }) => {
-  let [isOpen, setIsOpen] = useState(false);
-  const [status, setStatus] = useState();
+  const [isOpen, setIsOpen] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const menuRef = useRef(null);
   const [timeRemaining, setTimeRemaining] = useState("");
@@ -34,7 +36,20 @@ const TaskCard = ({ task }) => {
   const [isUpdatingStatus, setIsUpdatingStatus] = useState(false);
   const [isUpdatingStatusPre, setIsUpdatingStatusPre] = useState(false);
 
-  console.log(task);
+  // Configure useDraggable with a handle
+  const { attributes, listeners, setNodeRef, transform } = useDraggable({
+    id: task._id,
+  });
+
+  const style = useMemo(
+    () =>
+      transform
+        ? {
+            transform: `translate3d(${transform.x}px, ${transform.y}px, 0)`,
+          }
+        : {},
+    [transform]
+  );
 
   useEffect(() => {
     if (task?.targetDate) {
@@ -47,7 +62,6 @@ const TaskCard = ({ task }) => {
         const days = duration.days();
         const hours = duration.hours();
         const minutes = duration.minutes();
-        const seconds = duration.seconds();
 
         setTimeRemaining(
           `${days} ${days !== 1 ? "d" : ""}/ ${hours} ${
@@ -67,15 +81,17 @@ const TaskCard = ({ task }) => {
     }
   }, [task?.targetDate]);
 
-  function openModal() {
+  const openModal = (e) => {
+    e.stopPropagation();
     setIsOpen(true);
-  }
+  };
 
-  function closeModal() {
+  const closeModal = () => {
     setIsOpen(false);
-  }
+  };
 
-  const toggleMenu = () => {
+  const toggleMenu = (e) => {
+    e.stopPropagation();
     setIsMenuOpen(!isMenuOpen);
   };
 
@@ -91,30 +107,29 @@ const TaskCard = ({ task }) => {
     };
 
     document.addEventListener("mousedown", handleClickOutside);
-
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [menuRef]);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   const [deleteSingleTask] = useDeleteSingleTaskMutation();
   const [updateBoardStatus] = useUpdateBoardStatusMutation();
 
-  const taskDelete = () => {
+  const taskDelete = async () => {
     try {
-      deleteSingleTask(task?._id).unwrap();
+      await deleteSingleTask(task?._id).unwrap();
       closeModal();
     } catch (error) {
       console.error("Delete failed:", error);
     }
   };
 
-  const handleAddTaskMember = () => {
+  const handleAddTaskMember = (e) => {
+    e.stopPropagation();
     closeMenu();
     // Implement add member functionality here
   };
 
-  const handleEditTask = () => {
+  const handleEditTask = (e) => {
+    e.stopPropagation();
     closeMenu();
     // Implement edit task functionality here
   };
@@ -137,6 +152,7 @@ const TaskCard = ({ task }) => {
       setIsUpdatingStatus(false);
     }
   };
+
   const handleStatusChangePre = async (taskId, direction) => {
     setIsUpdatingStatusPre(true);
     let newStatus;
@@ -157,8 +173,24 @@ const TaskCard = ({ task }) => {
   };
 
   return (
-    <div className="bg-white dark:bg-[#0A0A0A] p-4 rounded-lg shadow-md purple-shadow relative">
+    <div
+      ref={setNodeRef}
+      style={style}
+      className="bg-white dark:bg-[#0A0A0A] p-4 rounded-lg shadow-md purple-shadow relative"
+    >
       <div className="flex justify-between items-center">
+        {/* Drag Handle */}
+        <div
+          {...listeners}
+          {...attributes}
+          className="cursor-grab p-1 hover:bg-gray-200 dark:hover:bg-gray-700 rounded"
+          title="Drag to Another"
+        >
+          <GripVertical
+            className="text-gray-500 dark:text-gray-300"
+            size={20}
+          />
+        </div>
         <h3 className="font-medium dark:font-normal text-sm md:text-base text-gray-900 dark:text-gray-100">
           {task?.title}
         </h3>
@@ -210,16 +242,14 @@ const TaskCard = ({ task }) => {
       </div>
       <div className="flex gap-2 font-semibold text-xs py-2 flex-wrap items-center">
         {task?.targetDate && (
-          <>
-            <div className="flex justify-between  w-full">
-              <p className="bg-purple-100 dark:bg-purple-600 text-purple-700 dark:text-white rounded-full font-bold text-[14px] py-1 px-2">
-                Reaming : {timeRemaining}
-              </p>
-              <p className="bg-purple-100 dark:bg-purple-600 text-purple-700 dark:text-white rounded-full font-bold text-[14px] py-1 px-2">
-                {formattedTargetDate}
-              </p>
-            </div>
-          </>
+          <div className="flex justify-between w-full">
+            <p className="bg-purple-100 dark:bg-purple-600 text-purple-700 dark:text-white rounded-full font-bold text-[14px] py-1 px-2">
+              Remaining: {timeRemaining}
+            </p>
+            <p className="bg-purple-100 dark:bg-purple-600 text-purple-700 dark:text-white rounded-full font-bold text-[14px] py-1 px-2">
+              {formattedTargetDate}
+            </p>
+          </div>
         )}
       </div>
       <div>
@@ -237,13 +267,12 @@ const TaskCard = ({ task }) => {
 
           <div className="flex items-center gap-5">
             <div className="flex md:flex-wrap xl:flex-nowrap gap-2">
-              <Comment task={task} />{" "}
+              <Comment task={task} />
               <span className="text-amber-500 dark:text-amber-400 font-bold">
                 {task?.comments?.length || 0}
               </span>
-              <Attachment task={task} />{" "}
+              <Attachment task={task} />
               <p className="flex items-center gap-1 justify-center">
-                {" "}
                 <span className="text-blue-700 dark:text-blue-400 font-bold">
                   {task?.attachments?.length || 0}
                 </span>
@@ -251,7 +280,10 @@ const TaskCard = ({ task }) => {
             </div>
             <div className="flex items-center gap-2">
               <button
-                onClick={() => handleStatusChangePre(task._id, task.status)}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleStatusChangePre(task._id, task.status);
+                }}
                 className={`p-1 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 ${
                   isUpdatingStatusPre ? "cursor-not-allowed" : ""
                 }`}
@@ -270,7 +302,10 @@ const TaskCard = ({ task }) => {
                 )}
               </button>
               <button
-                onClick={() => handleStatusChange(task._id, task.status)}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleStatusChange(task._id, task.status);
+                }}
                 className={`p-1 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 ${
                   isUpdatingStatus ? "cursor-not-allowed" : ""
                 }`}

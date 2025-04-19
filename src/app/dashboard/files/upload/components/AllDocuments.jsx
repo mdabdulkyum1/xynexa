@@ -74,7 +74,7 @@ const documents = [
   }
 ]
 
-// Function to determine the file icon based on file extension
+// Function to determine the file icon based on file extension3,,
 const getFileIcon = (fileName) => {
   const extension = fileName.split(".").pop().toLowerCase()
   switch (extension) {
@@ -95,7 +95,7 @@ export default function DocumentsTable() {
   return (
     <div className="p-4 md:p-6 lg:p-10">
       <div className="flex justify-between items-center mb-4">
-        <h2 className="text-xl font-semibold text-gray-800 dark:text-white">All documents</h2>
+        <h2 className="text-xl font-semibold text-gray-800 dark:text-white">All Documents</h2>
         <div className="flex gap-2">
           <Button variant="outline" size="sm"><List className="w-4 h-4 mr-1" /> List</Button>
           <Button variant="outline" size="sm"><LayoutGrid className="w-4 h-4 mr-1" /> Grid</Button>

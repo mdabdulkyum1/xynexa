@@ -1,8 +1,14 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap');
+
 @import "tailwindcss";
 @plugin "daisyui";
 
 @import 'slick-carousel/slick/slick.css';
 @import 'slick-carousel/slick/slick-theme.css';
+
+
+@tailwind utilities;
+
 
 
 @plugin "tailwindcss-animate";
@@ -131,10 +137,30 @@
   }
 }
 
+
+@layer utilities {
+  .animate-spin-slow {
+    animation: spin 30s linear infinite;
+  }
+
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+}
+
 .glass-team {
 /* From https://css.glass */
 background: rgba(6, 0, 0, 0.15);
 box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
 backdrop-filter: blur(9.2px);
 -webkit-backdrop-filter: blur(9.2px);
+}
+
+.dm-font {
+  font-family: "DM Sans", sans-serif;
 }

@@ -99,6 +99,8 @@ export function AppSidebar(props) {
         url: "/dashboard/files",
         icon: File, // Standard File Icon
         items: [
+          // { title: "Share File", url: "/dashboard/files" },
+          { title: "Upload", url: "/dashboard/files/upload" },
           { title: "Share File", url: "/dashboard/files" },
           // { title: "Upload", url: "/dashboard/files/upload" },
           // { title: "Cloud Sync", url: "/dashboard/files/sync" },
