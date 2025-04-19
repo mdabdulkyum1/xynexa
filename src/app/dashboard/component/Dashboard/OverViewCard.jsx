@@ -5,7 +5,7 @@ const OverViewCard = () => {
   const cardData = [
     {
       icon: <CheckCircle size={36} />,
-      value: "1220",
+      value: "20",
       label: "Total Task",
       gradient: "bg-gradient-to-r from-purple-400 to-purple-200",
     },
@@ -17,13 +17,13 @@ const OverViewCard = () => {
     },
     {
       icon: <Clock size={36} />,
-      value: "43",
+      value: "03",
       label: "Pending",
       gradient: "bg-gradient-to-r from-red-400 to-red-200",
     },
     {
       icon: <CheckCircle size={36} />,
-      value: "1550",
+      value: "10",
       label: "completed",
       gradient: "bg-gradient-to-r from-green-400 to-green-200",
     },
@@ -34,7 +34,7 @@ const OverViewCard = () => {
       {cardData.map((card, index) => (
         <div
           key={index}
-          className={`flex max-w-[250px] justify-center items-center p-4 text-white gap-3 rounded-4xl ${card.gradient} shadow-md`}
+          className={`flex max-w-[250px] justify-center items-center p-4 text-white gap-3 rounded-xl ${card.gradient} shadow-md`}
         >
           <div className="mb-2">{card.icon}</div>
           <div className="">
