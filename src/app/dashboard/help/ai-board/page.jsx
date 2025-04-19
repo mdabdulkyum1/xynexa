@@ -166,3 +166,6 @@ const AiBoard = () => {
 };
 
 export default AiBoard;
+
+
+// Ai Baord is a component that provides an AI-powered chat interface. It allows users to interact with an AI assistant, send messages, and receive responses. The component uses the `useChat` hook from the `@ai-sdk/react` library to manage chat messages and handle user input. The chat interface includes a header with the AI assistant's name, a scrollable area for displaying messages, and an input field for sending new messages. The component also handles loading states and error messages gracefully.
