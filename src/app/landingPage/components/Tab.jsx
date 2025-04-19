@@ -5,6 +5,8 @@ import { IoIosAnalytics } from "react-icons/io";
 import { MdPeople } from "react-icons/md";
 import { TbAutomation } from "react-icons/tb";
 import { MdArrowForwardIos } from "react-icons/md";
+import Image from 'next/image';
+import { motion } from 'framer-motion';
 
 const Tab = () => {
     return (
@@ -30,7 +32,9 @@ const Tab = () => {
                    <button className='btn mt-4 lg:mt-8  items-center rounded-2xl dark:text-white border-2 dark:border-white dark:bg-transparent'>Learn More <MdArrowForwardIos /></button>
                    </div>
                    </div>
-                   <div className='border-2'></div>
+                   <div className=''>
+                    <Image src="/assets/images/ai-robot.png" alt="AI Assistant" width={400} height={400} className='w-full h-full object-cover' />
+                   </div>
                    </div>
                   
                 </TabsContent>
@@ -48,7 +52,9 @@ const Tab = () => {
                    <button className='btn mt-4 lg:mt-8 items-center rounded-2xl dark:text-white border-2 dark:border-white dark:bg-transparent'>Learn More <MdArrowForwardIos /></button>
                    </div>
                    </div>
-                   <div className='border-2'></div>
+                   <div className=''>
+                   <Image src="/assets/images/analytic-img.png" alt="AI Assistant" width={400} height={400} className='w-full h-full object-cover' />
+                   </div>
                    </div>
                 </TabsContent>
 
@@ -65,7 +71,9 @@ const Tab = () => {
                    <button className='btn mt-4 lg:mt-8 items-center rounded-2xl dark:text-white border-2 dark:border-white dark:bg-transparent'>Learn More <MdArrowForwardIos /></button>
                    </div>
                    </div>
-                   <div className='border-2'></div>
+                   <div className=''>
+                   <Image src="/assets/images/collab-img.png" alt="AI Assistant" width={400} height={400} className='w-full h-full object-cover' />
+                   </div>
                    </div>
                 </TabsContent>
 
@@ -82,7 +90,9 @@ const Tab = () => {
                    <button className='btn mt-4 lg:mt-8 items-center rounded-2xl dark:text-white border-2 dark:border-white dark:bg-transparent'>Learn More <MdArrowForwardIos /></button>
                    </div>
                    </div>
-                   <div className='border-2'></div>
+                   <div className=''>
+                   <Image src="/assets/images/automation.png" alt="AI Assistant" width={400} height={400} className='w-full h-full object-cover' />
+                   </div>
                    </div>
                 </TabsContent>
             </Tabs>
