@@ -146,8 +146,8 @@ export function AppSidebar(props) {
     ],
     projects: [
       {
-        name: "Help & Support ",
-        url: "#",
+        name: "AI Support ",
+        url: "/dashboard/help/ai-board",
         icon: HelpCircle, // Standard Help Icon
       },
     ],

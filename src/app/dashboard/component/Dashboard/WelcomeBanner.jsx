@@ -16,11 +16,11 @@ const WelcomeBanner = () => {
           Learn More
         </button>
       </div>
-      <div className="flex-1  h-[200px] my-[12px] flex justify-end">
+      <div className="flex-1 w-full  h-[200px] my-[12px] flex justify-end">
         <img
           src="/assets/feature.jpg"
           alt="Welcome"
-          className="max-w-md rounded-2xl"
+          className="w-full rounded-2xl"
         />
       </div>
     </div>

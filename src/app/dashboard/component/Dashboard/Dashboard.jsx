@@ -27,7 +27,8 @@ import { ScratchToRevealDemo } from "./ScratchToRevealDemo";
 export default function Page() {
   return (
     <SidebarInset>
-      <div className="max-w-[1600px] mx-auto bg-muted/50 gap-4 p-4 rounded-md min-h-screen">
+      <div className=" bg-muted/50  min-h-screen">
+        <div className="max-w-[1600px] mx-auto gap-4 p-4 rounded-md">
         <div className="flex   gap-10 ">
           <div className="w-[100%]">
             <div className="">
@@ -59,7 +60,7 @@ export default function Page() {
               <TaskPercent />
             </div>
           </div>
-          <div className=" bg-white rounded-lg mt-6 p-4">
+          <div className=" light:bg-white rounded-lg mt-6 p-4">
             <div className="flex justify-between items-center mb-2">
               <h2 className="text-xl font-semibold ">Recent Tasks</h2>
               <p className="text-blue-600">SeeAll</p>
@@ -68,6 +69,7 @@ export default function Page() {
             <hr className="my-4 mb-6" />
             <RecentTasks />
           </div>
+        </div>
         </div>
       </div>
     </SidebarInset>
