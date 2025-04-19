@@ -15,6 +15,7 @@ import OthersFeatures from './landingPage/OthersFeatures';
 import SimpleAnlytics from './landingPage/SimpleAnlytics';
 import FavriteApps from './landingPage/FavriteApps';
 import Today from './landingPage/Today';
+import Pricing from './landingPage/Pricing';
 
 export default function Home() {
   return (
@@ -29,6 +30,7 @@ export default function Home() {
      <EssyCollab></EssyCollab>
      <WorkFlow></WorkFlow>
      <FavriteApps></FavriteApps>
+     <Pricing></Pricing>
      <Today></Today>
 
       
