@@ -1,4 +1,5 @@
-"use client"
+
+"use client";
 
 import { useState, useEffect, useRef, useCallback } from "react";
 import { useUser } from "@clerk/clerk-react";
@@ -37,7 +38,7 @@ const ChatWindow = () => {
     };
 
     fetchReceiver();
-  }, [receiverId]);
+  }, [receiverId, axiosPublic]);
 
   // Join socket & setup listeners
   useEffect(() => {
@@ -46,10 +47,16 @@ const ChatWindow = () => {
     socket.emit("join", { userId });
 
     const handleReceiveMessage = (message) => {
-      setMessages((prev) => {
-        const exists = prev.some((msg) => msg._id === message._id);
-        return exists ? prev : [...prev, message];
-      });
+      // Only add the message if it belongs to the current chat
+      if (
+        (message.senderId === receiverId && message.receiverId === userId) ||
+        (message.senderId === userId && message.receiverId === receiverId)
+      ) {
+        setMessages((prev) => {
+          const exists = prev.some((msg) => msg._id === message._id);
+          return exists ? prev : [...prev, message];
+        });
+      }
     };
 
     const handleTyping = ({ senderId }) => {
@@ -97,7 +104,7 @@ const ChatWindow = () => {
     };
 
     if (userId && receiverId) fetchMessages();
-  }, [userId, receiverId]);
+  }, [userId, receiverId, axiosPublic]);
 
   // Scroll to bottom
   useEffect(() => {
@@ -118,22 +125,22 @@ const ChatWindow = () => {
   // Send message
   const sendMessage = useCallback(async () => {
     if (!newMessage.trim()) return;
-  
+
     const messageData = {
       senderId: userId,
       receiverId,
       text: newMessage,
     };
-  
+
     try {
       const { data } = await axiosPublic.post("/api/messages/send", messageData);
-  
+
       // Emit to receiver
       socket.emit("sendMessage", data);
-  
+
       // Add to local messages immediately
       setMessages((prev) => [...prev, data]);
-  
+
       // Clear input
       setNewMessage("");
     } catch (error) {
@@ -141,7 +148,7 @@ const ChatWindow = () => {
       alert("Failed to send message.");
     }
   }, [newMessage, userId, receiverId, axiosPublic]);
-  
+
   // Typing indicator
   const handleTyping = () => {
     socket.emit("typing", { senderId: userId, receiverId });
@@ -168,25 +175,20 @@ const ChatWindow = () => {
     if (!messageId) return;
 
     try {
-      // Send delete request to the server
       await axiosPublic.delete(`/api/messages/${messageId}`);
-
-      // Remove the message from state
-      setMessages((prevMessages) =>
-        prevMessages.filter((msg) => msg._id !== messageId)
-      );
-
-      // Optionally, you can also emit a socket event to inform other users
+      setMessages((prevMessages) => prevMessages.filter((msg) => msg._id !== messageId));
       socket.emit("deleteMessage", { messageId, receiverId });
-
-   
     } catch (error) {
       console.error("Error deleting message:", error);
     }
   };
 
   if (!receiverId) {
-    return <div><h1>No user selected!!</h1></div>;
+    return (
+      <div>
+        <h1>No user selected!!</h1>
+      </div>
+    );
   }
 
   return (
@@ -219,16 +221,13 @@ const ChatWindow = () => {
               }`}
             >
               {msg.text}
-              <div className="text-xs text-right">
-                {msg.read ? "✔️" : "⏳"}
-              </div>
+              <div className="text-xs text-right">{msg.read ? "✔️" : "⏳"}</div>
 
-              {/* Delete Button */}
               {msg.senderId === userId && (
                 <button
                   className="absolute top-0 right-0 p-1 text-red-500"
                   onClick={(e) => {
-                    e.stopPropagation(); // Prevent the click from triggering message read
+                    e.stopPropagation();
                     handleDeleteMessage(msg._id);
                   }}
                 >
