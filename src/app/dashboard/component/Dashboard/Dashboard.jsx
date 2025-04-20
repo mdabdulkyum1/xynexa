@@ -52,10 +52,10 @@ export default function Page() {
           </div>
           
         </div>
-        <div className="flex gap-10 ">
-          <div className="w-[75%]">
+        <div className="flex flex-col lg:flex-row gap-10 ">
+          <div className="w-full lg:w-[75%]">
             <OverViewCard />
-            <div className="grid grid-cols-2 gap-6 mt-10">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-10">
               <TotalTaskChart />
               <TaskPercent />
             </div>
@@ -63,7 +63,7 @@ export default function Page() {
           <div className=" light:bg-white rounded-lg mt-6 p-4">
             <div className="flex justify-between items-center mb-2">
               <h2 className="text-xl font-semibold ">Recent Tasks</h2>
-              <p className="text-blue-600">SeeAll</p>
+              <p className="text-blue-500">SeeAll</p>
             </div>
 
             <hr className="my-4 mb-6" />

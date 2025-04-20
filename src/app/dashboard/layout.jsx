@@ -14,9 +14,9 @@ export default function DashboardLayout({ children }) {
         <SidebarProvider>
           <AppSidebar className="w-64 h-full fixed left-0 top-0 border-r border-blue-500 border-opacity-0" />
           <div className="flex flex-col flex-1">
-            <div className="">
+            <div className="dark:bg-black">
               <header className="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12">
-                <div className="flex justify-between items-center gap-2 px-4">
+                <div className="flex justify-between items-center gap-2 px-4 ">
                   <SidebarTrigger className="-ml-1" />
                   <Separator orientation="vertical" className="mr-2 h-4" />
                   <Breadcrumb>
