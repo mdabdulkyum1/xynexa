@@ -1,54 +1,46 @@
 'use client';
 
+import { Button } from "@/components/ui/button";
+import "./Hero.css";
 
 const Hero = () => {
+  return (
+    <section className="relative z-0 min-h-screen flex flex-col items-center justify-center text-center px-6 py-20 bg-white dark:bg-background transition-colors overflow-hidden">
+  {/* Animated Grid Background */}
+  <div className="absolute inset-0 bg-grid-pattern pointer-events-none" />
 
+  {/* Badge */}
+  <div className="z-10 mb-6 inline-flex items-center bg-green-100 text-green-700 px-4 py-1 rounded-full text-sm font-medium dark:bg-green-900 dark:text-green-300">
+    Introducing Xynexa
+  </div>
 
-    return (
-        <div
-            style={{
-                backgroundImage: `linear-gradient(to right, #131831 30%, transparent), url('https://i.ibb.co.com/1fq0mpyp/pexels-photo-3182784.jpg')`,
-                backgroundSize: 'cover',
-                backgroundPosition: 'center',
-                backgroundBlendMode: 'multiply',
-            }}
-            className="mt-16 h-[300px] lg:mt-[72px] lg:h-full lg:min-h-screen lg:flex items-center justify-center relative text-center"
-        >
-            <div className="absolute inset-0 bg-gray-500 opacity-20 text-white"></div>
-            <div className="container mx-auto px-6 lg:px-32 flex flex-col lg:flex-row items-center justify-between gap-10 h-full">
-                {/* Text Container */}
-                <div className="w-full lg:w-1/2 mx-auto text-white lg:space-y-3 md:pt-12">
-                    <h2 className="text-2xl lg:text-5xl text-center uppercase lg:leading-[60px] font-bold pt-4">
-                    Boost <span className="text-teal-600">collaboration,</span>
-                         <span className="text-teal-600">profits</span> like an expert
-                    </h2>
+  {/* Heading */}
+  <h1 className="z-10 text-4xl md:text-6xl font-bold max-w-4xl text-gray-900 dark:text-white">
+    Collaborate smarter with your team.
+  </h1>
 
-                    <p className="text-xs lg:text-lg text-center mb-2 lg:mb-8">
-                        XYnexa is the smarter project management platform that keeps
-                        your client projects on track, your resourcing in check, and your
-                        profits on point.
-                    </p>
+  {/* Subheading */}
+  <p className="z-10 mt-6 max-w-2xl text-lg md:text-xl text-gray-600 dark:text-muted-foreground">
+    Xynexa is your all-in-one collaboration tool — chat, plan, and manage projects with unmatched clarity and speed.
+  </p>
 
-                    <div className="flex justify-center items-center gap-3">
-                        <button className="btn bg-teal-500 text-white border-none text-lg rounded-lg px-2 lg:px-8 py-3">
-                            Get Started <span className="hidden lg:flex">for free</span>
-                        </button>
+  {/* CTA Buttons */}
+  <div className="z-10 mt-8 flex gap-4 flex-wrap justify-center">
+    <Button size="lg" className="text-base">
+      Try Xynexa Free →
+    </Button>
+    <Button variant="outline" size="lg" className="text-base">
+      See Features →
+    </Button>
+  </div>
 
-                        <button className="btn btn-outline text-white text-lg rounded-lg px-4 lg:px-8 py-3">
-                            Book a demo
-                        </button>
-                    </div>
+  {/* Reviews */}
+  <div className="z-10 mt-10 text-sm text-muted-foreground">
+    Trusted by 1,200+ teams • Rated 4.9/5
+  </div>
+</section>
 
-                   
-                </div>
-
-                {/* Image Container */}
-                <div className="relative w-full lg:w-3/5 flex justify-center lg:justify-end lg:absolute bottom-0 right-0">
-
-                </div>
-            </div>
-        </div>
-    );
+  );
 };
 
 export default Hero;
