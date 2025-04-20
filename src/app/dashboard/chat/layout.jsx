@@ -3,7 +3,7 @@ import Sidebar from "./components/Sidebar";
 
 export default function ChatLayout({ children }) {
   return (
-    <div className="flex bg-gray-100">
+    <div className="flex bg-gray-100 dark:bg-black">
       <Sidebar />
       <main className="w-full">
         {/* Main Chat Section */}
