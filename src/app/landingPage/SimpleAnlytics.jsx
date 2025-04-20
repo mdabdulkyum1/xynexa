@@ -11,7 +11,7 @@ const SimpleAnlytics = () => {
             <div className='grid grid-cols-1 lg:grid-cols-2 gap-8 p-4 mt-6 lg:mt-12'>
                 <div className="relative w-full h-[500px] md:h-[600px] lg:h-[500px]">
                     <Image
-                        src="/assets/images/analytics.png"
+                        src="/assets/images/analytics2.png"
                         alt="ai"
                         fill
                         className="object-cover"

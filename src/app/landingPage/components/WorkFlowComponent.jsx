@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 
 const services = [
@@ -11,35 +11,43 @@ const services = [
     { name: "Dashboard", description: "Stay connected with instant messaging and group chats.", image: "/assets/images/services4.png" },
 ];
 
-const Service = () => {
+const WorkFlowComponent = () => {
     const [selectedService, setSelectedService] = useState(services[0]);
-    const [activeIndex, setActiveIndex] = useState(null);
+    const [activeIndex, setActiveIndex] = useState(0);
     const [imageTransition, setImageTransition] = useState(false);
 
     const toggleAccordion = (index) => {
-        if (activeIndex === index) return; // Prevent animation if clicking the same item
+        if (activeIndex === index) return;
 
         setImageTransition(true);
         setTimeout(() => {
             setSelectedService(services[index]);
             setActiveIndex(index);
             setImageTransition(false);
-        }, 500); // Matches the transition duration
+        }, 500);
     };
+
+    // Auto cycle accordion
+    useEffect(() => {
+        const interval = setInterval(() => {
+            const nextIndex = (activeIndex + 1) % services.length;
+            toggleAccordion(nextIndex);
+        }, 3000); // Change every 3 seconds
+
+        return () => clearInterval(interval);
+    }, [activeIndex]); // Re-run when activeIndex changes
 
     return (
         <div className="container mx-auto p-4">
-            
             <div className="flex flex-col lg:flex-row items-start lg:items-center gap-6 p-6 shadow rounded-lg">
                 {/* Accordion Section */}
                 <div className="w-full lg:w-1/3">
-                   
                     <div className="space-y-3">
                         {services.map((service, index) => (
                             <div
                                 key={index}
                                 className="relative border border-gray-300 rounded-lg overflow-hidden transition-all duration-300 cursor-pointer"
-                                onClick={() => toggleAccordion(index)} // Click anywhere on the accordion
+                                onClick={() => toggleAccordion(index)}
                             >
                                 <div className={`p-4 font-semibold flex justify-between items-center transition-all duration-300 dark:text-white dark:bg-teal-600 
                                     ${activeIndex === index ? "bg-primary text-white" : "bg-background "}`}
@@ -48,13 +56,11 @@ const Service = () => {
                                         style={{ width: activeIndex === index ? "4px" : "0px", backgroundColor: "#014E4E" }}
                                     />
                                     <span className="ml-4">{service.name}</span>
-                                    {/* Text-based Arrow Icon */}
                                     <span className={`text-primary transition-transform duration-300 ${activeIndex === index ? "rotate-180" : ""}`}>
                                         {activeIndex === index ? "▲" : "▼"}
                                     </span>
                                 </div>
-                                <div
-                                    className={`transition-all duration-500 ease-in-out overflow-hidden 
+                                <div className={`transition-all duration-500 ease-in-out overflow-hidden 
                                     ${activeIndex === index ? "max-h-40 p-3 dark:bg-[#252526] dark:text-white border-l-4 border-primary" : "max-h-0 p-0 border-l-2 border-transparent"}`}
                                 >
                                     <p className="text-sm">{service.description}</p>
@@ -94,4 +100,4 @@ const Service = () => {
     );
 };
 
-export default Service;
+export default WorkFlowComponent;
