@@ -178,8 +178,14 @@ const TaskCard = ({ task }) => {
       style={style}
       className="bg-white dark:bg-[#0A0A0A] p-4 rounded-lg shadow-md purple-shadow relative"
     >
+      
+      <div>
       <div className="flex justify-between items-center">
         {/* Drag Handle */}
+        
+
+        <div className="flex items-center">
+        
         <div
           {...listeners}
           {...attributes}
@@ -191,9 +197,11 @@ const TaskCard = ({ task }) => {
             size={20}
           />
         </div>
-        <h3 className="font-medium dark:font-normal text-sm md:text-base text-gray-900 dark:text-white">
+        <h3 className="font-medium dark:font-normal text-sm md:text-base text-gray-900 dark:text-gray-100">
           {task?.title}
         </h3>
+        </div>
+       
         <div className="relative">
           <div onClick={toggleMenu} className="cursor-pointer">
             <MoreVertical
@@ -235,8 +243,7 @@ const TaskCard = ({ task }) => {
           )}
         </div>
       </div>
-      <div>
-        <p className="text-[12px] text-gray-600 dark:text-white line-clamp-2">
+        <p className="text-[12px] text-gray-600 line-clamp-2">
           {task?.description}
         </p>
       </div>
@@ -335,6 +342,7 @@ const TaskCard = ({ task }) => {
         task={task}
       />
     </div>
+   
   );
 };
 

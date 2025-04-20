@@ -1,11 +1,11 @@
 "use client";
-import React, { useEffect, useRef, useState } from "react";
+
 import { useChat } from "@ai-sdk/react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
-import { motion, AnimatePresence } from "framer-motion";
+
 import { Button } from "@/components/ui/button";
-import { ArrowDownCircleIcon, Bot, MessageCircle, Send, X } from "lucide-react";
+import { Bot, Send,  } from "lucide-react";
 import {
   Card,
   CardContent,
@@ -13,12 +13,12 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { ScrollArea } from "@/components/ui/scroll-area";
+
 import { Input } from "@/components/ui/input";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 const AiBoard = () => {
-  const scrollRef = useRef < HTMLDivElement > null;
+  
   const {
     messages,
     input,
@@ -29,11 +29,7 @@ const AiBoard = () => {
     error,
   } = useChat({ api: "/api/gemini" });
 
-  useEffect(() => {
-    if (scrollRef.current) {
-      scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
-    }
-  }, [messages]);
+ 
 
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-100 p-4">
