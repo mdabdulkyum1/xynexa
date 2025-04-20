@@ -189,7 +189,7 @@ const TaskCard = ({ task }) => {
         <div
           {...listeners}
           {...attributes}
-          className="cursor-grab  hover:bg-gray-200 dark:hover:bg-gray-700 rounded"
+          className="cursor-grab p-1 hover:bg-gray-200 dark:hover:bg-gray-700 rounded"
           title="Drag to Another"
         >
           <GripVertical
@@ -243,7 +243,8 @@ const TaskCard = ({ task }) => {
           )}
         </div>
       </div>
-        <p className="text-[12px] text-gray-600 line-clamp-2">
+      <div>
+        <p className="text-[12px] text-gray-600 dark:text-white line-clamp-2">
           {task?.description}
         </p>
       </div>

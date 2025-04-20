@@ -1,0 +1,68 @@
+.bg-grid-pattern {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(0, 0, 0, 0.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0, 0, 0, 0.05) 1px, transparent 1px);
+    background-size: 40px 40px;
+    overflow: hidden;
+    z-index: 0;
+  }
+  
+  /* Dark mode grid */
+  .dark .bg-grid-pattern {
+    background-image:
+      linear-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+  }
+  
+  /* Shimmer Layer */
+  .bg-grid-pattern::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -150%;
+    width: 200%;
+    height: 100%;
+    background: linear-gradient(
+      120deg,
+      rgba(255, 255, 255, 0) 0%,
+      rgba(255, 255, 255, 0.1) 20%,
+      rgba(255, 255, 255, 0.25) 50%,
+      rgba(255, 255, 255, 0.1) 80%,
+      rgba(255, 255, 255, 0) 100%
+    );
+    animation: shimmerMove 10s linear infinite;
+    z-index: 1;
+    pointer-events: none;
+  }
+  
+  /* Dark mode shimmer */
+  .dark .bg-grid-pattern::before {
+    background: linear-gradient(
+      120deg,
+      rgba(255, 255, 255, 0) 0%,
+      rgba(255, 255, 255, 0.05) 20%,
+      rgba(255, 255, 255, 0.1) 50%,
+      rgba(255, 255, 255, 0.05) 80%,
+      rgba(255, 255, 255, 0) 100%
+    );
+  }
+  
+  @keyframes shimmerMove {
+    0% {
+      left: -150%;
+    }
+    100% {
+      left: 100%;
+    }
+  }
+  @keyframes moveGrid {
+    from { background-position: 0 0; }
+    to { background-position: 40px 40px; }
+  }
+  
+  .bg-grid-pattern {
+    animation: moveGrid 3s linear infinite;
+  }
+    

@@ -30,7 +30,7 @@ export default function Page() {
   };
 
   return (
-    <div className="flex flex-col min-h-screen   bg-gray-100 p-4">
+    <div className="flex flex-col min-h-screen   bg-gray-100 dark:bg-black p-4">
       <Image src="/assets/images/Conversation-pana.png" alt="chat-image" width={400} height={400}></Image>
       <div className="text-center">
         <h2 className="text-4xl font-bold text-teal-700 mb-4">Stay connected with friends and colleagues.</h2>
