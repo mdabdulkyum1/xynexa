@@ -184,7 +184,7 @@ const TaskCard = ({ task }) => {
         {/* Drag Handle */}
         
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center">
         
         <div
           {...listeners}
@@ -243,8 +243,7 @@ const TaskCard = ({ task }) => {
           )}
         </div>
       </div>
-      <div>
-        <p className="text-[12px] text-gray-600 dark:text-white line-clamp-2">
+        <p className="text-[12px] text-gray-600 line-clamp-2">
           {task?.description}
         </p>
       </div>
@@ -343,6 +342,7 @@ const TaskCard = ({ task }) => {
         task={task}
       />
     </div>
+   
   );
 };
 
