@@ -16,7 +16,7 @@ const socket = io(`${process.env.NEXT_PUBLIC_SERVER_URL}`);
 const TaskBoard = ({ team, allTasks, teamId }) => {
   const [tasks, setTasks] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const taskStatuses = ["todo", "in-progress", "done", "blocked"];
+  const taskStatuses = ["todo", "in-progress", "done"];
   const sensors = useSensors(useSensor(PointerSensor));
 
   // ✅ Sync local tasks with prop on mount or change
@@ -77,7 +77,7 @@ const TaskBoard = ({ team, allTasks, teamId }) => {
       onDragEnd={handleDragEnd}
       sensors={sensors}
     >
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 p-4 bg-gray-100 dark:bg-[#171717]">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-4 bg-gray-100 dark:bg-[#171717]">
         {taskStatuses.map((status) => (
           <TaskColumn
             key={status}

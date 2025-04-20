@@ -23,16 +23,17 @@ const TaskControl = () => {
                 </button>
 
                 {/* Access Control */}
-                <button className="flex items-center gap-1 text-gray-400  px-3 py-1.5">
+                {/* <button className="flex items-center gap-1 text-gray-400  px-3 py-1.5">
                     <Lock size={18} className="text-gray-400" /> Limited Access <ChevronDown size={16} className="text-gray-400" />
-                </button>
-            </div>
-
-            {/* Middle Section (Team Info) */}
-            <div className="flex items-center gap-2">
+                </button> */}
+                <div className="flex items-center gap-2">
                 <Twitter size={18} className="text-blue-500" />
                 <span className="text-gray-900 font-medium">Twitter Team</span>
             </div>
+            </div>
+
+            {/* Middle Section (Team Info) */}
+            
 
             {/* Right Section (Search & Icons) */}
             <div className="flex items-center gap-3">
@@ -42,20 +43,12 @@ const TaskControl = () => {
                     <input
                         type="text"
                         placeholder="Search Tasks"
-                        className="pl-10 pr-3 py-1.5 border border-purple-300 rounded-md text-sm text-gray-900 dark:text-white dark:bg-[#0A0A0A] bg-gray-200 focus:ring-1 focus:ring-purple-400 focus:outline-none"
+                        className="pl-10 pr-3 py-1.5 border border-purple-300 rounded-md text-sm text-gray-900 dark:text-white dark:bg-[#0A0A0A] bg-gray-100 focus:ring-1 focus:ring-purple-400 focus:outline-none"
                     />
                 </div>
 
-                {/* Icons */}
-                <button className="p-2 rounded-md hover:bg-gray-200">
-                    <Filter size={18} className="text-gray-400" />
-                </button>
-                <button className="p-2 rounded-md hover:bg-gray-200">
-                    <Circle size={18} className="text-gray-400" />
-                </button>
-                <button className="p-2 rounded-md hover:bg-gray-200">
-                    <LayoutGrid size={18} className="text-gray-400" />
-                </button>
+               
+                
             </div>
         </div>
     );
