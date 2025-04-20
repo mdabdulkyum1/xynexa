@@ -29,7 +29,7 @@ export default function Home() {
      <EssyCollab></EssyCollab>
      <WorkFlow></WorkFlow>
      <FavriteApps></FavriteApps>
-     <Today></Today>
+    
 
       
       {/* <LeastStressed></LeastStressed> */}
