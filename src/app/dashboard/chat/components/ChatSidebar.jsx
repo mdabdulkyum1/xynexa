@@ -77,7 +77,7 @@ const ChatSidebar = () => {
   };
 
   return (
-    <div className="flex">
+    <div className="flex border-r-2 border-l-2 border-gray-200 dark:border-gray-700 ">
       {/* Sidebar */}
       <div className="relative w-80">
         <Card className="p-4 h-[600px] flex flex-col">
@@ -94,7 +94,7 @@ const ChatSidebar = () => {
               {users.map((user) => (
                 <Link href="/dashboard/chat/chat-app" key={user._id}>
                   <div
-                    className="flex items-center p-2 rounded-md hover:bg-gray-100 cursor-pointer transition"
+                    className="flex items-center p-2 rounded-md  hover:bg-gray-500 cursor-pointer transition"
                     onClick={() => dispatch(setSelectedUserId(user?.clerkId))} // Set selected user
                   >
                     <img
@@ -107,7 +107,7 @@ const ChatSidebar = () => {
                         <p className="text-sm font-medium text-gray-800 dark:text-white">
                           {user.firstName} {user.lastName}
                         </p>
-                        <p className="text-xs text-gray-100">
+                        <p className="text-xs text-gray-600 dark:text-gray-400">
                           {user?.lastActive &&
                             formatLastActive(user.lastActive)}
                         </p>
