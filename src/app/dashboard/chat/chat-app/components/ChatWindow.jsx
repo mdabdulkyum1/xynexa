@@ -305,7 +305,7 @@ return (
         value={newMessage}
         onChange={(e) => {
           setNewMessage(e.target.value);
-          // handleTyping();
+          handleTyping();
         }}
         placeholder="Type your message..."
         className="flex-1"
