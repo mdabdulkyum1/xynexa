@@ -36,31 +36,31 @@ export default function TeamView() {
 
     return (
         <div>
-            <div className=' flex lg:pl-20  border-b-2 border-gray-600 mb-4'>
-                <div className='mt-2'>
-                <Image src="/assets/images/logo-xynexa.png" alt='logo-img' width={100} height={100}></Image>
+            <div className=' flex lg:pl-20  border-b-2 border-gray-600  bg-gray-100 dark:bg-black p-4'>
+                <div className=' '>
+                {/* <Image src="/assets/images/xy-logo.png" alt='logo-img' width={200} height={200}></Image> */}
                 </div>
                 <div className='flex flex-col justify-center items-center'>
-                <h2 className='font-bold text-xl lg:text-3xl'>XY<span className='text-purple-500'>nexa</span></h2>
-                
+                <h2 className='font-bold text-xl lg:text-3xl mb-4 '>XY<span className=''>nexa</span></h2>
+                <p className='text-xs font-bold '>Make a team work together</p>
                 </div>
             </div>
-            <div className=''>
-                <h1 className='text-xl lg:text-2xl font-semibold'>Teams</h1>
+            <div className='bg-red-100 dark:bg-black p-4'>
+                <h1 className='text-xl lg:text-2xl font-semibold '>Your Teams</h1>
                 <div>
-                    <div>
+                    <div className=''>
                         <Filter></Filter>
                     </div>
                 </div>
                 <div></div>
             </div>
-            <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 p-4 lg:p-8 mt-5 lg:mt-10'>
+            <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-4 lg:p-8  bg-red-100 dark:bg-black'>
                 
                 <CreateModalBtn></CreateModalBtn>
                 {teamData && teamData.length > 0 ? (
-                    teamData.map((team) => (
-                       <Link  key={team._id} href={`/dashboard/team/view/${team._id}`}>
-                         <div className="p-4 rounded-lg shadow bg-white dark:bg-gray-800">
+                    teamData.map((team, idx) => (
+                       
+                         <div key={idx} className="p-4 rounded-lg shadow bg-white dark:bg-gray-700">
                             <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2">
                                 {team.name}
                             </h2>
@@ -76,27 +76,27 @@ export default function TeamView() {
                                     <p className="text-sm font-semibold text-gray-800 dark:text-gray-200">
                                         {team.creator.firstName} {team.creator.lastName}
                                     </p>
-                                    <p className="text-xs text-gray-500 dark:text-gray-400">
+                                    <p className="text-xs text-gray-500 dark:text-gray-300">
                                         {team.creator.email}
                                     </p>
                                 </div>
                             </div>
                             
-                            <div className="flex items-center text-gray-600 dark:text-gray-400 mb-2">
-                                <Type className="mr-2 w-4 h-4" /> 
-                                {team.type}
-                            </div>
-                            <div className="flex items-center text-gray-600 dark:text-gray-400 mb-2">
+                            
+                            <div className="flex items-center text-gray-600 dark:text-gray-300 mb-2">
                                 <Users className="mr-2 w-4 h-4" /> 
                                 {team.members.length} Members
                             </div>
-                            <div className="flex items-center text-gray-600 dark:text-gray-400">
+                            <div className="flex justify-between items-center text-gray-600 dark:text-gray-300">
+                                <p className='flex items-center'>
                                 <Calendar className="mr-2 w-4 h-4" /> 
                                 Created: {new Date(team.createdAt).toLocaleDateString()}
+                                </p>
+                                <button className='btn bg-primary text-white dark:text-black dark:bg-white border-none'><Link  key={team._id} href={`/dashboard/team/view/${team._id}`}> Details </Link></button>
                             </div>
 
                         </div>
-                       </Link>
+                       
                     ))
                 ) : (
                     emptyCard

@@ -4,8 +4,9 @@ import { RiColorFilterAiFill } from 'react-icons/ri';
 import { MdArrowForwardIos } from 'react-icons/md';
 import { FaRegPlayCircle } from "react-icons/fa";
 import { RiBox3Line } from "react-icons/ri";
-// import aiImage from '../../assets/ai.png';
+
 import Image from 'next/image';
+
 
 const MuchMore = () => {
     return (
@@ -39,9 +40,9 @@ const MuchMore = () => {
                             </div>
                         </div>
                     </div>
-                    <div className="relative w-full h-[500px] md:h-[600px] lg:h-[500px]">
+                    <div className="relative w-full h-[400px] lg:h-[500px] ">
                         <Image
-                            src="/assets/images/ai.png"
+                            src="/assets/images/chatbot.png"
                             alt="ai"
                             fill
                             className="object-cover"

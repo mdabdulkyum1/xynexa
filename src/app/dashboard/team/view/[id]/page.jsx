@@ -9,6 +9,7 @@ import Image from 'next/image';
 import Swal from 'sweetalert2';
 import { useRouter } from 'next/navigation';
 import UpdateButton from '../components/UpdateButton';
+import { IoMdPersonAdd } from "react-icons/io";
 
 const TeamDetails = () => {
   const { id: teamId } = useParams();
@@ -42,7 +43,10 @@ const TeamDetails = () => {
   }, [isMenuOpen]);
 
   if (isLoading) {
-    return <p>Loading team details...</p>;
+    return (
+      <div className='flex items-center justify-center min-h-screen'>
+    <p className='text-2xl lg:text-5xl font-bold'>Loading team details...</p>
+    </div>);
   }
 
   if (isError) {
@@ -113,7 +117,26 @@ const TeamDetails = () => {
               </div>
             </div>
             <div className="flex items-center gap-4">
-              {/* Three-dot menu */}
+               
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Team members */}
+      <section className="p-6 mx-4">
+        <div className="container mx-auto">
+          <div className="bg-white dark:bg-[#121314] p-6 rounded-lg shadow-sm dark:border-0 border-gray-200">
+            <div className="flex justify-between items-center mb-4 p-2">
+              <h2 className="text-xl font-semibold">Team Members</h2>
+              <div className='flex items-center gap-2'>
+              <button
+                className="rounded-md bg-primary px-4 py-2 text-sm font-medium text-white  focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2  dark:bg-white dark:text-black"
+                onClick={() => setIsOpenAdd(true)}
+              >
+               <IoMdPersonAdd />
+              </button>
+              <AddMember teamId={teamId} isOpenAdd={isOpenAdd} setIsOpenAdd={setIsOpenAdd} />
               <div className="relative" ref={menuRef}>
                 <MoreVertical
                   className="h-6 w-6 text-gray-500 dark:text-gray-400 cursor-pointer"
@@ -138,24 +161,7 @@ const TeamDetails = () => {
                   </div>
                 )}
               </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Team members */}
-      <section className="p-6 mx-4">
-        <div className="container mx-auto">
-          <div className="bg-white dark:bg-[#121314] p-6 rounded-lg shadow-sm dark:border-0 border-gray-200">
-            <div className="flex justify-between items-center mb-4 p-2">
-              <h2 className="text-xl font-semibold">Team Members</h2>
-              <button
-                className="rounded-md bg-gradient-to-r from-[#8B5CF6] to-[#6366F1] px-4 py-2 text-sm font-medium text-white hover:from-[#6366F1] hover:to-[#8B5CF6] focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
-                onClick={() => setIsOpenAdd(true)}
-              >
-                Add Member
-              </button>
-              <AddMember teamId={teamId} isOpenAdd={isOpenAdd} setIsOpenAdd={setIsOpenAdd} />
+              </div>
             </div>
             <div className="overflow-x-auto">
               <table className="w-full text-left">
