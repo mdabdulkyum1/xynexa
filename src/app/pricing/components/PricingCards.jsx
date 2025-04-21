@@ -45,7 +45,7 @@ const PricingCards = () => {
                 {/* card-1 */}
                 <div className='bg-[#EAEEF1] p-8 rounded-lg'>
                     <h3 className='font-bold text-[#014E4E] text-xl lg:text-3xl'>Free</h3>
-                    <p className='text-gray-600 mb-4'>Best for personal use</p>
+                    <p className='text-gray-600 mb-4'>Best for personal uses</p>
                     <h3 className='font-extrabold text-[#014E4E] text-2xl lg:text-4xl mb-4'>FREE</h3>
                     <div className='text-gray-600 text-left'>
                         <h3 className='font-bold text-xl'>Key Features:</h3>
