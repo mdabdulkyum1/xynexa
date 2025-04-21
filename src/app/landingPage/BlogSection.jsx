@@ -47,7 +47,7 @@ const BlogSection = () => {
 
       <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
         {blogs.map((post, index) => (
-          <div key={index} className="bg-[#1A1A1A] dark:bg-[#1A1A1A] text-white rounded-2xl p-4 shadow-md hover:shadow-lg transition duration-300">
+          <div key={index} className="dark:bg-[#1A1A1A]  dark:text-white rounded-2xl p-4 shadow-xl hover:shadow-lg transition duration-300">
             <img src={post.image} alt={post.title} className="rounded-xl mb-4 w-full h-48 object-cover" />
             <span className="bg-[#20B7AB1A] text-[#20B7AB] px-3 py-1 text-xs rounded-full mb-3 inline-block font-medium">{post.tag}</span>
             <h3 className="text-lg font-semibold mb-4">{post.title}</h3>
