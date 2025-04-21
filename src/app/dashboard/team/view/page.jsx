@@ -13,7 +13,7 @@ export default function TeamView() {
     const { userData, isLoading, isError, error } = useUserDataFromClerk();
 
     const userId = userData?.user?._id
-    // console.log(userId);
+    console.log(userId);
 
     // const { data: teamData } = useGetUseTeamsQuery(userId);
     const { data: teamData } = useGetTeamsByCurrentUserQuery(userId);
