@@ -37,7 +37,7 @@ export default function Home() {
      <Testimonials></Testimonials>
      <BlogSection></BlogSection>
      <FAQSection></FAQSection>
-     <Today></Today>
+     {/* <Today></Today> */}
 
       
      
