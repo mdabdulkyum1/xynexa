@@ -63,15 +63,15 @@ const Pricing = () => {
             </p>
 
             <div className='flex justify-center my-6'>
-                <div className='flex bg-[#1F1F1F] rounded-full p-1'>
+                <div className='flex dark:bg-[#1F1F1F] bg-gray-400 rounded-full p-1'>
                     <button 
-                        className={`px-4 py-1 rounded-full transition ${!isYearly ? 'bg-[#20B7AB] text-white font-semibold' : 'text-gray-400'}`}
+                        className={`px-4 py-1 rounded-full transition ${!isYearly ? 'bg-[#20B7AB] dark:text-white text-black font-semibold' : 'dark:text-gray-400'}`}
                         onClick={() => setIsYearly(false)}
                     >
                         Monthly
                     </button>
                     <button 
-                        className={`px-4 py-1 rounded-full transition ${isYearly ? 'bg-[#20B7AB] text-white font-semibold' : 'text-gray-400'}`}
+                        className={`px-4 py-1 rounded-full transition ${isYearly ? 'bg-[#20B7AB] dark:text-white text-black font-semibold' : 'dark:text-gray-400'}`}
                         onClick={() => setIsYearly(true)}
                     >
                         Yearly
@@ -83,7 +83,7 @@ const Pricing = () => {
                 {Object.entries(pricingData).map(([key, plan]) => (
                     <div 
                         key={key} 
-                        className={`relative rounded-2xl border p-6 flex flex-col justify-between min-h-[540px] transition hover:outline outline-[#20B7AB] ${plan.popular ? 'border-[#20B7AB]' : 'border-gray-700'} bg-[#1A1A1A]`}
+                        className={`relative rounded-2xl border p-6 flex flex-col justify-between min-h-[540px] transition hover:outline outline-[#20B7AB] ${plan.popular ? 'border-[#20B7AB]' : 'border-gray-700'} dark:bg-[#1A1A1A] text-black dark:text-white`}
                     >
                        
                         {plan.popular && (
@@ -97,7 +97,7 @@ const Pricing = () => {
                             <p className='text-3xl font-bold mb-4'>
                                 {plan.price === 'Custom' ? 'Custom' : `$${plan.price}`}<span className='text-base font-medium'>/{isYearly ? 'year' : 'month'}</span>
                             </p>
-                            <ul className='mb-6 space-y-2 text-sm text-gray-300'>
+                            <ul className='mb-6 space-y-2 text-sm dark:text-gray-300'>
                                 {plan.features.map((feature, i) => (
                                     <li key={i} className='flex items-center'>
                                         <span className='text-green-500 mr-2'>✔</span> {feature}

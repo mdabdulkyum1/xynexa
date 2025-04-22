@@ -37,7 +37,7 @@ const FAQSection = () => {
       <button className="bg-[#20B7AB1A] text-[#20B7AB] px-4 py-1 rounded-full text-sm font-medium mb-4 mx-auto block">
         💬 FAQ
       </button>
-      <h2 className="text-3xl md:text-4xl font-bold text-center text-black mb-2">
+      <h2 className="text-3xl md:text-4xl font-bold text-center dark:text-white text-black mb-2">
         Some of the things you may want to know
       </h2>
       <p className="text-center text-gray-400 mb-10">
@@ -47,7 +47,7 @@ const FAQSection = () => {
       {faqs.map((faq, index) => (
         <div
           key={index}
-          className="mb-4 rounded-xl bg-[#1A1A1A] px-6 py-4 cursor-pointer"
+          className="mb-4 rounded-xl dark:bg-[#1A1A1A] text-black border-2 dark:text-white px-6 py-4 cursor-pointer"
           onClick={() => toggleFAQ(index)}
         >
           <div className="flex justify-between items-center text-lg font-medium">
@@ -55,7 +55,7 @@ const FAQSection = () => {
             {openIndex === index ? <FaChevronUp /> : <FaChevronDown />}
           </div>
           {openIndex === index && (
-            <p className="mt-3 text-gray-300 text-sm">{faq.answer}</p>
+            <p className="mt-3 text-black dark:text-gray-300 text-sm">{faq.answer}</p>
           )}
         </div>
       ))}
