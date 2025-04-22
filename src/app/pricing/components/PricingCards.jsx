@@ -1,18 +1,23 @@
 "use client"
 import React from 'react';
 import PricingToggle from './PricingToggle';
-
+// import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { FaCheck } from 'react-icons/fa';
 
 import useAxiosPublic from '@/hooks/AxiosPublic/useAxiosPublic';
 
 import { useUserDataFromClerk } from '@/hooks/useUserDataFromClerk';
+import Link from 'next/link';
 
 const PricingCards = () => {
+
+
+    // const router = useRouter();
     const { userData, isLoading, isError, error } = useUserDataFromClerk();
     const userId = userData?.user?._id
-    console.log(userData, userId);
+    const packageInfo = userData?.user?.package
+    console.log(userData, userId, packageInfo);
     const axiosPublic = useAxiosPublic()
 
     const [showModal, setShowModal] = useState(false);
@@ -21,19 +26,23 @@ const PricingCards = () => {
 
     const handleClaim = async () => {
         try {
-              const res = await axiosPublic.patch('/api/packageUpdate', {
+            const res = await axiosPublic.patch('/api/packageUpdate', {
                 packageName: 'free',
-            _id: userId});
-              if (res.data.success) {
-            setClaimed(true);
-            setShowModal(false);
-              }
+                _id: userId
+            });
+            if (res.data.success) {
+                setClaimed(true);
+                setShowModal(false);
+            }
         } catch (error) {
             console.error('Error claiming free plan:', error);
         }
     };
 
-
+    // const handleClick = () => {
+    //     // Static payment URL with query parameters
+    //     router.push(`/payment?plan=Pro&amount=50`);
+    //   };
     return (
         <div className='my-10 lg:my-20 w-11/12 mx-auto'>
             <div className='flex flex-col justify-center items-center mb-8 lg:mb-16'>
@@ -57,12 +66,25 @@ const PricingCards = () => {
                             <li className="flex items-center"><span className="font-bold mr-2"><FaCheck /></span>Collaborative Docs</li>
                         </ul>
                     </div>
-                    <button
-                        onClick={() => setShowModal(true)}
-                        className='btn w-full p-2 border-none mt-4 lg:px-4 rounded-lg bg-[#014E4E] text-white font-bold'
-                    >
-                        {claimed ? 'Claimed' : 'Claim'}
-                    </button>
+                    {
+                        packageInfo === 'free' ?
+
+                            <button
+                                disabled={true}
+                                onClick={() => setShowModal(true)}
+                                className='btn w-full p-2 border-none mt-4 lg:px-4 rounded-lg bg-[#014E4E] text-white font-bold'
+                            >
+                                Claimed
+                            </button>
+                            :
+                            <button
+                                onClick={() => setShowModal(true)}
+                                className='btn w-full p-2 border-none mt-4 lg:px-4 rounded-lg bg-[#014E4E] text-white font-bold'
+                            >
+                                {claimed ? 'Claimed' : 'Claim'}
+                            </button>
+                    }
+
                     {/* modal */}
                     {showModal && (
                         <div className='fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50'>
@@ -105,7 +127,13 @@ const PricingCards = () => {
                             <li className="flex items-center"><span className="font-bold mr-2"><FaCheck /></span> Unlimited Gantt Charts</li>
                         </ul>
                     </div>
-                    <button className='btn w-full border-none p-2 mt-4 lg:px-4 rounded-lg bg-white text-[#014E4E] font-bold'>Claim</button>
+                    <Link href={{
+                        pathname: '/payment',
+                        query: {
+                            plan: 'Diamond',
+                            amount: 12
+                        }
+                    }} className='btn w-full border-none p-2 mt-4 lg:px-4 rounded-lg bg-white text-[#014E4E] font-bold'>claim</Link>
                 </div>
                 {/* card-3 */}
                 <div className='bg-[#EAEEF1] p-8 rounded-lg'>

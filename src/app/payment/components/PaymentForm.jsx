@@ -1,35 +1,54 @@
 'use client';
-import { useForm } from "react-hook-form";
-import { useEffect, useState } from "react";
-import { MapPin } from "lucide-react";
+import { loadStripe } from '@stripe/stripe-js';
+// import { useForm } from "react-hook-form";
+// import { useEffect, useState } from "react";
+// import { MapPin } from "lucide-react";
+import { useSearchParams } from 'next/navigation';
+import CheckoutForm from './CheckoutForm';
+import { Elements } from '@stripe/react-stripe-js';
 
+
+const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY);
 export default function PaymentForm() {
-    const { register, handleSubmit, formState: { errors } } = useForm();
-    const [countries, setCountries] = useState([]);
+    const searchParams = useSearchParams();
+    const amount = searchParams.get("amount");
+    const plan = searchParams.get("plan");
+
+    console.log(plan, amount); 
+    
+
+    // const { register, handleSubmit, formState: { errors } } = useForm();
+    // const [countries, setCountries] = useState([]);
 
     // Fetch country list from an API using fetch
-    useEffect(() => {
-        fetch('https://restcountries.com/v3.1/all')
-            .then(response => response.json())
-            .then(data => {
-                const countryNames = data.map(country => ({
-                    name: country.name.common,
-                    code: country.cca2
-                }));
-                setCountries(countryNames);
-            })
-            .catch(error => console.error("Error fetching countries", error));
-    }, []);
+    // useEffect(() => {
+    //     fetch('https://restcountries.com/v3.1/all')
+    //         .then(response => response.json())
+    //         .then(data => {
+    //             const countryNames = data.map(country => ({
+    //                 name: country.name.common,
+    //                 code: country.cca2
+    //             }));
+    //             setCountries(countryNames);
+    //         })
+    //         .catch(error => console.error("Error fetching countries", error));
+    // }, []);
 
-    const onSubmit = (data) => {
-        // console.log(data); 
-    };
+    
 
     return (
         <div className="max-w-md mx-auto p-4">
-            <div className="border border-gray-200 rounded-lg shadow-sm">
+            <Elements stripe={stripePromise}>
+            <CheckoutForm amount={amount} plan={plan} />
+            </Elements>
+        </div>
+    );
+}
+
+
+{/* <div className="border border-gray-200 rounded-lg shadow-sm">
                 <div className="p-4 space-y-3">
-                    {/* Organization Info */}
+                  
                     <div>
                         <h2 className="text-base font-semibold">1. Organization info</h2>
                         <p className="text-xs text-gray-500">
@@ -45,6 +64,15 @@ export default function PaymentForm() {
                                 placeholder="Enter organization name"
                             />
                             {errors.organizationName && <p className="text-xs text-red-500">{errors.organizationName.message}</p>}
+                        </div>
+                        <div>
+                            <label className="text-base font-medium">Plan</label>
+                            <input
+                                {...register("plan")}
+                                className="w-full mt-1 px-2 py-1 text-sm border border-purple-300 rounded-md focus:outline-none focus:ring focus:ring-purple-400"
+                                defaultValue={plan}
+                            />
+                            
                         </div>
 
                         <div>
@@ -73,7 +101,7 @@ export default function PaymentForm() {
                             {errors.addressLine1 && <p className="text-xs text-red-500">{errors.addressLine1.message}</p>}
                         </div>
                         <div className="divider"></div>
-                        {/* Payment Method */}
+                        
                         <div>
                             <h2 className="text-base font-semibold">2. Payment method</h2>
                         </div>
@@ -120,12 +148,12 @@ export default function PaymentForm() {
                             </div>
                         </div>
 
-                        {/* Purchase Button */}
+                       
                         <button className="w-full mt-2  md:mt-4 bg-purple-800 hover:bg-purple-800 text-white text-sm font-medium px-3 py-1.5 rounded-md transition duration-200">
                             Purchase Slack Pro
                         </button>
 
-                        {/* Terms & Policy */}
+                       
                         <p className="text-[10px] text-gray-500 text-center mt-2">
                             You can cancel your plan at any time. Purchases made by credit card can’t be refunded, although your credit can be transferred to another account.
                         </p>
@@ -136,7 +164,4 @@ export default function PaymentForm() {
                         </p>
                     </form>
                 </div>
-            </div>
-        </div>
-    );
-}
+            </div> */}
