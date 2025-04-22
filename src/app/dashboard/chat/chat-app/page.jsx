@@ -1,12 +1,11 @@
-
-import ChatWindow from "./components/ChatWindow";
+import ChatWrapper from "./components/ChatWrapper";
 
 const page = () => {
       
 
     return (
         <div className="flex flex-1 overflow-hidden">
-             <ChatWindow/>
+             <ChatWrapper />
         </div>
     );
 };

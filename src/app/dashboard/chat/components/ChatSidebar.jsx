@@ -20,12 +20,20 @@ import {
   differenceInWeeks,
   parseISO,
 } from "date-fns";
+import { useGetTeamsByEmailForGroupChatQuery } from "@/redux/features/Api/teamApi";
+import { setGroupChatId } from "@/redux/features/Slice/groupChatSlice";
 
 const ChatSidebar = () => {
   const axiosPublic = useAxiosPublic();
   const { user } = useUser();
   const [users, setUsers] = useState([]);
   // const [selectedUserId, setSelectedUserId] = useState(null);
+
+  const userEmail = user?.emailAddresses[0]?.emailAddress;
+  const { data: groups = [] } = useGetTeamsByEmailForGroupChatQuery(userEmail);
+  // console.log("Haiku >>>", data);
+
+  // console.log(user);
 
   const dispatch = useDispatch();
   const selectedUserId = useSelector((state) => state.chat.selectedUserId);
@@ -55,11 +63,11 @@ const ChatSidebar = () => {
     fetchUsers();
   }, [user]);
 
-  const groups = [
-    { id: 1, name: "React Developers", img: "https://placehold.co/40x40" },
-    { id: 2, name: "Gaming Squad", img: "https://placehold.co/40x40" },
-    { id: 3, name: "UI Designers", img: "https://placehold.co/40x40" },
-  ];
+  // const groups = [
+  //   { id: 1, name: "React Developers", img: "https://placehold.co/40x40" },
+  //   { id: 2, name: "Gaming Squad", img: "https://placehold.co/40x40" },
+  //   { id: 3, name: "UI Designers", img: "https://placehold.co/40x40" },
+  // ];
 
   const formatLastActive = (timestamp) => {
     const date = parseISO(timestamp);
@@ -75,6 +83,19 @@ const ChatSidebar = () => {
       return format(date, "MMM d, yyyy"); // Apr 5, 2025
     }
   };
+
+
+const handleUserSelect = (id) => {
+  dispatch(setSelectedUserId(id))
+  dispatch(setGroupChatId(null))
+};
+
+
+const handleGroupSelect = (id) => {
+  dispatch(setGroupChatId(id))
+  dispatch(setSelectedUserId(null))
+};
+
 
   return (
     <div className="flex border-r-2 border-l-2 border-gray-200 dark:border-gray-700 ">
@@ -95,7 +116,7 @@ const ChatSidebar = () => {
                 <Link href="/dashboard/chat/chat-app" key={user._id}>
                   <div
                     className="flex items-center p-2 rounded-md  hover:bg-gray-500 cursor-pointer transition"
-                    onClick={() => dispatch(setSelectedUserId(user?.clerkId))} // Set selected user
+                    onClick={() => handleUserSelect(user?.clerkId)} // Set selected user
                   >
                     <img
                       src={user.imageUrl}
@@ -134,14 +155,10 @@ const ChatSidebar = () => {
             <div className="space-y-3">
               {groups.map((group) => (
                 <div
-                  key={group.id}
+                  key={group._id}
                   className="flex items-center p-2 rounded-md hover:bg-gray-100 cursor-pointer transition"
+                  onClick={() => handleGroupSelect(group._id)} 
                 >
-                  <img
-                    src={group.img}
-                    alt={group.name}
-                    className="w-10 h-10 rounded-full mr-3"
-                  />
                   <p className="text-sm font-medium text-gray-800">
                     {group.name}
                   </p>
