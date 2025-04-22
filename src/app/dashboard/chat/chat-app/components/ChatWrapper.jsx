@@ -7,8 +7,7 @@ import GroupChatWindow from "./GroupChatWindow";
 const ChatWrapper = () => {
   const receiverId = useSelector((state) => state.chat.selectedUserId);
   const groupId = useSelector((state) => state.groupChat.groupChatId);
-  console.log("receiverId", receiverId);
-  console.log("chat",  groupId);
+ 
 
   return (
     <>

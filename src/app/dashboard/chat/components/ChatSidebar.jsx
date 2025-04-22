@@ -1,48 +1,42 @@
 "use client";
 
-import { useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { FaUsers } from "react-icons/fa";
 import useAxiosPublic from "@/hooks/AxiosPublic/useAxiosPublic";
-import { useEffect } from "react";
-import { useUser } from "@clerk/nextjs";
+import { useGetTeamsByEmailForGroupChatQuery } from "@/redux/features/Api/teamApi";
 import { setSelectedUserId } from "@/redux/features/Slice/chatSlice";
-import { useSelector } from "react-redux";
-import { useDispatch } from "react-redux";
-import Link from "next/link";
+import { setGroupChatId } from "@/redux/features/Slice/groupChatSlice";
+import { useUser } from "@clerk/nextjs";
 import {
+  differenceInDays,
+  differenceInWeeks,
   format,
   isToday,
   isYesterday,
-  differenceInDays,
-  differenceInWeeks,
   parseISO,
 } from "date-fns";
-import { useGetTeamsByEmailForGroupChatQuery } from "@/redux/features/Api/teamApi";
-import { setGroupChatId } from "@/redux/features/Slice/groupChatSlice";
+import Link from "next/link";
+import { useEffect, useState } from "react";
+import { FaUsers } from "react-icons/fa";
+import { useDispatch, useSelector } from "react-redux";
 
 const ChatSidebar = () => {
   const axiosPublic = useAxiosPublic();
   const { user } = useUser();
   const [users, setUsers] = useState([]);
-  // const [selectedUserId, setSelectedUserId] = useState(null);
 
   const userEmail = user?.emailAddresses[0]?.emailAddress;
   const { data: groups = [] } = useGetTeamsByEmailForGroupChatQuery(userEmail);
-  // console.log("Haiku >>>", data);
-
-  // console.log(user);
+  
 
   const dispatch = useDispatch();
-  const selectedUserId = useSelector((state) => state.chat.selectedUserId);
 
   const fetchUsers = async () => {
-    if (user) {
+    if (user && userEmail) {
       try {
-        const res = await axiosPublic.get("/api/online/users");
-        const fetchedUsers = res.data.onlineUsers;
+        const res = await axiosPublic.get(`/api/online/users/${userEmail}`);
+        const fetchedUsers = res.data.uniqueMembers;
 
         // Sort: Online users first, then offline; both sorted by lastActive DESC
         const sortedUsers = fetchedUsers.sort((a, b) => {
