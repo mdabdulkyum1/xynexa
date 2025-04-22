@@ -29,8 +29,6 @@ const TaskBoard = ({ team, allTasks, teamId }) => {
 
   // ✅ Socket listener: update tasks on board change
   useEffect(() => {
-    console.log("🔌 Connected to Socket.IO");
-
     socket.on("boardStatusUpdated", (updatedBoard) => {
       console.log("📦 Board status updated:", updatedBoard);
       if (updatedBoard?.tasks) {
