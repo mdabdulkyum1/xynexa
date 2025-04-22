@@ -25,6 +25,7 @@ const ChatWindow = () => {
   const userId = user?.id;
 
   const receiverId = useSelector((state) => state.chat.selectedUserId);
+  
   const [receiver, setReceiver] = useState(null);
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
@@ -306,6 +307,11 @@ return (
         onChange={(e) => {
           setNewMessage(e.target.value);
           handleTyping();
+        }}
+        onKeyDown={(e) => {
+          if (e.key === "Enter") {
+            sendMessage();
+          }
         }}
         placeholder="Type your message..."
         className="flex-1"
