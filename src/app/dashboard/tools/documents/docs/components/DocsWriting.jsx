@@ -133,7 +133,7 @@ const DocsEditor = () => {
       </div>
 
       {/* Toolbar */}
-      <div className="flex flex-wrap items-center gap-2 border px-2 py-2 mb-4 rounded-md shadow-sm">
+      <div className="flex flex-wrap items-center gap-2  px-2 py-2 mb-4 rounded-md shadow-sm">
         <select className="px-2 py-1 border rounded-md text-sm">
           <option>Normal</option>
           <option>Heading 1</option>
@@ -184,7 +184,7 @@ const DocsEditor = () => {
       {/* Editor Content */}
       <div
         ref={editorWrapperRef}
-        className="min-h-[400px] p-6 bg-white border rounded-md shadow"
+        className="min-h-[400px] p-6 bg-white dark:bg-black dark:text-white border-none"
       >
         <EditorContent editor={editor} />
       </div>

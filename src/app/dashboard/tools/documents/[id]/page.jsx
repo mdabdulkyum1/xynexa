@@ -2,7 +2,7 @@
 
 import { useEffect, useState, useRef } from "react";
 import { useParams, useRouter } from "next/navigation";
-import { FaRegEdit } from "react-icons/fa";
+
 import toast from "react-hot-toast";
 import Loading from "@/components/loading/Loading";
 import {
@@ -95,7 +95,11 @@ const DetailsPage = () => {
     }
   };
 
-  if (isLoading) return <Loading />;
+  if (isLoading) return (
+    <div className="flex items-center justify-center h-screen">
+  <Loading />
+  </div>
+);
 
   if (isError) {
     toast.error("Failed to load document.");
@@ -115,13 +119,13 @@ const DetailsPage = () => {
             value={title}
             onChange={(e) => setTitle(e.target.value)}
           />
-          <button onClick={handleUpdate} className="btn text-xl">
-            <FaRegEdit />
+          <button onClick={handleUpdate} className="btn px-2 lg:px-4 text-2xl font-bold dark:bg-black ">
+            Edit
           </button>
         </div>
 
         {/* Toolbar */}
-        <div className="flex flex-wrap items-center gap-2 border px-2 py-2 mb-4 rounded-md shadow-sm">
+        <div className="flex flex-wrap items-center gap-2  px-2 py-2 mb-4 rounded-md shadow-sm">
           <select className="px-2 py-1 border rounded-md text-sm">
             <option>Normal</option>
             <option>Heading 1</option>
@@ -167,7 +171,7 @@ const DetailsPage = () => {
         </div>
 
         {/* Editor Content */}
-        <div ref={editorWrapperRef} className="min-h-[400px] p-6 bg-white rounded-md shadow">
+        <div ref={editorWrapperRef} className="min-h-[400px] p-6 bg-white dark:bg-black dark:text-white rounded-md shadow">
           <EditorContent editor={editor} />
         </div>
 

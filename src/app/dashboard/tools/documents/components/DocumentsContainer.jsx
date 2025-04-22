@@ -8,6 +8,7 @@ import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
 import Swal from 'sweetalert2';
 import { MdDelete } from "react-icons/md";
+import { FaEdit } from "react-icons/fa";
 
 const DocumentsContainer = () => {
   const [loading, setLoading] = useState(false);
@@ -83,7 +84,7 @@ const [documentDelete, {isLoading:isDeleting}] =  useDocumentDeleteMutation()
           ) : (
             <div>
               {availableDocumentsData?.documents?.length === 0 ? (
-                <p className="text-gray-500 text-4xl">No documents available.</p>
+              <div className='flex justify-center items-center  h-[200px]'><p className="text-gray-500 text-2xl lg:text-3xl">No documents available.</p></div>
               ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
 
@@ -93,7 +94,7 @@ const [documentDelete, {isLoading:isDeleting}] =  useDocumentDeleteMutation()
                       
 
                      <div className='flex items-center justify-between mt-4'>
-                     <Link className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition mr-2" href={`/dashboard/tools/documents/${doc?._id}`}>Edit</Link>
+                     <Link className="btn px-4 py-2 text-xl text-blue-500 border-none dark:bg-black dark:text-white rounded  transition mr-2" href={`/dashboard/tools/documents/${doc?._id}`}><FaEdit /></Link>
                      <button onClick={()=>handleDelete(doc?._id)} className='btn text-xl text-red-600 border-none bg-transparent'><MdDelete /></button>
                      </div>
 
