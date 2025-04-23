@@ -28,7 +28,7 @@ const ChatSidebar = () => {
 
   const userEmail = user?.emailAddresses[0]?.emailAddress;
   const { data: groups = [] } = useGetTeamsByEmailForGroupChatQuery(userEmail);
-  
+
 
   const dispatch = useDispatch();
 
@@ -79,16 +79,16 @@ const ChatSidebar = () => {
   };
 
 
-const handleUserSelect = (id) => {
-  dispatch(setSelectedUserId(id))
-  dispatch(setGroupChatId(null))
-};
+  const handleUserSelect = (id) => {
+    dispatch(setSelectedUserId(id))
+    dispatch(setGroupChatId(null))
+  };
 
 
-const handleGroupSelect = (id) => {
-  dispatch(setGroupChatId(id))
-  dispatch(setSelectedUserId(null))
-};
+  const handleGroupSelect = (id) => {
+    dispatch(setGroupChatId(id))
+    dispatch(setSelectedUserId(null))
+  };
 
 
   return (
@@ -128,11 +128,10 @@ const handleGroupSelect = (id) => {
                         </p>
                       </div>
                       <p
-                        className={`text-xs ${
-                          user.status === "Online"
-                            ? "text-green-500"
-                            : "text-gray-500"
-                        }`}
+                        className={`text-xs ${user.status === "Online"
+                          ? "text-green-500"
+                          : "text-gray-500"
+                          }`}
                       >
                         {user.status}
                       </p>
@@ -148,15 +147,18 @@ const handleGroupSelect = (id) => {
             </h3>
             <div className="space-y-3">
               {groups.map((group) => (
-                <div
-                  key={group._id}
-                  className="flex items-center p-2 rounded-md hover:bg-gray-100 cursor-pointer transition"
-                  onClick={() => handleGroupSelect(group._id)} 
-                >
-                  <p className="text-sm font-medium text-gray-800">
-                    {group.name}
-                  </p>
-                </div>
+                <Link href="/dashboard/chat/chat-app" key={group._id}>
+                  <div
+
+                    key={group._id}
+                    className="flex items-center p-2 rounded-md hover:bg-gray-100 cursor-pointer transition"
+                    onClick={() => handleGroupSelect(group._id)}
+                  >
+                    <p className="text-sm font-medium text-gray-800">
+                      {group.name}
+                    </p>
+                  </div>
+                </Link>
               ))}
             </div>
           </ScrollArea>
