@@ -8,31 +8,18 @@ import CheckoutForm from './CheckoutForm';
 import { Elements } from '@stripe/react-stripe-js';
 
 
+
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY);
 export default function PaymentForm() {
     const searchParams = useSearchParams();
     const amount = searchParams.get("amount");
     const plan = searchParams.get("plan");
+    
 
     console.log(plan, amount); 
     
 
-    // const { register, handleSubmit, formState: { errors } } = useForm();
-    // const [countries, setCountries] = useState([]);
-
-    // Fetch country list from an API using fetch
-    // useEffect(() => {
-    //     fetch('https://restcountries.com/v3.1/all')
-    //         .then(response => response.json())
-    //         .then(data => {
-    //             const countryNames = data.map(country => ({
-    //                 name: country.name.common,
-    //                 code: country.cca2
-    //             }));
-    //             setCountries(countryNames);
-    //         })
-    //         .catch(error => console.error("Error fetching countries", error));
-    // }, []);
+   
 
     
 

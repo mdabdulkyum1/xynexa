@@ -1,7 +1,7 @@
 "use client"
 import React from 'react';
 import PricingToggle from './PricingToggle';
-// import { useRouter } from 'next/router';
+
 import { useState } from 'react';
 import { FaCheck } from 'react-icons/fa';
 
@@ -13,7 +13,7 @@ import Link from 'next/link';
 const PricingCards = () => {
 
 
-    // const router = useRouter();
+
     const { userData, isLoading, isError, error } = useUserDataFromClerk();
     const userId = userData?.user?._id
     const packageInfo = userData?.user?.package
@@ -39,10 +39,7 @@ const PricingCards = () => {
         }
     };
 
-    // const handleClick = () => {
-    //     // Static payment URL with query parameters
-    //     router.push(`/payment?plan=Pro&amount=50`);
-    //   };
+
     return (
         <div className='my-10 lg:my-20 w-11/12 mx-auto'>
             <div className='flex flex-col justify-center items-center mb-8 lg:mb-16'>
@@ -74,7 +71,7 @@ const PricingCards = () => {
                                 onClick={() => setShowModal(true)}
                                 className='btn w-full p-2 border-none mt-4 lg:px-4 rounded-lg bg-[#014E4E] text-white font-bold'
                             >
-                                Claimed
+                                Already claimed
                             </button>
                             :
                             <button
@@ -127,13 +124,28 @@ const PricingCards = () => {
                             <li className="flex items-center"><span className="font-bold mr-2"><FaCheck /></span> Unlimited Gantt Charts</li>
                         </ul>
                     </div>
-                    <Link href={{
-                        pathname: '/payment',
-                        query: {
-                            plan: 'Diamond',
-                            amount: 12
-                        }
-                    }} className='btn w-full border-none p-2 mt-4 lg:px-4 rounded-lg bg-white text-[#014E4E] font-bold'>claim</Link>
+                    {
+                        packageInfo === 'diamond' ?
+                            (
+                                <button
+                                    className='btn w-full border-none p-2 mt-4 lg:px-4 rounded-lg  text-white font-bold cursor-not-allowed'
+                                    disabled
+                                >
+                                    Diamond Claimed
+                                </button>
+                            )
+                            :
+                            (
+                                <Link href={{
+                                    pathname: '/payment',
+                                    query: {
+                                        plan: 'diamond',
+                                        amount: 12
+                                    }
+                                }} className='btn w-full border-none p-2 mt-4 lg:px-4 rounded-lg bg-white text-[#014E4E] font-bold'>Claim Diamond</Link>
+                            )
+                    }
+
                 </div>
                 {/* card-3 */}
                 <div className='bg-[#EAEEF1] p-8 rounded-lg'>
@@ -151,7 +163,28 @@ const PricingCards = () => {
                             <li className="flex items-center"><span className="font-bold mr-2"><FaCheck /></span> Unlimited Custom Roles</li>
                         </ul>
                     </div>
-                    <button className='btn w-full border-none p-2 mt-4 lg:px-4 rounded-lg bg-[#014E4E] text-white font-bold'>Claim</button>
+                    {
+                        packageInfo === 'platinum' ?
+                            (
+                                <button
+                                    className='btn w-full border-none p-2 mt-4 lg:px-4 rounded-lg  text-white font-bold cursor-not-allowed'
+                                    disabled
+                                >
+                                    Platinum Claimed
+                                </button>
+                            )
+                            :
+                            (
+                                <Link href={{
+                                    pathname: '/payment',
+                                    query: {
+                                        plan: 'platinum',
+                                        amount: 25
+                                    }
+                                }} className='btn w-full border-none p-2 mt-4 lg:px-4 rounded-lg bg-white text-[#014E4E] font-bold'>Claim Platinum</Link>
+                            )
+                    }
+                    
                 </div>
 
             </div>
