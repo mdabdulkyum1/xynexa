@@ -7,6 +7,8 @@ import { useSearchParams } from 'next/navigation';
 import CheckoutForm from './CheckoutForm';
 import { Elements } from '@stripe/react-stripe-js';
 
+import Loading from '@/components/loading/Loading';
+
 
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY);
@@ -26,7 +28,9 @@ export default function PaymentForm() {
     return (
         <div className="max-w-md mx-auto p-4">
             <Elements stripe={stripePromise}>
+            
             <CheckoutForm amount={amount} plan={plan} />
+            
             </Elements>
         </div>
     );

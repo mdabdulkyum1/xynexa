@@ -1,16 +1,23 @@
-import PackInfo from "./components/PackInfo";
+import Loading from "@/components/loading/Loading";
+
+import { Suspense } from 'react';
 import PaymentForm from "./components/PaymentForm";
 
 const page = () => {
     return (
-        <div className='mt-20'>
-            <div className="">
-                <PaymentForm></PaymentForm>
+
+
+        <Suspense fallback={<div><Loading></Loading></div>}>
+            <div className="mt-20">
+            <PaymentForm></PaymentForm>
             </div>
-            <div className="">
-                {/* <PackInfo></PackInfo> */}
-            </div>
-        </div>
+       
+        </Suspense>
+
+
+
+
+
     );
 };
 
