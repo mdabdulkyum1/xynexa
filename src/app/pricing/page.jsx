@@ -1,3 +1,4 @@
+'use client'
 
 import PackageFeature from './components/PackageFeature';
 import PricingBanner from './components/PricingBanner';
@@ -8,6 +9,7 @@ import Productivity from './components/Productivity';
 
 
 const Pricing = () => {
+  
   return (
     <div className='mt-20 container mx-auto'>
       <PricingBanner></PricingBanner>
