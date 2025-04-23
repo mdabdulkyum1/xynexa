@@ -6,7 +6,7 @@ import { loadStripe } from '@stripe/stripe-js';
 import { useSearchParams } from 'next/navigation';
 import CheckoutForm from './CheckoutForm';
 import { Elements } from '@stripe/react-stripe-js';
-import { Suspense } from 'react';
+
 import Loading from '@/components/loading/Loading';
 
 
@@ -28,9 +28,9 @@ export default function PaymentForm() {
     return (
         <div className="max-w-md mx-auto p-4">
             <Elements stripe={stripePromise}>
-            <Suspense fallback={<div><Loading></Loading></div>}>
+            
             <CheckoutForm amount={amount} plan={plan} />
-            </Suspense>
+            
             </Elements>
         </div>
     );
