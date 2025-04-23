@@ -10,6 +10,7 @@ const chatSlice = createSlice({
   reducers: {
     setSelectedUserId: (state, action) => {
       state.selectedUserId = action.payload;
+      state.groupChatId = null;
     },
   },
 });

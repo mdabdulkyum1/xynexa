@@ -48,6 +48,10 @@ export const teamApi = baseApi.injectEndpoints({
             query: (userEmail) => `/teams/user/teams/email/${userEmail}`,
             providesTags: ['Team'],
         }),
+        getTeamsByEmailForGroupChat: builder.query({
+            query: (userEmail) => `/teams/get-teams-by-email/${userEmail}`,
+            providesTags: ['Team'],
+        }),
     }),
 });
 
@@ -58,5 +62,6 @@ export const {
     useDeleteTeamMutation,
     useAddMemberToTeamMutation,
     useGetTeamsByCurrentUserQuery,
-    useGetTeamsByCurrentUserEmailQuery, 
+    useGetTeamsByCurrentUserEmailQuery,
+    useGetTeamsByEmailForGroupChatQuery, 
 } = teamApi;

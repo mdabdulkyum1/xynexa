@@ -47,6 +47,7 @@ export default function RootLayout({ children }) {
         <body
           className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         >
+          <Providers>
           <ThemeProvider
             attribute="class"
             defaultTheme="system"
@@ -58,13 +59,15 @@ export default function RootLayout({ children }) {
               <SaveUserToDB />
               <OfflineUserToDB />
               <LoginUserToDB />
-              <Providers>
+              
               <Toaster  position="top-right" />
                 
-                {children}</Providers> 
+                {children}
             </main>
             {shouldShowNavbarFooter && <Footer />}{" "}
+            
           </ThemeProvider>
+          </Providers> 
         </body>
       </html>
     </ClerkProvider>

@@ -8,7 +8,6 @@ import {
   useMotionValue,
   useSpring,
 } from "motion/react";
-import { ListItemSecondaryAction } from "@mui/material";
 
 export const AnimatedTooltip = ({
   items
@@ -25,7 +24,6 @@ export const AnimatedTooltip = ({
     x.set(event.nativeEvent.offsetX - halfWidth); // set the x value, which is then used in transform and rotate
   };
 
-  console.log("item", items);
   return (
     <>
       {items?.map((item, idx) => (
