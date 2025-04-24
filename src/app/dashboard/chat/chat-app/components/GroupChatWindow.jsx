@@ -1,24 +1,34 @@
 // components/GroupChatWindow.tsx
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Send } from "lucide-react";
 import { useSelector } from "react-redux";
 import { useUserDataFromClerk } from "@/hooks/useUserDataFromClerk";
 import { useGetTeamQuery } from "@/redux/features/Api/teamApi";
 import { AnimatedTooltip } from "@/components/ui/animated-tooltip";
+import useAxiosPublic from "@/hooks/AxiosPublic/useAxiosPublic";
 
 const GroupChatWindow = () => {
+    const [groupMsg, setGroupMsg] = useState([]);
+    const [newMessage, setNewMessage] = useState("");
+
+
+    const axiosPublic = useAxiosPublic()
     // get group _id
     const groupId = useSelector((state) => state.groupChat.groupChatId);
 
     // get User _id
-    const data = useUserDataFromClerk()
-    const currentUserId = data?.userData?.user?._id;
+    const dataHook = useUserDataFromClerk()
+    const currentUserId = dataHook?.userData?.user?._id;
+
+
+    console.log("currentUserId", currentUserId)
 
     // get group group info and members (by team ID)
 
     const { data: team, isLoading, isError, error } = useGetTeamQuery(groupId);
-    console.log("team", team)
+
+
 
 
     useEffect(() => {
@@ -28,27 +38,55 @@ const GroupChatWindow = () => {
 
 
     const fetchGroupInfo = async () => {
-
+        // http://localhost:5000/api/groupMessage/66294e7de3b7f36fa00a50a3
+        try {
+            const { data } = await axiosPublic.get(`/api/groupMessage/${groupId}`);
+            setGroupMsg(data)
+        } catch (error) {
+            console.log("error", error)
+        }
     }
 
 
     // Mock data for messages
-    const [messages, setMessages] = useState([
-        { id: 1, sender: "Alice", text: "Hey team!" },
-        { id: 2, sender: "Bob", text: "Hello everyone!" },
-    ]);
-    const [newMessage, setNewMessage] = useState("");
 
-    const sendMessage = () => {
-        if (newMessage.trim() === "") return;
-        const message = {
-            id: messages.length + 1,
-            sender: "You",
-            text: newMessage,
+
+    const sendMessage = useCallback(async () => {
+        if (!newMessage.trim()) return;
+
+        const messageData = {
+            senderId: currentUserId,
+            groupId,
+            message: newMessage,
         };
-        setMessages([...messages, message]);
-        setNewMessage("");
-    };
+
+        try {
+            const { data } = await axiosPublic.post(
+                "/api/groupMessage/send",
+                messageData
+            );
+
+            const newMsg = {
+                ...data?.newGroupMessage,
+                senderId: {
+                    _id: currentUserId,
+                    firstName: dataHook?.userData?.user?.firstName,
+                    email: dataHook?.userData?.user?.email,
+                },
+            };
+
+            setGroupMsg((prev) => {
+                return [...prev, newMsg];
+            });
+            // Clear input
+            setNewMessage("");
+        } catch (error) {
+            console.error("Error sending message:", error);
+            alert("Failed to send message.");
+        }
+    }, [newMessage, currentUserId, groupId, axiosPublic, groupMsg]);
+
+
 
     return (
         <div className="flex flex-col w-full h-[80vh] mx-4 shadow-xl rounded-2xl bg-white overflow-hidden">
@@ -63,20 +101,20 @@ const GroupChatWindow = () => {
 
             {/* Chat Area */}
             <div className="flex-1 overflow-y-auto p-4 space-y-3 bg-gray-50 ">
-                {messages.map((msg) => (
+                {groupMsg.map((msg) => (
                     <div
-                        key={msg.id}
-                        className={`flex ${msg.sender === "You" ? "justify-end" : "justify-start"
+                        key={msg._id}
+                        className={`flex  ${msg?.senderId?._id === currentUserId ? "justify-end" : "justify-start"
                             }`}
                     >
                         <div
-                            className={`px-4 py-2 rounded-lg max-w-xs ${msg.sender === "You"
+                            className={`px-4 py-2 rounded-lg max-w-xs ${msg?.message === "You"
                                 ? "bg-blue-500 text-white"
                                 : "bg-gray-200 text-black"
                                 }`}
                         >
-                            <span className="text-xs block mb-1 font-medium">{msg.sender}</span>
-                            {msg.text}
+                            <span className="text-xs block mb-1 font-medium">{msg?.senderId?.firstName}</span>
+                            {msg?.message}
                         </div>
                     </div>
                 ))}
@@ -94,7 +132,7 @@ const GroupChatWindow = () => {
                 />
                 <button
                     onClick={sendMessage}
-                    className="bg-blue-600 text-white p-2 rounded-full hover:bg-blue-700 transition"
+                    className="bg-blue-600 cursor-pointer text-white p-2 rounded-full hover:bg-blue-700 transition"
                 >
                     <Send size={20} />
                 </button>
