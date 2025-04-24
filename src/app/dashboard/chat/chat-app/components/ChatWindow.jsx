@@ -218,7 +218,7 @@ const ChatWindow = () => {
   };
 
 return (
-  <div className="flex flex-col justify-between w-full max-w-3xl mx-auto bg-white shadow-md rounded-lg dark:bg-black">
+  <div className="flex flex-col justify-between w-full mx-2  bg-white shadow-md rounded-lg dark:bg-black">
     {/* Header */}
     <div className="flex items-center p-4 border-b border-gray-200 dark:border-gray-700">
       <img

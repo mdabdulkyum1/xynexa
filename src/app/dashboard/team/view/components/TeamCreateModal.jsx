@@ -33,6 +33,7 @@ const TeamCreateModal = ({ isOpen, closeModal }) => {
 
   
 const onSubmit = async (data) => {
+  console.log("creatyor id isssssss:", creatorId); // Log the form data for debugging
   try {
     const teamData = {
       ...data,
