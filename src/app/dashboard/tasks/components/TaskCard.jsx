@@ -12,7 +12,8 @@ import {
   ArrowLeft,
   ArrowRight,
   Loader2,
-  GripVertical, // Added for drag handle
+  GripVertical,
+  Move, // Added for drag handle
 } from "lucide-react";
 import React, { useState, useRef, useEffect } from "react";
 import "./taskcard.css";
@@ -174,27 +175,36 @@ const TaskCard = ({ task }) => {
 
   return (
     <div
+    
+   
       ref={setNodeRef}
       style={style}
-      className="bg-white dark:bg-[#0A0A0A] p-4 rounded-lg shadow-md purple-shadow relative"
+      className={`bg-gray-100 dark:bg-[#0A0A0A] p-4 rounded-lg shadow-md 
+        relative border-2  
+        transition-all duration-200 ease-in-out 
+        shadow-3xl
+        shadow-teal-700 hover:scale-[1.02] 
+        `}
     >
+    
       
       <div>
       <div className="flex justify-between items-center">
-        {/* Drag Handle */}
+        
         
 
         <div className="flex items-center">
         
-        <div
-          {...listeners}
-          {...attributes}
-          className="cursor-grab p-1 hover:bg-gray-200 dark:hover:bg-gray-700 rounded"
-          title="Drag to Another"
-        >
+        <div>
           <GripVertical
-            className="text-gray-500 dark:text-gray-300"
+          
+            className="text-gray-500 dark:text-gray-300 cursor-grab"
             size={20}
+            {...listeners}
+            {...attributes}
+            ref={setNodeRef}
+            style={style}
+            
           />
         </div>
         <h3 className="font-medium dark:font-normal text-sm md:text-base text-gray-900 dark:text-gray-100">
@@ -250,10 +260,10 @@ const TaskCard = ({ task }) => {
       <div className="flex gap-2 font-semibold text-xs py-2 flex-wrap items-center">
         {task?.targetDate && (
           <div className="flex justify-between w-full">
-            <p className="bg-purple-100 dark:bg-purple-600 text-purple-700 dark:text-white rounded-full font-bold text-[14px] py-1 px-2">
+            <p className="bg-purple-100 dark:bg-teal-600 text-teal-700 dark:text-white rounded-full font-bold text-[14px] py-1 px-2">
               Remaining: {timeRemaining}
             </p>
-            <p className="bg-purple-100 dark:bg-purple-600 text-purple-700 dark:text-white rounded-full font-bold text-[14px] py-1 px-2">
+            <p className="bg-purple-100 dark:bg-teal-600 text-teal-700 dark:text-white rounded-full font-bold text-[14px] py-1 px-2">
               {formattedTargetDate}
             </p>
           </div>

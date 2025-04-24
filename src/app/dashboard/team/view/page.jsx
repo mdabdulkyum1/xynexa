@@ -7,6 +7,7 @@ import { useUserDataFromClerk } from '@/hooks/useUserDataFromClerk';
 import { useGetTeamsByCurrentUserQuery } from '@/redux/features/Api/teamApi';
 import { Users, Calendar, Type, User } from 'lucide-react'; // Import Lucide Icons
 import Link from 'next/link';
+import Loading from '@/components/loading/Loading';
 
 export default function TeamView() {
 
@@ -19,7 +20,7 @@ export default function TeamView() {
     const { data: teamData } = useGetTeamsByCurrentUserQuery(userId);
 
     if (isLoading) {
-        return <div>Loading...</div>; 
+        return <div className='flex justify-center items-center h-screen'><Loading></Loading></div>; 
     }
 
     if (isError) {
@@ -45,7 +46,7 @@ export default function TeamView() {
                 <p className='text-xs font-bold '>Make a team work together</p>
                 </div>
             </div>
-            <div className='bg-red-100 dark:bg-black p-4'>
+            <div className='bg-blue-100 dark:bg-black p-4'>
                 <h1 className='text-xl lg:text-2xl font-semibold '>Your Teams</h1>
                 <div>
                     <div className=''>
@@ -54,7 +55,7 @@ export default function TeamView() {
                 </div>
                 <div></div>
             </div>
-            <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-4 lg:p-8  bg-red-100 dark:bg-black'>
+            <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-4 lg:p-8  bg-blue-100 dark:bg-black'>
                 
                 <CreateModalBtn></CreateModalBtn>
                 {teamData && teamData?.length > 0 ? (
