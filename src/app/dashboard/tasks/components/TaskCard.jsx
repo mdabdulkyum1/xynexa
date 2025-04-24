@@ -195,9 +195,9 @@ const TaskCard = ({ task }) => {
 
         <div className="flex items-center">
         
-        <div>
+        <div  title="Drag to another">
           <GripVertical
-          
+         
             className="text-gray-500 dark:text-gray-300 cursor-grab"
             size={20}
             {...listeners}
