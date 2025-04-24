@@ -151,7 +151,7 @@ const ChatSidebar = () => {
                   <div
 
                     key={group._id}
-                    className="flex items-center p-2 rounded-md hover:bg-gray-100 cursor-pointer transition"
+                    className="flex items-center p-2 rounded-md hover:bg-gray-100 cursor-pointer transition capitalize"
                     onClick={() => handleGroupSelect(group._id)}
                   >
                     <p className="text-sm font-medium text-gray-800">

@@ -3,15 +3,22 @@
 import { useEffect, useState } from "react";
 import { Send } from "lucide-react";
 import { useSelector } from "react-redux";
-import { useUser } from "@clerk/nextjs";
 import { useUserDataFromClerk } from "@/hooks/useUserDataFromClerk";
+import { useGetTeamQuery } from "@/redux/features/Api/teamApi";
+import { AnimatedTooltip } from "@/components/ui/animated-tooltip";
 
 const GroupChatWindow = () => {
-
+    // get group _id
     const groupId = useSelector((state) => state.groupChat.groupChatId);
 
+    // get User _id
     const data = useUserDataFromClerk()
     const currentUserId = data?.userData?.user?._id;
+
+    // get group group info and members (by team ID)
+
+    const { data: team, isLoading, isError, error } = useGetTeamQuery(groupId);
+    console.log("team", team)
 
 
     useEffect(() => {
@@ -21,7 +28,7 @@ const GroupChatWindow = () => {
 
 
     const fetchGroupInfo = async () => {
-        
+
     }
 
 
@@ -46,12 +53,16 @@ const GroupChatWindow = () => {
     return (
         <div className="flex flex-col w-full h-[80vh] mx-4 shadow-xl rounded-2xl bg-white overflow-hidden">
             {/* Header */}
-            <div className="bg-blue-600 text-white text-lg font-semibold px-4 py-3">
-                My Group Chat
+            <div className="bg-blue-600 text-white text-lg font-semibold px-4 py-3  flex items-center justify-between">
+                <h5 className="capitalize">{team?.name}</h5>
+
+                <div className="flex items-center gap-2">
+                    <AnimatedTooltip items={team?.members} />
+                </div>
             </div>
 
             {/* Chat Area */}
-            <div className="flex-1 overflow-y-auto p-4 space-y-3 bg-gray-50">
+            <div className="flex-1 overflow-y-auto p-4 space-y-3 bg-gray-50 ">
                 {messages.map((msg) => (
                     <div
                         key={msg.id}
