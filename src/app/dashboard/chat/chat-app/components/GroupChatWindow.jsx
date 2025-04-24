@@ -7,8 +7,12 @@ import { useUserDataFromClerk } from "@/hooks/useUserDataFromClerk";
 import { useGetTeamQuery } from "@/redux/features/Api/teamApi";
 import { AnimatedTooltip } from "@/components/ui/animated-tooltip";
 import useAxiosPublic from "@/hooks/AxiosPublic/useAxiosPublic";
+import { io } from "socket.io-client";
+const socket = io(process.env.NEXT_PUBLIC_SERVER_URL);
 
 const GroupChatWindow = () => {
+
+
     const [groupMsg, setGroupMsg] = useState([]);
     const [newMessage, setNewMessage] = useState("");
 
@@ -33,12 +37,9 @@ const GroupChatWindow = () => {
 
     useEffect(() => {
         fetchGroupInfo()
-
     }, [currentUserId, groupId])
 
-
     const fetchGroupInfo = async () => {
-        // http://localhost:5000/api/groupMessage/66294e7de3b7f36fa00a50a3
         try {
             const { data } = await axiosPublic.get(`/api/groupMessage/${groupId}`);
             setGroupMsg(data)
@@ -49,8 +50,6 @@ const GroupChatWindow = () => {
 
 
     // Mock data for messages
-
-
     const sendMessage = useCallback(async () => {
         if (!newMessage.trim()) return;
 
@@ -78,6 +77,17 @@ const GroupChatWindow = () => {
             setGroupMsg((prev) => {
                 return [...prev, newMsg];
             });
+
+            // Emit the new message to the socket server
+            socket.emit("sentGroupMessage", {
+                newMessage,
+                groupId,
+                senderId: currentUserId,
+            });
+
+
+
+
             // Clear input
             setNewMessage("");
         } catch (error) {
@@ -87,6 +97,43 @@ const GroupChatWindow = () => {
     }, [newMessage, currentUserId, groupId, axiosPublic, groupMsg]);
 
 
+
+    // Socket connection for real-time messaging
+    useEffect(() => {
+        if (!groupId && !currentUserId) return;
+
+
+        socket.emit("joinGroup", { groupId });
+
+        const handleReceiveGroupMessage = (message) => {
+            console.log("message", message)
+            // Only add the message if it belongs to the current chat
+            // if (
+            //   (message.senderId === receiverId && message.receiverId === userId) ||
+            //   (message.senderId === userId && message.receiverId === receiverId)
+            // ) {
+            //   setMessages((prev) => {
+            //     const exists = prev.some((msg) => msg._id === message._id);
+            //     return exists ? prev : [...prev, message];
+            //   });
+            // }
+
+
+
+
+
+
+        };
+
+
+        socket.on("receiveGroupMessage", handleReceiveGroupMessage);
+
+        return () => {
+            socket.off("receiveGroupMessage", handleReceiveGroupMessage);
+        }
+
+
+    }, [groupId, currentUserId, newMessage])
 
     return (
         <div className="flex flex-col w-full h-[80vh] mx-4 shadow-xl rounded-2xl bg-white overflow-hidden">
