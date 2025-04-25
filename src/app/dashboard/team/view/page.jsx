@@ -66,7 +66,7 @@ export default function TeamView() {
                             </h2>
                             <div className="flex items-center mb-3">
                                 <Image
-                                    src={team.creator.imageUrl}
+                                    src={team?.creator?.imageUrl}
                                     alt="Creator Image"
                                     width={40}
                                     height={40}
@@ -74,25 +74,25 @@ export default function TeamView() {
                                 />
                                 <div>
                                     <p className="text-sm font-semibold text-gray-800 dark:text-gray-200">
-                                        {team.creator.firstName} {team.creator.lastName}
+                                        {team?.creator?.firstName} {team?.creator?.lastName}
                                     </p>
                                     <p className="text-xs text-gray-500 dark:text-gray-400">
-                                        {team.creator.email}
+                                        {team?.creator?.email}
                                     </p>
                                 </div>
                             </div>
                             
                             <div className="flex items-center text-gray-600 dark:text-gray-400 mb-2">
                                 <Type className="mr-2 w-4 h-4" /> 
-                                {team.type}
+                                {team?.type}
                             </div>
                             <div className="flex items-center text-gray-600 dark:text-gray-400 mb-2">
                                 <Users className="mr-2 w-4 h-4" /> 
-                                {team.members.length} Members
+                                {team?.members?.length} Members
                             </div>
                             <div className="flex items-center text-gray-600 dark:text-gray-400">
                                 <Calendar className="mr-2 w-4 h-4" /> 
-                                Created: {new Date(team.createdAt).toLocaleDateString()}
+                                Created: {new Date(team?.createdAt).toLocaleDateString()}
                             </div>
 
                         </div>
