@@ -13,11 +13,10 @@ const Sidebar = () => {
   const links = [
     { href: "/dashboard/chat", icon: <FaHome />, name: "Home" },
     { href: "/dashboard/chat/chat-app", icon: <FaComments />, name: "Chat" },
-    { href: "/dashboard/settings", icon: <FaCog />, name: "Settings" },
   ];
 
   return (
-    <aside className="w-20 bg-teal-700 dark:bg-black flex flex-col items-center py-5 rounded">
+    <aside className="w-12 bg-gray-100 dark:bg-black flex flex-col items-center py-5 rounded">
       <img src={user?.user?.imageUrl} alt="User" className="w-10 h-10 rounded-full mb-5" />
 
       {links.map((link) => (
