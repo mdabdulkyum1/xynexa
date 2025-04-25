@@ -143,6 +143,7 @@ export function AppSidebar(props) {
         items: [
           { title: "documents", url: "/dashboard/tools/documents" },
           { title: "drawing", url: "/dashboard/tools/drawing" },
+          { title: "diagram", url: "/dashboard/tools/diagram" },
         ],
       },
     ],
