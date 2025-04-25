@@ -39,20 +39,9 @@ const initialNodes = [
 ];
 
 const initialEdges = [
-    { 
-      id: 'e1-2', 
-      source: '1', 
-      target: '2', 
-      animated: true, 
-      style: { strokeWidth: 4, stroke: '#000' } // Increased stroke width and black color
-    },
-    { 
-      id: 'e1-3', 
-      source: '1', 
-      target: '3', 
-      style: { strokeWidth: 4, stroke: '#000' } // Same for all edges
-    },
-  ];
+  { id: 'e1-2', source: '1', target: '2', animated: true },
+  { id: 'e1-3', source: '1', target: '3' },
+];
 
 const Diagram = () => {
   const diagramRef = useRef(null);
