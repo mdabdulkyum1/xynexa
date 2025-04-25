@@ -8,19 +8,83 @@ import { Sheet, SheetTrigger, SheetContent } from "@/components/ui/sheet";
 import { Menu } from "lucide-react";
 import useScrollDirection from "@/hooks/ScrollDirection/useScrollDirection";
 import { usePathname } from "next/navigation";
-import {
-  SignedIn,
-  SignedOut,
-  UserButton,
-  useUser,
-} from "@clerk/nextjs";
-
+import { SignedIn, SignedOut, UserButton, useUser } from "@clerk/nextjs";
+import clsx from "clsx";
 
 const Navbar = () => {
   const isVisible = useScrollDirection(); // Get the visibility status
-  const { user } = useUser(); 
+  const { user } = useUser();
 
-  const pathName = usePathname(); // Get the current path
+  const pathName = usePathname(); // Get the current
+
+  const activeClass =
+    "text-primary dark:text-primary font-semibold underline decoration-2 underline-offset-4";
+
+  const links = (
+    <>
+      <li>
+        <Link
+          href="/"
+          className={clsx(
+            "hover:text-primary dark:hover:text-[#014E4E]",
+            pathName === "/" && activeClass
+          )}
+        >
+          Home
+        </Link>
+      </li>
+      <li>
+        <Link
+          href="/about"
+          className={clsx(
+            "hover:text-primary dark:hover:text-[#014E4E]",
+            pathName === "/about" && activeClass
+          )}
+        >
+          About Us
+        </Link>
+      </li>
+      <li>
+        <Link
+          href="/pricing"
+          className={clsx(
+            "hover:text-primary dark:hover:text-[#014E4E]",
+            pathName === "/pricing" && activeClass
+          )}
+        >
+          Pricing
+        </Link>
+      </li>
+      {user && (
+        <li>
+          <Link
+            href="/dashboard"
+            className={clsx(
+              "hover:text-primary dark:hover:text-[#014E4E]",
+              pathName === "/dashboard" && activeClass
+            )}
+          >
+            Dashboard
+          </Link>
+        </li>
+      )}
+      <li>
+        <Link
+          href="/contact-us"
+          className={clsx(
+            "hover:text-primary dark:hover:text-[#014E4E]",
+            pathName === "/contact-us" && activeClass
+          )}
+        >
+          Contact Us
+        </Link>
+      </li>
+      <li>
+        <ModeToggle />
+      </li>
+    </>
+  );
+
   if (!pathName.includes("dashboard")) {
     return (
       <nav
@@ -36,38 +100,7 @@ const Navbar = () => {
 
           {/* Center-aligned links */}
           <ul className="hidden lg:flex space-x-6 text-lg font-medium">
-            <li>
-              <Link href="/" className="hover:text-primary">
-               Home
-              </Link>
-            </li>
-            <li>
-              <Link href="/about" className="hover:text-primary">
-                About Us
-              </Link>
-            </li>
-            <li>
-              <Link href="/pricing" className="hover:text-primary">
-                Pricing
-              </Link>
-            </li>
-            {
-              user && 
-            <li>
-              <Link href="/dashboard" className="hover:text-primary">
-                Dashboard
-              </Link>
-            </li>
-            }
-
-            <li>
-              <Link href="/contact-us" className="hover:text-primary">
-                Contact Us
-              </Link>
-            </li>
-            <li>
-              <ModeToggle />
-            </li>
+            {links}
           </ul>
 
           {/* Mobile Menu */}
@@ -77,23 +110,31 @@ const Navbar = () => {
                 <Menu className="w-6 h-6" />
               </Button>
             </SheetTrigger>
-            <SheetContent side="left" className="flex flex-col space-y-4 pt-6">
-              <Link href="/" className="text-lg font-medium hover:text-primary">
-                Tasks
-              </Link>
-              <Link
-                href="/about"
-                className="text-lg font-medium hover:text-primary"
-              >
-                About Us
-              </Link>
-              <Link
-                href="/pricing"
-                className="text-lg font-medium hover:text-primary"
-              >
-                Pricing
-              </Link>
-              <ModeToggle />
+            <SheetContent side="left" className="">
+              <div className="flex flex-col justify-between h-full">
+                <ul className="flex flex-col p-6 space-y-4 text-lg font-medium">
+                  {links}
+                </ul>
+
+                <div className="p-6">
+                  <SignedOut className="flex gap-4">
+                    <Link
+                      href="/sign-in"
+                      className="dark:text-white inline-block px-4 py-2 rounded-md font-medium text-[#014E4E] bg-transparent transition-all duration-300 hover:bg-[#014E4E] hover:text-white"
+                      style={{
+                        border: "1px solid transparent",
+                        borderImage: "linear-gradient(90deg, #014E4E, #2dd4bf)",
+                        borderImageSlice: 1,
+                      }}
+                    >
+                      Sign In
+                    </Link>
+                  </SignedOut>
+                  <SignedIn>
+                    <UserButton />
+                  </SignedIn>
+                </div>
+              </div>
             </SheetContent>
           </Sheet>
 
@@ -101,7 +142,15 @@ const Navbar = () => {
           <div className="hidden lg:flex space-x-4">
             <div className="">
               <SignedOut className="flex gap-4">
-              <Link href="/sign-in" className="bg-primary px-4 py-2 rounded-md">
+                <Link
+                  href="/sign-in"
+                  className="dark:text-white inline-block px-4 py-2 rounded-md font-medium text-[#014E4E] bg-transparent transition-all duration-300 hover:bg-[#014E4E] hover:text-white"
+                  style={{
+                    border: "1px solid transparent",
+                    borderImage: "linear-gradient(90deg, #014E4E, #2dd4bf)",
+                    borderImageSlice: 1,
+                  }}
+                >
                   Sign In
                 </Link>
               </SignedOut>

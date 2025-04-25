@@ -1,15 +1,17 @@
 "use client";
+
 import React from 'react';
 
 const Loading = () => {
     return (
         <>
-            <div className="flex items-center justify-center bg-gray-100">
-                <div className="relative w-16 h-16">
-                    <div className="w-full h-full rounded-full border-4 border-t-transparent border-indigo-500 animate-spin"></div>
-                    <div className="absolute top-0 left-1/2 w-3 h-3 bg-indigo-500 rounded-full transform -translate-x-1/2 animate-ping"></div>
-                </div>
-            </div>
+           <div className="flex items-center justify-center ">
+  <div className="relative w-16 h-16">
+    <div className="w-full h-full border-4 border-indigo-500 border-b-transparent animate-spin rounded-sm shadow-lg shadow-indigo-500/50"></div>
+    <div className="absolute top-4 left-4 w-3 h-3 bg-indigo-500 animate-ping rounded-full shadow-md shadow-indigo-400"></div>
+  </div>
+</div>
+
 
         </>
     );

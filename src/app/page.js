@@ -37,10 +37,10 @@ export default function Home() {
      <Testimonials></Testimonials>
      <BlogSection></BlogSection>
      <FAQSection></FAQSection>
-     <Today></Today>
+     {/* <Today></Today> */}
 
       
-      {/* <LeastStressed></LeastStressed> */}
+     
       {/* <Features></Features> */}
       {/* <Service></Service> */}
       {/* <Pricing></Pricing> */}

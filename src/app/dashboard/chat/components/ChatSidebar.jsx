@@ -1,40 +1,42 @@
 "use client";
 
-import { useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { FaUsers } from "react-icons/fa";
 import useAxiosPublic from "@/hooks/AxiosPublic/useAxiosPublic";
-import { useEffect } from "react";
-import { useUser } from "@clerk/nextjs";
+import { useGetTeamsByEmailForGroupChatQuery } from "@/redux/features/Api/teamApi";
 import { setSelectedUserId } from "@/redux/features/Slice/chatSlice";
-import { useSelector } from "react-redux";
-import { useDispatch } from "react-redux";
-import Link from "next/link";
+import { setGroupChatId } from "@/redux/features/Slice/groupChatSlice";
+import { useUser } from "@clerk/nextjs";
 import {
+  differenceInDays,
+  differenceInWeeks,
   format,
   isToday,
   isYesterday,
-  differenceInDays,
-  differenceInWeeks,
   parseISO,
 } from "date-fns";
+import Link from "next/link";
+import { useEffect, useState } from "react";
+import { FaUsers } from "react-icons/fa";
+import { useDispatch, useSelector } from "react-redux";
 
 const ChatSidebar = () => {
   const axiosPublic = useAxiosPublic();
   const { user } = useUser();
   const [users, setUsers] = useState([]);
-  // const [selectedUserId, setSelectedUserId] = useState(null);
+
+  const userEmail = user?.emailAddresses[0]?.emailAddress;
+  const { data: groups = [] } = useGetTeamsByEmailForGroupChatQuery(userEmail);
+
 
   const dispatch = useDispatch();
-  const selectedUserId = useSelector((state) => state.chat.selectedUserId);
 
   const fetchUsers = async () => {
-    if (user) {
+    if (user && userEmail) {
       try {
-        const res = await axiosPublic.get("/api/online/users");
-        const fetchedUsers = res.data.onlineUsers;
+        const res = await axiosPublic.get(`/api/online/users/${userEmail}`);
+        const fetchedUsers = res.data.uniqueMembers;
 
         // Sort: Online users first, then offline; both sorted by lastActive DESC
         const sortedUsers = fetchedUsers.sort((a, b) => {
@@ -55,11 +57,11 @@ const ChatSidebar = () => {
     fetchUsers();
   }, [user]);
 
-  const groups = [
-    { id: 1, name: "React Developers", img: "https://placehold.co/40x40" },
-    { id: 2, name: "Gaming Squad", img: "https://placehold.co/40x40" },
-    { id: 3, name: "UI Designers", img: "https://placehold.co/40x40" },
-  ];
+  // const groups = [
+  //   { id: 1, name: "React Developers", img: "https://placehold.co/40x40" },
+  //   { id: 2, name: "Gaming Squad", img: "https://placehold.co/40x40" },
+  //   { id: 3, name: "UI Designers", img: "https://placehold.co/40x40" },
+  // ];
 
   const formatLastActive = (timestamp) => {
     const date = parseISO(timestamp);
@@ -75,6 +77,19 @@ const ChatSidebar = () => {
       return format(date, "MMM d, yyyy"); // Apr 5, 2025
     }
   };
+
+
+  const handleUserSelect = (id) => {
+    dispatch(setSelectedUserId(id))
+    dispatch(setGroupChatId(null))
+  };
+
+
+  const handleGroupSelect = (id) => {
+    dispatch(setGroupChatId(id))
+    dispatch(setSelectedUserId(null))
+  };
+
 
   return (
     <div className="flex border-r-2 border-l-2 border-gray-200 dark:border-gray-700 ">
@@ -95,7 +110,7 @@ const ChatSidebar = () => {
                 <Link href="/dashboard/chat/chat-app" key={user._id}>
                   <div
                     className="flex items-center p-2 rounded-md  hover:bg-gray-500 cursor-pointer transition"
-                    onClick={() => dispatch(setSelectedUserId(user?.clerkId))} // Set selected user
+                    onClick={() => handleUserSelect(user?.clerkId)} // Set selected user
                   >
                     <img
                       src={user.imageUrl}
@@ -113,11 +128,10 @@ const ChatSidebar = () => {
                         </p>
                       </div>
                       <p
-                        className={`text-xs ${
-                          user.status === "Online"
-                            ? "text-green-500"
-                            : "text-gray-500"
-                        }`}
+                        className={`text-xs ${user.status === "Online"
+                          ? "text-green-500"
+                          : "text-gray-500"
+                          }`}
                       >
                         {user.status}
                       </p>
@@ -133,19 +147,18 @@ const ChatSidebar = () => {
             </h3>
             <div className="space-y-3">
               {groups.map((group) => (
-                <div
-                  key={group.id}
-                  className="flex items-center p-2 rounded-md hover:bg-gray-100 cursor-pointer transition"
-                >
-                  <img
-                    src={group.img}
-                    alt={group.name}
-                    className="w-10 h-10 rounded-full mr-3"
-                  />
-                  <p className="text-sm font-medium text-gray-800">
-                    {group.name}
-                  </p>
-                </div>
+                <Link href="/dashboard/chat/chat-app" key={group._id}>
+                  <div
+
+                    key={group._id}
+                    className="flex items-center p-2 rounded-md hover:bg-gray-100 cursor-pointer transition capitalize"
+                    onClick={() => handleGroupSelect(group._id)}
+                  >
+                    <p className="text-sm font-medium text-gray-800">
+                      {group.name}
+                    </p>
+                  </div>
+                </Link>
               ))}
             </div>
           </ScrollArea>

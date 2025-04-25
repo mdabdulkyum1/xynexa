@@ -13,7 +13,7 @@ const FavriteApps = () => {
                 <h2 className='text-3xl lg:text-5xl font-bold mb-4 dm-font'>All your favorite apps</h2>
                 <p className='w-full lg:w-1/2 mx-auto dark:text-gray-400'> We offer seamless integration solutions that empower your business with enhanced efficiency and productivity.</p>
             </div>
-            <div className='h-[500px] mt-6 lg:mt-12 border-2'>
+            <div className='h-[450px] w-full mt-6 lg:mt-12'>
                 <Apps></Apps>
             </div>
         </div>

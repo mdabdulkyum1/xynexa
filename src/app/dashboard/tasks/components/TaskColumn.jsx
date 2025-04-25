@@ -12,7 +12,15 @@ const TaskColumn = ({ title, taskCategory, team ,teamId}) => {
   
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+  const colorMap = {
+    "todo": "bg-blue-100",
+    "in-progress": "bg-orange-100",
+    "done": "bg-purple-200"
+  };
+  
+  const dynamicColorClass = colorMap[title] || "bg-gray-200";
 
+console.log(taskCategory)
   return (
     <div
       ref={setNodeRef}
@@ -20,13 +28,15 @@ const TaskColumn = ({ title, taskCategory, team ,teamId}) => {
         task-column-shadow-white
         dark:border border-gray-800 min-h-[400px] w-full"
     >
-      <div className="flex justify-between items-center mb-4">
-        <h2 className="text-lg font-bold text-gray-900 dark:text-gray-100">
+      <div className={`flex justify-between items-center mb-4 ${dynamicColorClass} dark:bg-[#171717] border-none  rounded-lg p-2`}>
+        <div className="flex justify-center items-center w-full">
+        <h2 className="text-lg font-bold text-gray-800 dark:text-gray-100">
           {title}
         </h2>
+        </div>
         <Badge
           color="gray"
-          className="dark:bg-[#0A0A0A] py-1 px-2 rounded-l-full dark:text-gray-300"
+          className="dark:bg-[#171717] py-1 px-2 rounded-l-full dark:text-gray-300"
         >
           {taskCategory?.length}
         </Badge>

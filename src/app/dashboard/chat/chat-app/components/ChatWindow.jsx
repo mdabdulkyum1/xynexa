@@ -25,6 +25,7 @@ const ChatWindow = () => {
   const userId = user?.id;
 
   const receiverId = useSelector((state) => state.chat.selectedUserId);
+  
   const [receiver, setReceiver] = useState(null);
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
@@ -217,7 +218,7 @@ const ChatWindow = () => {
   };
 
 return (
-  <div className="flex flex-col justify-between w-full max-w-3xl mx-auto bg-white shadow-md rounded-lg dark:bg-black">
+  <div className="flex flex-col justify-between w-full mx-2  bg-white shadow-md rounded-lg dark:bg-black">
     {/* Header */}
     <div className="flex items-center p-4 border-b border-gray-200 dark:border-gray-700">
       <img
@@ -305,7 +306,12 @@ return (
         value={newMessage}
         onChange={(e) => {
           setNewMessage(e.target.value);
-          // handleTyping();
+          handleTyping();
+        }}
+        onKeyDown={(e) => {
+          if (e.key === "Enter") {
+            sendMessage();
+          }
         }}
         placeholder="Type your message..."
         className="flex-1"
