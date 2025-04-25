@@ -65,6 +65,8 @@ const GroupChatWindow = () => {
                 messageData
             );
 
+            const messageId = data?.newGroupMessage?._id
+
             const newMsg = {
                 ...data?.newGroupMessage,
                 senderId: {
@@ -83,6 +85,7 @@ const GroupChatWindow = () => {
                 newMessage,
                 groupId,
                 senderId: currentUserId,
+                messageId,
             });
 
 
@@ -106,23 +109,16 @@ const GroupChatWindow = () => {
         socket.emit("joinGroup", { groupId });
 
         const handleReceiveGroupMessage = (message) => {
-            console.log("message", message)
-            // Only add the message if it belongs to the current chat
-            // if (
-            //   (message.senderId === receiverId && message.receiverId === userId) ||
-            //   (message.senderId === userId && message.receiverId === receiverId)
-            // ) {
-            //   setMessages((prev) => {
-            //     const exists = prev.some((msg) => msg._id === message._id);
-            //     return exists ? prev : [...prev, message];
-            //   });
-            // }
+            if (!message) return;
+            if (message.senderId === currentUserId) return;
+            if (message.groupId !== groupId) return; 
 
 
-
-
-
-
+            setGroupMsg((prev) => {
+                const exists = prev.some((msg) => msg._id === message._id);
+                if (exists) return prev;
+                return [...prev, message];
+            });
         };
 
 
@@ -155,12 +151,14 @@ const GroupChatWindow = () => {
                             }`}
                     >
                         <div
-                            className={`px-4 py-2 rounded-lg max-w-xs ${msg?.message === "You"
+                            className={`px-2 py-1 rounded-lg max-w-xs ${msg?.senderId?._id === currentUserId
                                 ? "bg-blue-500 text-white"
                                 : "bg-gray-200 text-black"
                                 }`}
                         >
-                            <span className="text-xs block mb-1 font-medium">{msg?.senderId?.firstName}</span>
+                            <span className="text-xs block mb-1 font-medium">
+                                {msg?.senderId?._id === currentUserId ? "You" : msg?.senderId?.firstName}
+                            </span>
                             {msg?.message}
                         </div>
                     </div>
