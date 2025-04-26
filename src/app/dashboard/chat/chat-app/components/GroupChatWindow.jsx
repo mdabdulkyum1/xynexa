@@ -111,7 +111,7 @@ const GroupChatWindow = () => {
         const handleReceiveGroupMessage = (message) => {
             if (!message) return;
             if (message.senderId === currentUserId) return;
-            if (message.groupId !== groupId) return; 
+            if (message.groupId !== groupId) return;
 
 
             setGroupMsg((prev) => {
@@ -150,17 +150,7 @@ const GroupChatWindow = () => {
                         className={`flex  ${msg?.senderId?._id === currentUserId ? "justify-end" : "justify-start"
                             }`}
                     >
-                        <div
-                            className={`px-2 py-1 rounded-lg max-w-xs ${msg?.senderId?._id === currentUserId
-                                ? "bg-blue-500 text-white"
-                                : "bg-gray-200 text-black"
-                                }`}
-                        >
-                            <span className="text-xs block mb-1 font-medium">
-                                {msg?.senderId?._id === currentUserId ? "You" : msg?.senderId?.firstName}
-                            </span>
-                            {msg?.message}
-                        </div>
+
                     </div>
                 ))}
             </div>
