@@ -5,7 +5,7 @@ import { MdOutlineSaveAlt } from "react-icons/md";
 import { FaFilePdf } from "react-icons/fa6";
 import "react-quill-new/dist/quill.snow.css";
 import DocumentHeading from "./DocumentHeading";
-
+import { toast } from "react-hot-toast";
 import { useDocumentCreateMutation } from "@/redux/features/Api/documentApi";
 import { useUserDataFromClerk } from "@/hooks/useUserDataFromClerk";
 import { useRouter } from "next/navigation";
@@ -41,10 +41,10 @@ const TextEditor = () => {
             a.download = `${title}.html`;
             a.click();
             URL.revokeObjectURL(url);
-            alert("Document saved successfully!");
+            toast.success("Document saved successfully!");
         } catch (error) {
             console.error("Error saving document:", error);
-            alert("Failed to save the document.");
+            toast.error("Failed to save the document.");
         }
     };
 
@@ -88,11 +88,11 @@ const TextEditor = () => {
                 });
                 console.log("Document shared successfully");
             } else {
-                alert("Sharing is not supported on this browser. Copy the content manually.");
+                toast.error("Sharing is not supported on this browser. Copy the content manually.");
             }
         } catch (error) {
             console.error("Error sharing document:", error);
-            alert("Failed to share the document.");
+            toast.error("Failed to share the document.");
         }
     };
 
@@ -113,11 +113,11 @@ const TextEditor = () => {
 
             const res = await documentCreate(docData).unwrap();
             console.log("Document saved to DB:", res);
-            alert("Document saved to database!");
+            toast.success("Document saved to database!");
             router.push(`/dashboard/documents`);
         } catch (err) {
             console.error("Error saving to DB:", err);
-            alert("Failed to save document to database.");
+            toast.error("Failed to save document to database.");
         }
     };
 

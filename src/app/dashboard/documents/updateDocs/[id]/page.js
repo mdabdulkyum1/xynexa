@@ -8,6 +8,8 @@ import { useParams, useRouter } from "next/navigation";
 import "../../new/components/editor.css";
 import DocumentHeading from "../../new/components/DocumentHeading";
 import { useDocumentGetByIdQuery, useDocumentUpdateMutation } from "@/redux/features/Api/documentApi";
+import Swal from "sweetalert2";
+import { toast } from "react-hot-toast";
 
 const ReactQuill = dynamic(() => import("react-quill-new"), { ssr: false });
 
@@ -43,7 +45,7 @@ const TextEditor = () => {
     const handleContentChange = (value) => {
         setContent(value);
         const plainText = quillRef.current ? quillRef.current.getEditor().getText() : "";
-        console.log("document title", title, "Editor Content:", plainText.trim());
+        // console.log("document title", title, "Editor Content:", plainText.trim());
     };
 
     const shareDocument = async () => {
@@ -54,15 +56,52 @@ const TextEditor = () => {
                     title: title,
                     text: textContent,
                 });
-                console.log("Document shared successfully");
+                // console.log("Document shared successfully");
             } else {
-                alert("Sharing is not supported on this browser. Copy the content manually.");
+                toast.error("Failed to share the document.");
             }
         } catch (error) {
             console.error("Error sharing document:", error);
-            alert("Failed to share the document.");
+            toast.error("Failed to share the document.");
         }
     };
+
+    const handleUpdate = async () => {
+        if (!title.trim() || !content.trim()) {
+            toast.error("Title and Content cannot be empty!");
+            return;
+        }
+    
+        try {
+            await documentUpdate({
+                id,
+                title,
+                content,
+                creator: {
+                    _id: currentDocCreator_id,
+                    email: currentDocCreatorEmail,
+                },
+            }).unwrap();
+    
+            // console.log("Document updated successfully!");
+            Swal.fire({
+                icon: "success",
+                title: "Document Updated!",
+                text: "Your document has been updated successfully.",
+                timer: 2000,
+                showConfirmButton: false,
+            });
+            router.push("/dashboard/documents"); 
+        } catch (error) {
+            console.error("Failed to update document:", error);
+            Swal.fire({
+                icon: "error",
+                title: "Update Failed",
+                text: "Something went wrong. Please try again!",
+            });
+        }
+    };
+    
 
     return (
         <div className="min-h-screen bg-purple-50 dark:bg-[#0A0A0A] flex justify-center items-start p-4">
@@ -71,7 +110,7 @@ const TextEditor = () => {
                 <div className="flex justify-between items-center p-4 border-b border-gray-200">
                     <DocumentHeading title={title} setTitle={setTitle} />
                     <div className="space-x-1 lg:space-x-2">
-                        <button className="btn px-2 py-1 lg:px-4 lg:py-2 bg-gradient-to-r border-fuchsia-700 from-fuchsia-700 to-pink-200 text-white rounded-md font-extrabold dark:border-none">
+                        <button  onClick={handleUpdate} className="btn px-2 py-1 lg:px-4 lg:py-2 bg-gradient-to-r border-fuchsia-700 from-fuchsia-700 to-pink-200 text-white rounded-md font-extrabold dark:border-none">
                             <FaEdit />
                         </button>
                         <button

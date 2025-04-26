@@ -25,7 +25,7 @@ const DynamicDocsContainer = () => {
     const { data: availableDocumentsData = [], isError, error, isLoading: isFetchingLoading } = useDocumentGetByEmailQuery(userEmail)
     const [documentDelete, {isLoading:isDeleting}] =  useDocumentDeleteMutation()
     const documents = availableDocumentsData.documents
-    console.log(documents)
+    
 
     const handleDelete = (docsId) => {
         Swal.fire({
