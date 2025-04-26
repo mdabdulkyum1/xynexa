@@ -6,11 +6,13 @@ import { ThemeProvider } from "@/components/theme-provider";
 import Footer from "@/components/global/Footer";
 import { ClerkProvider } from "@clerk/nextjs";
 import { SaveUserToDB } from "@/lib/saveUserToDB";
-import Providers from "@/providers/Providers"; 
+import Providers from "@/providers/Providers";
 import { Toaster } from "sonner";
 import { usePathname } from "next/navigation";
 import { OfflineUserToDB } from "@/lib/offlineUserToDB";
 import { LoginUserToDB } from "@/lib/loginUserToDB";
+
+import { HMSRoomProvider } from "@100mslive/react-sdk";
 
 // export const metadata = {
 //   title: "XyNexa",
@@ -30,46 +32,49 @@ const geistMono = Geist_Mono({
 
 
 export default function RootLayout({ children }) {
-  const pathname=usePathname()
-  const isDashboard = pathname.startsWith("/dashboard"); 
-  const isSignIn = pathname.startsWith("/sign-in"); 
+  const pathname = usePathname()
+  const isDashboard = pathname.startsWith("/dashboard");
+  const isSignIn = pathname.startsWith("/sign-in");
   const isSignUp = pathname.startsWith("/sign-up");
   const shouldShowNavbarFooter = !(isDashboard || isSignIn || isSignUp);
   return (
-    <ClerkProvider
-    appearance={{
-      layout: {
-        unsafe_disableDevelopmentModeWarnings: true,
-      },
-    }}
-    >
-      <html lang="en">
-        <body
-          className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-        >
-          <Providers>
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange
+    <HMSRoomProvider>
+      <ClerkProvider
+        appearance={{
+          layout: {
+            unsafe_disableDevelopmentModeWarnings: true,
+          },
+        }}
+      >
+        <html lang="en">
+          <body
+            className={`${geistSans.variable} ${geistMono.variable} antialiased`}
           >
-            {shouldShowNavbarFooter && <Navbar />}{" "}
-            <main className="min-h-screen">
-              <SaveUserToDB />
-              <OfflineUserToDB />
-              <LoginUserToDB />
-              
-              <Toaster  position="top-right" />
-                
-                {children}
-            </main>
-            {shouldShowNavbarFooter && <Footer />}{" "}
-            
-          </ThemeProvider>
-          </Providers> 
-        </body>
-      </html>
-    </ClerkProvider>
+            <Providers>
+              <ThemeProvider
+                attribute="class"
+                defaultTheme="system"
+                enableSystem
+                disableTransitionOnChange
+              >
+                {shouldShowNavbarFooter && <Navbar />}{" "}
+                <main className="min-h-screen">
+                  <SaveUserToDB />
+                  <OfflineUserToDB />
+                  <LoginUserToDB />
+
+                  <Toaster position="top-right" />
+
+                  {children}
+                </main>
+                {shouldShowNavbarFooter && <Footer />}{" "}
+
+              </ThemeProvider>
+            </Providers>
+          </body>
+        </html>
+      </ClerkProvider>
+    </HMSRoomProvider>
+
   );
 }
