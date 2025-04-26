@@ -77,8 +77,6 @@ const Meeting = () => {
                  <p className='text-xs mt-2'><span className='underline text-blue-500'>LearnMore</span>about Goggle Meet</p>
                </div>
              </div>
-       
-       
            </div>
     );
 };

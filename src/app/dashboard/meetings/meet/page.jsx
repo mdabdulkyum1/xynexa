@@ -2,7 +2,7 @@ import ClientWrapper from "./components/ClientWrapper";
 
 
 
-export default function Page() {
+export default function Meeting() {
   return (
     <div>
          <ClientWrapper />
