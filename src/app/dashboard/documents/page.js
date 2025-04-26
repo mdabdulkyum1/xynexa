@@ -1,10 +1,11 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
+import DynamicDocsContainer from './new/components/DynamicDocsContainer';
 
 const page = () => {
     return (
-        <div className='p-4'>
+        <div className='p-4 lg:p-10'>
             <h2 className='text-xl lg:text-3xl font-semibold mb-2'>Start a new documents</h2>
             <div className='p-2 inline-block justify-center items-center border-2 mb-6'>
                 <Link href="/dashboard/documents/new"> 
@@ -20,10 +21,8 @@ const page = () => {
             </div>
             {/* dynamic document section */}
             <div>
-                <h3 className='text-xl lg:text-3xl font-semibold mb-2'>Recent documents</h3>
-                <div className='border-2 p-4'>
-
-                </div>
+                <h3 className='text-xl lg:text-3xl font-semibold mb-4 lg:mb-6'>Your documents</h3>
+               <DynamicDocsContainer></DynamicDocsContainer>
             </div>
 
         </div>
