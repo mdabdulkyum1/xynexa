@@ -5,7 +5,7 @@
 import { SectionCards } from "./component/section-cards"
 import { ChartAreaInteractive } from "./component/chart-area-interactive"
 
-
+// hay
 export default function Page() {
   return (
     <div className="flex flex-1 flex-col">
