@@ -27,9 +27,9 @@ const TextEditor = () => {
     const [isBrowser, setIsBrowser] = useState(false);
     const quillRef = useRef(null);
 
-    useEffect(() => {
-        setIsBrowser(typeof window !== 'undefined');
-    }, []);
+    // useEffect(() => {
+    //     setIsBrowser(typeof window !== 'undefined');
+    // }, []);
 
     // Save the document as HTML
     const saveDocument = () => {

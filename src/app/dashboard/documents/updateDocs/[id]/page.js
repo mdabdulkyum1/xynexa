@@ -30,9 +30,9 @@ const TextEditor = () => {
     const currentDocCreatorEmail = userData?.user?.email;
 
     // Eta diye window check
-    useEffect(() => {
-        setIsBrowser(typeof window !== 'undefined');
-    }, []);
+    // useEffect(() => {
+    //     setIsBrowser(typeof window !== 'undefined');
+    // }, []);
 
     // Jokhon document load hobe, tokhon title and content set hobe
     useEffect(() => {
