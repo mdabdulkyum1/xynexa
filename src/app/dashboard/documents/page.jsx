@@ -1,10 +1,14 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
-import DynamicDocsContainer from './new/components/DynamicDocsContainer';
 
+import dynamic from 'next/dynamic';
+const DynamicDocsContainer = dynamic(() => import('./new/components/DynamicDocsContainer'), {
+    ssr: false,
+  });
 
 const page = () => {
+
     return (
         <div className='p-4 lg:p-10'>
             <h2 className='text-xl lg:text-3xl font-semibold mb-2'>Start a new documents</h2>
