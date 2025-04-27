@@ -16,6 +16,7 @@ import {
   isYesterday,
   parseISO,
 } from "date-fns";
+import { Search } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { FaUsers } from "react-icons/fa";
@@ -79,7 +80,10 @@ const ChatSidebar = () => {
   };
 
 
+const [active, setActive] = useState(false);
+
   const handleUserSelect = (id) => {
+    setActive(id)
     dispatch(setSelectedUserId(id))
     dispatch(setGroupChatId(null))
   };
@@ -92,30 +96,60 @@ const ChatSidebar = () => {
 
 
   return (
-    <div className="flex border-r-2 border-l-2 border-gray-200 dark:border-gray-700 ">
+    <div className="flex border-r-2 border-l-2  dark:border-gray-700  border-pink-600 ">
       {/* Sidebar */}
-      <div className="relative w-80">
-        <Card className="p-4 h-[600px] flex flex-col">
+      <div className="relative w-40 md:w-80">
+        <Card className="p-4 h-[90vh] flex flex-col bg-blue-50/50">
           {/* Search Bar */}
-          <div className="mb-4">
-            <Input type="text" placeholder="Search..." className="w-full" />
+          <div className="flex items-center bg-white rounded-2xl shadow-sm px-4 py-2 w-full max-w-sm border border-gray-200">
+            <Search className="text-gray-400 w-5 h-5 mr-2" />
+            <input
+              type="text"
+              placeholder="Search"
+              className="outline-none w-full bg-transparent text-gray-700 placeholder-gray-400"
+            />
           </div>
 
           {/* Scrollable List */}
           <ScrollArea className="flex-1 overflow-y-auto">
+            {/* Groups Section */}
+
+            <div className="space-y-3 bg-white rounded-lg p-4 shadow-sm">
+              <h3 className="text-lg font-medium text-gray-800 mb-3 flex items-center">
+                <FaUsers className="mr-2" /> Groups
+              </h3>
+              {groups.map((group) => (
+                <Link href="/dashboard/chat/chat-app" key={group._id} 
+                className={`${active === group._id ? "bg-blue-500" : ""}`}>
+                  <div
+
+                    key={group._id}
+                    className="flex items-center p-2 rounded-md hover:bg-gray-100 cursor-pointer transition capitalize border-b-2 border-gray-200"
+                    onClick={() => handleGroupSelect(group._id)}
+                  >
+                    <p className="text-sm font-medium text-gray-800">
+                      {group.name}
+                    </p>
+                  </div>
+                </Link>
+              ))}
+            </div>
+
+
             {/* People Section */}
-            <h3 className="text-lg font-medium text-gray-800 dark:text-white mb-3">People</h3>
-            <div className="mb-4 space-y-3">
+
+            <div className="space-y-3 bg-white rounded-lg p-4 shadow-sm mt-4">
+              <h3 className="text-lg font-medium text-gray-800 dark:text-white mb-3">People</h3>
               {users.map((user) => (
                 <Link href="/dashboard/chat/chat-app" key={user._id}>
                   <div
-                    className="flex items-center p-2 rounded-md  hover:bg-gray-500 cursor-pointer transition"
+                    className="flex items-center p-2 rounded-md  hover:bg-gray-100 cursor-pointer transition border-b-2 border-gray-200"
                     onClick={() => handleUserSelect(user?.clerkId)} // Set selected user
                   >
                     <img
                       src={user.imageUrl}
                       alt={`${user.firstName} ${user.lastName}`}
-                      className="w-10 h-10 rounded-full mr-3"
+                      className="w-10 h-10 rounded-full object-cover mr-3"
                     />
                     <div className="flex-1">
                       <div className="flex justify-between">
@@ -136,27 +170,6 @@ const ChatSidebar = () => {
                         {user.status}
                       </p>
                     </div>
-                  </div>
-                </Link>
-              ))}
-            </div>
-
-            {/* Groups Section */}
-            <h3 className="text-lg font-medium text-gray-800 mb-3 flex items-center">
-              <FaUsers className="mr-2" /> Groups
-            </h3>
-            <div className="space-y-3">
-              {groups.map((group) => (
-                <Link href="/dashboard/chat/chat-app" key={group._id}>
-                  <div
-
-                    key={group._id}
-                    className="flex items-center p-2 rounded-md hover:bg-gray-100 cursor-pointer transition capitalize"
-                    onClick={() => handleGroupSelect(group._id)}
-                  >
-                    <p className="text-sm font-medium text-gray-800">
-                      {group.name}
-                    </p>
                   </div>
                 </Link>
               ))}
