@@ -3,11 +3,13 @@ import { useHMSActions } from "@100mslive/react-sdk";
 import { useState } from "react";
 import { Video} from "lucide-react";
 import { useUserDataFromClerk } from "@/hooks/useUserDataFromClerk";
-
+import { io } from "socket.io-client";
+const socket = io(process.env.NEXT_PUBLIC_SERVER_URL);
 
 function JoinForm() {
 
-   const {} = useUserDataFromClerk();
+   const { userData } = useUserDataFromClerk();
+   
 
   const hmsActions = useHMSActions();
   const [inputValues, setInputValues] = useState({
@@ -41,16 +43,21 @@ function JoinForm() {
     }
   };
 
-  console.log("inputValues", inputValues);
 
 
    const  handleNewMeeting = () => {
-    const userData = {
-      name: user?.displayName,
-      profilePic: user?.photoURL,
+
+    
+     const name = userData?.user?.firstName + " " + userData?.user?.lastName;
+     const imageUrl = userData?.user?.imageUrl;
+    
+    const meetUserData = {
+      name,
+      imageUrl,
       timestamp: new Date(),
     };
 
+    socket.emit("createRoom", meetUserData)
 
 
 
