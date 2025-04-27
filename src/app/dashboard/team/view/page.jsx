@@ -75,46 +75,15 @@ export default function TeamView() {
                             <h2 className="text-xl font-bold text-gray-800 dark:text-gray-100 ">
                                 {team?.name}
                             </h2>
-<<<<<<< HEAD
-                            <div className="flex items-center mb-3">
-                                <Image
-                                    src={team?.creator?.imageUrl}
-                                    alt="Creator Image"
-                                    width={40}
-                                    height={40}
-                                    className="rounded-full mr-3"
-                                />
-                                <div>
-                                    <p className="text-sm font-semibold text-gray-800 dark:text-gray-200">
-                                        {team?.creator?.firstName} {team?.creator?.lastName}
-                                    </p>
-                                    <p className="text-xs text-gray-500 dark:text-gray-400">
-                                        {team?.creator?.email}
-=======
                             <div className="flex items-center mb-2">
                                
                                 <div className='mb-3'>
                                     <p className="text-sm font-semibold text-gray-800 dark:text-gray-200">
                                         {team?.creator?.firstName} {team?.creator?.lastName}
->>>>>>> f9e9b125aa6f873181860029202d63e725e9c041
                                     </p>
 
                                 </div>
                             </div>
-<<<<<<< HEAD
-                            
-                            <div className="flex items-center text-gray-600 dark:text-gray-400 mb-2">
-                                <Type className="mr-2 w-4 h-4" /> 
-                                {team?.type}
-                            </div>
-                            <div className="flex items-center text-gray-600 dark:text-gray-400 mb-2">
-                                <Users className="mr-2 w-4 h-4" /> 
-                                {team?.members?.length} Members
-                            </div>
-                            <div className="flex items-center text-gray-600 dark:text-gray-400">
-                                <Calendar className="mr-2 w-4 h-4" /> 
-                                Created: {new Date(team?.createdAt).toLocaleDateString()}
-=======
                             <div className='mb-4 h-18 text-gray-700 dark:text-gray-300'>
                                 <p>
                                     {team?.description?.toString().length > 100
@@ -144,7 +113,6 @@ export default function TeamView() {
 
 
                                 <button className='btn bg-primary text-white dark:text-gray-800 dark:bg-white border-none p-2'><Link key={team._id} href={`/dashboard/team/view/${team?._id}`}> View </Link></button>
->>>>>>> f9e9b125aa6f873181860029202d63e725e9c041
                             </div>
 
                         </div>
