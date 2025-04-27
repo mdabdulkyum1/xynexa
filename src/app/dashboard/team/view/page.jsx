@@ -84,7 +84,7 @@ export default function TeamView() {
 
                                 </div>
                             </div>
-                            <div className='mb-4 h-18 text-gray-700 dark:text-gray-300'>
+                            <div className='mb-4 h-14 text-gray-700 dark:text-gray-300'>
                                 <p>
                                     {team?.description?.toString().length > 100
                                         ? team.description.toString().slice(0, 100) + '...'
@@ -100,7 +100,7 @@ export default function TeamView() {
                                 </p>
                             </div>
                             <div className="flex justify-between items-center text-gray-600 dark:text-gray-300">
-                                <AvatarGroup max={4}>
+                                <AvatarGroup max={6}>
                                     {team?.members?.map((member) => (
                                         <Avatar
                                             key={member?._id}
