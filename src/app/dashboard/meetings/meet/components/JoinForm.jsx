@@ -55,6 +55,7 @@ function JoinForm() {
 
 
     const name = userData?.user?.firstName + " " + userData?.user?.lastName;
+    
     const imageUrl = userData?.user?.imageUrl;
 
     const meetUserData = {
