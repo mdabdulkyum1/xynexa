@@ -9,8 +9,8 @@ function Footer() {
     toggleVideo
   } = useAVToggle();
   return (
-    <div className="control-bar">
-      <button className="btn-control" onClick={toggleAudio}>
+    <div className="bg-green-400">
+      <button className="" onClick={toggleAudio}>
         {isLocalAudioEnabled ? "Mute" : "Unmute"}
       </button>
       <button className="btn-control" onClick={toggleVideo}>
