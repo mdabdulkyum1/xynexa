@@ -12,8 +12,6 @@ const page = () => {
     const hmsActions = useHMSActions();
 
 
-    const roomState = useHMSStore(selectRoomState);
-
     useEffect(() => {
         window.onunload = () => {
             if (isConnected) {

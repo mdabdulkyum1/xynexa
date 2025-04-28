@@ -4,11 +4,16 @@ import { useState } from "react";
 import { Video} from "lucide-react";
 import { useUserDataFromClerk } from "@/hooks/useUserDataFromClerk";
 import { io } from "socket.io-client";
+import { useRouter } from "next/navigation";
+
 const socket = io(process.env.NEXT_PUBLIC_SERVER_URL);
 
 function JoinForm() {
 
+  const router = useRouter();
+
    const { userData } = useUserDataFromClerk();
+
    
 
   const hmsActions = useHMSActions();
@@ -34,7 +39,6 @@ function JoinForm() {
       endpoint: "https://api.100ms.live/v2/rtc/token",
     });
 
-    console.log("authToken", authToken);
 
     try {
       await hmsActions.join({ userName, authToken });
@@ -58,6 +62,14 @@ function JoinForm() {
     };
 
     socket.emit("createRoom", meetUserData)
+
+    socket.on("RoomCreated", (roomCode, name, timestamp)=> {
+        console.log("Room Created", roomCode, name, timestamp)
+
+        
+
+        router.push("/dashboard/meetings/meet/" + roomCode);
+    })
 
 
   }
