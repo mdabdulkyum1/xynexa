@@ -50,39 +50,41 @@ export default function RootLayout({ children }) {
   }, [isDashboard, isAdminDashboard, isSignIn, isSignUp]);
 
   return (
-    <ClerkProvider
-      appearance={{
-        layout: {
-          unsafe_disableDevelopmentModeWarnings: true,
-        },
-      }}
-    >
-      <html lang="en">
-        <body
-          className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+    <HMSRoomProvider>
+        <ClerkProvider
+          appearance={{
+            layout: {
+              unsafe_disableDevelopmentModeWarnings: true,
+            },
+          }}
         >
-          <Providers>
-            <ThemeProvider
-              attribute="class"
-              defaultTheme="system"
-              enableSystem
-              disableTransitionOnChange
+          <html lang="en">
+            <body
+              className={`${geistSans.variable} ${geistMono.variable} antialiased`}
             >
-              {shouldShowNavbarFooter && <Navbar />}
-              <main className="min-h-screen">
-                <SaveUserToDB />
-                <OfflineUserToDB />
-                <LoginUserToDB />
+              <Providers>
+                <ThemeProvider
+                  attribute="class"
+                  defaultTheme="system"
+                  enableSystem
+                  disableTransitionOnChange
+                >
+                  {shouldShowNavbarFooter && <Navbar />}
+                  <main className="min-h-screen">
+                    <SaveUserToDB />
+                    <OfflineUserToDB />
+                    <LoginUserToDB />
 
-                <Toaster position="top-right" />
+                    <Toaster position="top-right" />
 
-                {children}
-              </main>
-              {shouldShowNavbarFooter && <Footer />}
-            </ThemeProvider>
-          </Providers>
-        </body>
-      </html>
-    </ClerkProvider>
+                    {children}
+                  </main>
+                  {shouldShowNavbarFooter && <Footer />}
+                </ThemeProvider>
+              </Providers>
+            </body>
+          </html>
+        </ClerkProvider>
+    </HMSRoomProvider>
   );
 }
