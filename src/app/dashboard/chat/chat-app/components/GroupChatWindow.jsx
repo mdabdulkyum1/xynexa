@@ -1,4 +1,4 @@
-// components/GroupChatWindow.tsx
+"use client"
 
 import { useCallback, useEffect, useState } from "react";
 import { Send } from "lucide-react";
@@ -12,10 +12,8 @@ const socket = io(process.env.NEXT_PUBLIC_SERVER_URL);
 
 const GroupChatWindow = () => {
 
-
     const [groupMsg, setGroupMsg] = useState([]);
     const [newMessage, setNewMessage] = useState("");
-
 
     const axiosPublic = useAxiosPublic()
     // get group _id
@@ -25,15 +23,7 @@ const GroupChatWindow = () => {
     const dataHook = useUserDataFromClerk()
     const currentUserId = dataHook?.userData?.user?._id;
 
-
-    console.log("currentUserId", currentUserId)
-
-    // get group group info and members (by team ID)
-
     const { data: team, isLoading, isError, error } = useGetTeamQuery(groupId);
-
-
-
 
     useEffect(() => {
         fetchGroupInfo()
@@ -89,9 +79,6 @@ const GroupChatWindow = () => {
             });
 
 
-
-
-            // Clear input
             setNewMessage("");
         } catch (error) {
             console.error("Error sending message:", error);
@@ -150,7 +137,7 @@ const GroupChatWindow = () => {
                         className={`flex  ${msg?.senderId?._id === currentUserId ? "justify-end" : "justify-start"
                             }`}
                     >
-
+                        <p>{msg.message}</p>
                     </div>
                 ))}
             </div>
