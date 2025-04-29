@@ -85,14 +85,15 @@ const data = {
       url: "/support",
       icon: HelpCircleIcon,
     },
-  ],
- 
-  navSecondary: [
     {
       title: "Settings",
       url: "#",
       icon: SettingsIcon,
     },
+  ],
+ 
+  navSecondary: [
+    
     {
       title: "Get Help",
       url: "#",
@@ -130,7 +131,7 @@ export function AppSidebar({ ...props }) {
       <SidebarContent>
         <NavMain items={data.navMain} />
         
-        <NavSecondary items={data.navSecondary} className="mt-auto" />
+        
       </SidebarContent>
       <SidebarFooter>
         <NavUser user={data.user} />

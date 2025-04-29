@@ -6,10 +6,7 @@
 @import 'slick-carousel/slick/slick.css';
 @import 'slick-carousel/slick/slick-theme.css';
 
-
 @tailwind utilities;
-
-
 
 @plugin "tailwindcss-animate";
 
@@ -136,7 +133,6 @@
     @apply bg-background text-foreground;
   }
 }
-
 
 @layer utilities {
   .animate-spin-slow {
