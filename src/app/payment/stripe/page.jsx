@@ -2,7 +2,7 @@
 
 import { Suspense } from 'react';
 import Loading from '@/components/loading/Loading';
-import StripeWrapper from './StripeWrapper';
+import StripeWrapper from './components/StripeWrapper';
 
 export default function StripePage() {
   return (
