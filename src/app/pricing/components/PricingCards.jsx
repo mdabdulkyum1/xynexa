@@ -56,10 +56,8 @@ const plans = [
 const PricingCards = () => {
     const router = useRouter();
     const { userData } = useUserDataFromClerk();
-    console.log(userData)
     const packageInfo = userData?.user?.package;
     const userId = userData?.user?._id;
-    console.log("userId", userId)
   
     const axiosPublic = useAxiosPublic();
     const [showModal, setShowModal] = useState(false);
@@ -144,7 +142,7 @@ const PricingCards = () => {
                   ) : (
                     <button
                       onClick={() => handleOpenPaymentModal(plan.name.toLowerCase(), plan.priceAmount)}
-                      className="btn w-full bg-white text-[#014E4E] font-bold"
+                      className="btn w-full bg-white text-[#014E4E] font-bold" disabled={userData?.package === plan.name.toLowerCase()}
                     >
                       Claim {plan.name}
                     </button>
