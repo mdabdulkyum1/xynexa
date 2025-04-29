@@ -1,7 +1,8 @@
 "use client";
-import { useAVToggle, useHMSActions } from "@100mslive/react-sdk";
+import { useAVToggle, useHMSActions, useHMSStore } from "@100mslive/react-sdk";
 import { Mic, MicOff, Video, VideoOff, LogOut } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { FaDesktop } from "react-icons/fa";
 
 function Footer() {
   const router = useRouter();
@@ -13,6 +14,9 @@ function Footer() {
   } = useAVToggle();
 
   const hmsActions = useHMSActions();
+  // Use HMS store to check if screen sharing is active
+  const isScreenShareEnabled = useHMSStore((state) => state.localPeer?.isScreenShared);
+  console.log("isScreenShareEnabled>>>>>>>>", isScreenShareEnabled);
 
   const handleToggleAudio = async () => {
     try {
@@ -36,18 +40,28 @@ function Footer() {
     try {
       await hmsActions.leave();
       router.push("/dashboard/meetings/meet");
-
     } catch (error) {
       console.error("Failed to leave call:", error);
       alert("Unable to leave call. Please try again.");
     }
   };
 
+  const handleScreenShare = async () => {
+    try {
+      const isShare =  await hmsActions.setScreenShareEnabled(!isScreenShareEnabled);
+      console.log("Screen share toggled:", isShare);
+    } catch (error) {
+      console.error("Failed to toggle screen share:", error);
+      alert("Unable to toggle screen share. Please try again.");
+    }
+  };
+
   return (
-    <div className="bg-gray-200 p-4 flex justify-center gap-4">
+    <div className="fixed bottom-0 left-0 w-full bg-gray-200 p-4 flex justify-center gap-4 border-t">
       <button
-        className={`px-3 py-1 rounded border flex items-center ${isLocalAudioEnabled ? "bg-green-300 border-green-400" : "bg-gray-300 border-gray-400"
-          }`}
+        className={`px-3 py-1 rounded border flex items-center ${
+          isLocalAudioEnabled ? "bg-green-300 border-green-400" : "bg-gray-300 border-gray-400"
+        }`}
         onClick={handleToggleAudio}
         title={isLocalAudioEnabled ? "Microphone is on" : "Microphone is off"}
         aria-label={isLocalAudioEnabled ? "Mute microphone" : "Unmute microphone"}
@@ -66,8 +80,9 @@ function Footer() {
       </button>
 
       <button
-        className={`px-3 py-1 rounded border flex items-center ${isLocalVideoEnabled ? "bg-green-300 border-green-400" : "bg-gray-300 border-gray-400"
-          }`}
+        className={`px-3 py-1 rounded border flex items-center ${
+          isLocalVideoEnabled ? "bg-green-300 border-green-400" : "bg-gray-300 border-gray-400"
+        }`}
         onClick={handleToggleVideo}
         title={isLocalVideoEnabled ? "Video is on" : "Video is off"}
         aria-label={isLocalVideoEnabled ? "Hide video" : "Unhide video"}
@@ -83,6 +98,18 @@ function Footer() {
             Unhide
           </>
         )}
+      </button>
+
+      <button
+        className={`px-3 py-1 rounded border flex items-center ${
+          isScreenShareEnabled ? "bg-green-300 border-green-400" : "bg-gray-300 border-gray-400"
+        }`}
+        onClick={handleScreenShare}
+        title={isScreenShareEnabled ? "Stop sharing screen" : "Share screen"}
+        aria-label={isScreenShareEnabled ? "Stop sharing screen" : "Share screen"}
+      >
+        <FaDesktop size={20} className="mr-1" />
+        {isScreenShareEnabled ? "Stop Share" : "Share Screen"}
       </button>
 
       <button
