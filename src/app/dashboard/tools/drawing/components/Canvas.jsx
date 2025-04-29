@@ -8,7 +8,7 @@ import { ReactSketchCanvas } from "react-sketch-canvas";
 const Canvas = () => {
   const colorInputRef = useRef(null);
   const canvasRef = useRef(null);
-  const [strokeColor, setStrokeColor] = useState("#a855f7");
+  const [strokeColor, setStrokeColor] = useState("#014E4E");
   const [strokeWidth, setStrokeWidth] = useState(4);
   const [eraserWidth, setEraserWidth] = useState(10);
   const [eraseMode, setEraseMode] = useState(false);

@@ -1,13 +1,9 @@
 'use client';
 import { loadStripe } from '@stripe/stripe-js';
-// import { useForm } from "react-hook-form";
-// import { useEffect, useState } from "react";
-// import { MapPin } from "lucide-react";
+import { Elements } from '@stripe/react-stripe-js';
 import { useSearchParams } from 'next/navigation';
 import CheckoutForm from './CheckoutForm';
-import { Elements } from '@stripe/react-stripe-js';
 
-import Loading from '@/components/loading/Loading';
 
 
 

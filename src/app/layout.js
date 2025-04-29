@@ -1,4 +1,4 @@
-'use client'
+'use client';
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/global/Navbar";
@@ -11,6 +11,7 @@ import { Toaster } from "sonner";
 import { usePathname } from "next/navigation";
 import { OfflineUserToDB } from "@/lib/offlineUserToDB";
 import { LoginUserToDB } from "@/lib/loginUserToDB";
+import { useEffect, useState } from "react";
 
 import { HMSRoomProvider } from "@100mslive/react-sdk";
 
@@ -29,52 +30,61 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-
-
 export default function RootLayout({ children }) {
-  const pathname = usePathname()
-  const isDashboard = pathname.startsWith("/dashboard");
-  const isSignIn = pathname.startsWith("/sign-in");
-  const isSignUp = pathname.startsWith("/sign-up");
-  const shouldShowNavbarFooter = !(isDashboard || isSignIn || isSignUp);
+  const pathname = usePathname();
+  const [isDashboard, setIsDashboard] = useState(false);
+  const [isAdminDashboard, setIsAdminDashboard] = useState(false);
+  const [isSignIn, setIsSignIn] = useState(false);
+  const [isSignUp, setIsSignUp] = useState(false);
+  const [shouldShowNavbarFooter, setShouldShowNavbarFooter] = useState(true);
+
+  useEffect(() => {
+    setIsDashboard(pathname.startsWith("/dashboard"));
+    setIsAdminDashboard(pathname.startsWith("/admin-dashbaord")); // Corrected path
+    setIsSignIn(pathname.startsWith("/sign-in"));
+    setIsSignUp(pathname.startsWith("/sign-up"));
+  }, [pathname]);
+
+  useEffect(() => {
+    setShouldShowNavbarFooter(!(isDashboard || isAdminDashboard || isSignIn || isSignUp));
+  }, [isDashboard, isAdminDashboard, isSignIn, isSignUp]);
+
   return (
     <HMSRoomProvider>
-      <ClerkProvider
-        appearance={{
-          layout: {
-            unsafe_disableDevelopmentModeWarnings: true,
-          },
-        }}
-      >
-        <html lang="en">
-          <body
-            className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-          >
-            <Providers>
-              <ThemeProvider
-                attribute="class"
-                defaultTheme="system"
-                enableSystem
-                disableTransitionOnChange
-              >
-                {shouldShowNavbarFooter && <Navbar />}{" "}
-                <main className="min-h-screen">
-                  <SaveUserToDB />
-                  <OfflineUserToDB />
-                  <LoginUserToDB />
+        <ClerkProvider
+          appearance={{
+            layout: {
+              unsafe_disableDevelopmentModeWarnings: true,
+            },
+          }}
+        >
+          <html lang="en">
+            <body
+              className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+            >
+              <Providers>
+                <ThemeProvider
+                  attribute="class"
+                  defaultTheme="system"
+                  enableSystem
+                  disableTransitionOnChange
+                >
+                  {shouldShowNavbarFooter && <Navbar />}
+                  <main className="min-h-screen">
+                    <SaveUserToDB />
+                    <OfflineUserToDB />
+                    <LoginUserToDB />
 
-                  <Toaster position="top-right" />
+                    <Toaster position="top-right" />
 
-                  {children}
-                </main>
-                {shouldShowNavbarFooter && <Footer />}{" "}
-
-              </ThemeProvider>
-            </Providers>
-          </body>
-        </html>
-      </ClerkProvider>
+                    {children}
+                  </main>
+                  {shouldShowNavbarFooter && <Footer />}
+                </ThemeProvider>
+              </Providers>
+            </body>
+          </html>
+        </ClerkProvider>
     </HMSRoomProvider>
-
   );
 }
