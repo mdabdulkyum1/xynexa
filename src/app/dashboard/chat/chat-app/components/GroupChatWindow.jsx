@@ -1,4 +1,4 @@
-// components/GroupChatWindow.tsx
+"use client"
 
 import { useCallback, useEffect, useState } from "react";
 import { Send } from "lucide-react";
@@ -12,10 +12,8 @@ const socket = io(process.env.NEXT_PUBLIC_SERVER_URL);
 
 const GroupChatWindow = () => {
 
-
     const [groupMsg, setGroupMsg] = useState([]);
     const [newMessage, setNewMessage] = useState("");
-
 
     const axiosPublic = useAxiosPublic()
     // get group _id
@@ -25,15 +23,7 @@ const GroupChatWindow = () => {
     const dataHook = useUserDataFromClerk()
     const currentUserId = dataHook?.userData?.user?._id;
 
-
-    console.log("currentUserId", currentUserId)
-
-    // get group group info and members (by team ID)
-
     const { data: team, isLoading, isError, error } = useGetTeamQuery(groupId);
-
-
-
 
     useEffect(() => {
         fetchGroupInfo()
@@ -89,9 +79,6 @@ const GroupChatWindow = () => {
             });
 
 
-
-
-            // Clear input
             setNewMessage("");
         } catch (error) {
             console.error("Error sending message:", error);
@@ -111,7 +98,7 @@ const GroupChatWindow = () => {
         const handleReceiveGroupMessage = (message) => {
             if (!message) return;
             if (message.senderId === currentUserId) return;
-            if (message.groupId !== groupId) return; 
+            if (message.groupId !== groupId) return;
 
 
             setGroupMsg((prev) => {
@@ -150,17 +137,7 @@ const GroupChatWindow = () => {
                         className={`flex  ${msg?.senderId?._id === currentUserId ? "justify-end" : "justify-start"
                             }`}
                     >
-                        <div
-                            className={`px-2 py-1 rounded-lg max-w-xs ${msg?.senderId?._id === currentUserId
-                                ? "bg-blue-500 text-white"
-                                : "bg-gray-200 text-black"
-                                }`}
-                        >
-                            <span className="text-xs block mb-1 font-medium">
-                                {msg?.senderId?._id === currentUserId ? "You" : msg?.senderId?.firstName}
-                            </span>
-                            {msg?.message}
-                        </div>
+                        <p>{msg.message}</p>
                     </div>
                 ))}
             </div>
