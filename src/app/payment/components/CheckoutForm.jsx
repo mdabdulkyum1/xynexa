@@ -154,7 +154,7 @@ const CheckoutForm = ({ amount, plan }) => {
       </div>
     );
   }
-
+ 
   return (
     <div className='max-w-xl mx-auto mt-8'>
       <form onSubmit={handleSubmit} className='space-y-4 p-6 bg-teal-100 rounded-lg shadow'>
