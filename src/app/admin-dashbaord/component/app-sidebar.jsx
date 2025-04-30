@@ -71,23 +71,23 @@ const data = {
     
     {
       title: "Billing",
-      url: "/billings",
+      url: "/admin-dashbaord/billings",
       icon: DollarSignIcon,
     },
     
     {
       title: "Feedback",
-      url: "/feedback",
+      url: "/admin-dashbaord/feedback",
       icon: MessageSquareIcon,
     },
     {
       title: "Support",
-      url: "/support",
+      url: "/admin-dashbaord/support",
       icon: HelpCircleIcon,
     },
     {
       title: "Settings",
-      url: "#",
+      url: "/admin-dashbaord",
       icon: SettingsIcon,
     },
   ],

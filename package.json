@@ -94,12 +94,7 @@
     "react-redux": "^9.2.0",
     "react-sketch-canvas": "^6.2.0",
     "react-slick": "^0.30.3",
-<<<<<<< HEAD
     "recharts": "^2.15.3",
-=======
-    "react-tooltip": "^5.28.1",
-    "recharts": "^2.15.1",
->>>>>>> a0b80f3939e72e8c206e6d373e189ff2e43449c8
     "remark-gfm": "^4.0.1",
     "slick-carousel": "^1.8.1",
     "socket.io-client": "^4.8.1",
