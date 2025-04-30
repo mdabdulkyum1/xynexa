@@ -11,11 +11,23 @@ import { usePathname } from "next/navigation";
 import { SignedIn, SignedOut, UserButton, useUser } from "@clerk/nextjs";
 import clsx from "clsx";
 
+
+import { useUserDataFromClerk } from '@/hooks/useUserDataFromClerk';
+import { MdDashboard } from "react-icons/md";
 const Navbar = () => {
-  const isVisible = useScrollDirection(); // Get the visibility status
+  const isVisible = useScrollDirection(); 
   const { user } = useUser();
 
-  const pathName = usePathname(); // Get the current
+  const pathName = usePathname(); 
+
+
+  const { user: mainUser, isLoaded } = useUser();
+  const userEmail = mainUser?.emailAddresses[0]?.emailAddress;
+
+  const { userData, isLoading } = useUserDataFromClerk(userEmail);
+  const userRole = userData?.user?.role;
+
+  
 
   const activeClass =
     "text-primary dark:text-primary font-semibold underline decoration-2 underline-offset-4";
@@ -55,10 +67,10 @@ const Navbar = () => {
           Pricing
         </Link>
       </li>
-      {user && (
+      {/* {user && (
         <li>
           <Link
-            href="/dashboard"
+            href={userRole === "admin" ? "/admin-dashbaord" : "/dashboard"}
             className={clsx(
               "hover:text-primary dark:hover:text-[#014E4E]",
               pathName === "/dashboard" && activeClass
@@ -67,7 +79,7 @@ const Navbar = () => {
             Dashboard
           </Link>
         </li>
-      )}
+      )} */}
       <li>
         <Link
           href="/contact-us"
@@ -155,7 +167,13 @@ const Navbar = () => {
                 </Link>
               </SignedOut>
               <SignedIn>
-                <UserButton />
+              <UserButton>
+                    <UserButton.MenuItems>
+                      <UserButton.Link label="Dashboard" href={userRole === "admin" ? "/admin-dashbaord" : "/dashboard"} labelIcon={<MdDashboard size={15} />} />
+                      <UserButton.Action label="manageAccount" />
+                      <UserButton.Action label="signOut" />
+                    </UserButton.MenuItems>
+                  </UserButton>
               </SignedIn>
             </div>
           </div>
