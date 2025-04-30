@@ -1,13 +1,14 @@
 "use client";
-import TextEditor from './components/TextEditor';
+import dynamic from "next/dynamic";
 
-const page = () => {
-    return (
-        <div>
-        
-        <TextEditor></TextEditor>
-        </div>
-    );
+const TextEditor = dynamic(() => import('./components/TextEditor'), { ssr: false });
+
+const Page = () => {
+  return (
+    <div>
+      <TextEditor />
+    </div>
+  );
 };
 
-export default page;
+export default Page;
