@@ -71,28 +71,29 @@ const data = {
     
     {
       title: "Billing",
-      url: "/billings",
+      url: "/admin-dashbaord/billings",
       icon: DollarSignIcon,
     },
     
     {
       title: "Feedback",
-      url: "/feedback",
+      url: "/admin-dashbaord/feedback",
       icon: MessageSquareIcon,
     },
     {
       title: "Support",
-      url: "/support",
+      url: "/admin-dashbaord/support",
       icon: HelpCircleIcon,
+    },
+    {
+      title: "Settings",
+      url: "/admin-dashbaord",
+      icon: SettingsIcon,
     },
   ],
  
   navSecondary: [
-    {
-      title: "Settings",
-      url: "#",
-      icon: SettingsIcon,
-    },
+    
     {
       title: "Get Help",
       url: "#",
@@ -130,7 +131,7 @@ export function AppSidebar({ ...props }) {
       <SidebarContent>
         <NavMain items={data.navMain} />
         
-        <NavSecondary items={data.navSecondary} className="mt-auto" />
+        
       </SidebarContent>
       <SidebarFooter>
         <NavUser user={data.user} />
