@@ -96,6 +96,7 @@ const GroupChatWindow = () => {
         socket.emit("joinGroup", { groupId });
 
         const handleReceiveGroupMessage = (message) => {
+            console.log("Received group message:", message);
             if (!message) return;
             if (message.senderId === currentUserId) return;
             if (message.groupId !== groupId) return;
@@ -132,18 +133,33 @@ const GroupChatWindow = () => {
             </div>
 
             {/* Chat Area */}
-            <div className="flex-1 overflow-y-auto p-4 space-y-3 bg-gray-50 ">
+            <div className="flex-1 overflow-y-auto p-4 space-y-3 bg-gray-50">
                 {groupMsg.map((msg) => (
                     <div
                         key={msg._id}
-                        className={`flex  ${msg?.senderId?._id === currentUserId ? "justify-end" : "justify-start"
-                            }`}
+                        className={`flex ${msg?.senderId?._id === currentUserId ? "justify-end" : "justify-start"}`}
                     >
-                        <div className={`flex items-center gap-2 ${msg?.senderId?._id === currentUserId ? "flex-row-reverse" : ""}`}>
-                            <img src={msg?.senderId.imageUrl || dataHook?.userData?.user?.imageUrl } className="w-6 h-6 rounded-full" alt="" />
-                            <p className={`${msg?.senderId?._id === currentUserId ? 
-                                "bg-purple-700 text-white  px-2 py-[0.4px] rounded-full" : 
-                                "bg-gray-200 text-black px-2 py-[0.4px] rounded-full"}`}>{msg?.message}</p>
+                        <div
+                            className={`flex items-center gap-2 ${msg?.senderId?._id === currentUserId ? "flex-row-reverse" : ""
+                                }`}
+                        >
+                            <img
+                                src={
+                                    msg?.senderId?._id === currentUserId
+                                        ? dataHook?.userData?.user?.imageUrl
+                                        : msg?.senderId?.imageUrl
+                                }
+                                className="w-6 h-6 rounded-full"
+                                alt=""
+                            />
+                            <p
+                                className={`${msg?.senderId?._id === currentUserId
+                                        ? "bg-purple-700 text-white px-2 py-[0.4px] rounded-full"
+                                        : "bg-gray-200 text-black px-2 py-[0.4px] rounded-full"
+                                    }`}
+                            >
+                                {msg?.message}
+                            </p>
                         </div>
                     </div>
                 ))}
