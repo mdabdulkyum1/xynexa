@@ -118,6 +118,8 @@ const GroupChatWindow = () => {
 
     }, [groupId, currentUserId, newMessage])
 
+    console.log("groupMsg", groupMsg)
+
     return (
         <div className="flex flex-col w-full h-[80vh] mx-4 shadow-xl rounded-2xl bg-white overflow-hidden">
             {/* Header */}
@@ -137,7 +139,12 @@ const GroupChatWindow = () => {
                         className={`flex  ${msg?.senderId?._id === currentUserId ? "justify-end" : "justify-start"
                             }`}
                     >
-                        <p>{msg.message}</p>
+                        <div className={`flex items-center gap-2 ${msg?.senderId?._id === currentUserId ? "flex-row-reverse" : ""}`}>
+                            <img src={msg?.senderId.imageUrl || dataHook?.userData?.user?.imageUrl } className="w-6 h-6 rounded-full" alt="" />
+                            <p className={`${msg?.senderId?._id === currentUserId ? 
+                                "bg-purple-700 text-white  px-2 py-[0.4px] rounded-full" : 
+                                "bg-gray-200 text-black px-2 py-[0.4px] rounded-full"}`}>{msg?.message}</p>
+                        </div>
                     </div>
                 ))}
             </div>
