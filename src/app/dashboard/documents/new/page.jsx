@@ -1,5 +1,8 @@
-import React from 'react';
-import TextEditor from './components/TextEditor';
+"use client";
+import dynamic from "next/dynamic";
+
+const TextEditor = dynamic(() => import('./components/TextEditor'), { ssr: false });
+
 
 const page = () => {
     return (
