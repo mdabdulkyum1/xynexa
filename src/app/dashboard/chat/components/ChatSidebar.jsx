@@ -28,7 +28,6 @@ const ChatSidebar = () => {
   const [users, setUsers] = useState([]);
 
   const userEmail = user?.emailAddresses[0]?.emailAddress;
-  console.log("user Email", userEmail);
   const { data: groups = [] } = useGetTeamsByEmailForGroupChatQuery(userEmail);
 
 
