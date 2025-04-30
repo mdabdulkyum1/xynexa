@@ -13,7 +13,7 @@ import "./editor.css";
 import { pdfExporter } from 'quill-to-pdf';
 import { saveAs } from 'file-saver';
 
-
+ 
 const ReactQuill = dynamic(() => import("react-quill-new"), { ssr: false });
 
 const TextEditor = () => {
