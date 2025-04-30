@@ -1,11 +1,10 @@
 import React from 'react';
-import TextEditor from './components/TextEditor';
+import FeedbackFrm from './components/FeedbackFrm';
 
 const page = () => {
     return (
         <div>
-        
-        <TextEditor></TextEditor>
+           <FeedbackFrm></FeedbackFrm> 
         </div>
     );
 };

@@ -1,6 +1,32 @@
+'use client';
 import Image from 'next/image';
+import { useRef } from 'react';
+import emailjs from '@emailjs/browser';
 
 const ContactBanner = () => {
+    const form = useRef();
+
+    const sendEmail = async (e) => {
+        e.preventDefault();
+
+        try {
+            const result = await emailjs.sendForm(
+                'service_6seqxf5',  // service ID
+                'template_i7h9t0k', // template ID
+                form.current,       // form reference
+                
+                process.env.NEXT_PUBLIC_EMAILJS_API_KEY
+            );
+            console.log(result.text);
+            alert('Message sent successfully to all team members!');
+            form.current.reset();
+        } catch (error) {
+            console.error(error.text);
+            alert('Failed to send the message. Please try again!');
+        }
+    };
+
+
     return (
         <section className="container mx-auto px-4 sm:px-6 lg:px-10 py-10">
             <div className="my-10 text-center">
@@ -18,9 +44,8 @@ const ContactBanner = () => {
                     <Image 
                         src="/assets/contact/hero-contact.jpg" 
                         alt="Customer support"
-                        layout="fill"
-                        
-                        className="absolute inset-0"
+                        fill
+                        className="absolute inset-0 object-cover"
                     />
                     <div className="absolute inset-0 bg-gray-800 opacity-30"></div>
 
@@ -40,39 +65,43 @@ const ContactBanner = () => {
                         Have a question or feedback? Fill out the form below, and we'll get back to you as soon as possible.
                     </p>
                     
-                    <form className="grid grid-cols-1 gap-4">
+                    <form ref={form} onSubmit={sendEmail} className="grid grid-cols-1 gap-4">
                         <input 
                             type="text" 
+                            name="user_name"
                             placeholder="Full Name" 
                             className="p-3 rounded-lg bg-white text-gray-800 placeholder-gray-400 focus:outline-none"
+                            required
                         />
                         <input 
                             type="email" 
+                            name="user_email"
                             placeholder="Email" 
                             className="p-3 rounded-lg bg-white text-gray-800 placeholder-gray-400 focus:outline-none"
+                            required
                         />
                         <input 
                             type="text" 
+                            name="subject"
                             placeholder="Subject" 
                             className="p-3 rounded-lg bg-white text-gray-800 placeholder-gray-400 focus:outline-none"
+                            required
                         />
                         <textarea 
                             placeholder="Message" 
+                            name="message"
                             rows="4"
                             className="p-3 rounded-lg bg-white text-gray-800 placeholder-gray-400 focus:outline-none"
+                            required
                         ></textarea>
 
                         {/* Styled Button */}
                         <div className="relative w-full flex justify-center text-center mt-6">
-                            <button className="bg-teal-900 text-white text-center font-semibold px-6 py-3 rounded-t-lg  gap-2 shadow-md hover:bg-gray-200 hover:text-teal-900 hover:border-2 hover:border-teal-900 transition w-full">
+                            <button type="submit" className="bg-teal-900 text-white font-semibold px-6 py-3 rounded-t-lg gap-2 shadow-md hover:bg-gray-200 hover:text-teal-900 hover:border-2 hover:border-teal-900 transition w-full">
                                 SEND MESSAGE 
-                                
                             </button>
-                            
                         </div>
                     </form>
-
-                    
                 </div>
             </div>
         </section>
