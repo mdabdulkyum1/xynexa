@@ -6,10 +6,7 @@
 @import 'slick-carousel/slick/slick.css';
 @import 'slick-carousel/slick/slick-theme.css';
 
-
 @tailwind utilities;
-
-
 
 @plugin "tailwindcss-animate";
 
@@ -137,7 +134,6 @@
   }
 }
 
-
 @layer utilities {
   .animate-spin-slow {
     animation: spin 30s linear infinite;
@@ -235,3 +231,6 @@ backdrop-filter: blur(9.2px);
   font-family: "DM Sans", sans-serif;
 }
 
+.cl-internal-1p733cp{
+  
+}

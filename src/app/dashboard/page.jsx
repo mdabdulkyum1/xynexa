@@ -10,6 +10,8 @@ const Dashboard = async () => {
         return redirect('/sign-in'); 
     }
 
+    
+
     return (
         <div>
             <Page/>
