@@ -22,7 +22,7 @@ const CreateModalBtn = () => {
                 <div onClick={openModal} className="p-4 cursor-pointer rounded-lg shadow border-dashed border-2 border-gray-400 flex items-center justify-center ">
             <div className="text-center">
             
-            <p>Click here to add new team</p>
+            <p>Create a new team</p>
             </div>
         </div>
             </div>
