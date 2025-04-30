@@ -55,17 +55,17 @@ const data = {
     },
     {
       title: "Users",
-      url: "/users",
+      url: "/admin-dashbaord/users",
       icon: UsersIcon,
     },
     {
       title: "Teams",
-      url: "/teams",
+      url: "/admin-dashbaord/teams",
       icon: FolderIcon,
     },
     {
       title: "Tasks",
-      url: "/tasks",
+      url: "/admin-dashbaord/tasks",
       icon: ClipboardListIcon,
     },
     
