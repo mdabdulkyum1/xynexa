@@ -14,25 +14,18 @@ import {
 import Link from "next/link";
 import { useState } from "react";
 import useScrollDirection from "@/hooks/ScrollDirection/useScrollDirection";
-
-// import { Sheet, SheetTrigger, SheetContent } from "@/components/ui/sheet";
-// import { Menu } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { SignedIn, SignedOut, UserButton, useUser } from "@clerk/nextjs";
-
-import { useUserDataFromClerk } from "@/hooks/useUserDataFromClerk";
 import { MdDashboard } from "react-icons/md";
+import { useSelector } from "react-redux";
 
 export function XynexaNavbar() {
-  const { user } = useUser();
+  
 
   const pathName = usePathname();
 
-  const { user: mainUser, isLoaded } = useUser();
-  const userEmail = mainUser?.emailAddresses[0]?.emailAddress;
-
-  const { userData, isLoading } = useUserDataFromClerk(userEmail);
-  const userRole = userData?.user?.role;
+  const user = useSelector((state) => state.user.user);
+  const userRole = user?.role;
 
   const navItems = [
     {
