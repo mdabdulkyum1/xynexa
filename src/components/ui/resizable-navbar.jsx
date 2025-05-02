@@ -7,8 +7,10 @@ import {
   useScroll,
   useMotionValueEvent,
 } from "motion/react";
+import Link from "next/link";
 
 import React, { useRef, useState } from "react";
+import { ModeToggle } from "../global/ModeToggle";
 
 
 export const Navbar = ({
@@ -91,7 +93,7 @@ export const NavItems = ({
         className
       )}>
       {items.map((item, idx) => (
-        <a
+        <Link
           onMouseEnter={() => setHovered(idx)}
           onClick={onItemClick}
           className="relative px-4 py-2 text-neutral-600 dark:text-neutral-300"
@@ -103,8 +105,9 @@ export const NavItems = ({
               className="absolute inset-0 h-full w-full rounded-full bg-gray-100 dark:bg-neutral-800" />
           )}
           <span className="relative z-20">{item.name}</span>
-        </a>
+        </Link>
       ))}
+      <ModeToggle />
     </motion.div>)
   );
 };
@@ -191,16 +194,16 @@ export const MobileNavToggle = ({
 
 export const NavbarLogo = () => {
   return (
-    (<a
-      href="#"
+    (<Link
+      href="/"
       className="relative z-20 mr-4 flex items-center space-x-2 px-2 py-1 text-sm font-normal text-black">
       <img
         src="https://assets.aceternity.com/logo-dark.png"
         alt="logo"
         width={30}
         height={30} />
-      <span className="font-medium text-black dark:text-white">Startup</span>
-    </a>)
+      <span className="font-medium text-black dark:text-white">Xynexa</span>
+    </Link>)
   );
 };
 
