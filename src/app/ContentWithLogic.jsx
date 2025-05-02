@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import { useDispatch } from "react-redux";
 import { useUser } from "@clerk/nextjs";
-// import { setUser, logout } from "@/redux/features/Auth/userSlice";
 import { useGetUserByEmailQuery } from "@/redux/features/Api/userApi";
 import { LoginUserToDB } from "@/lib/loginUserToDB";
 import { OfflineUserToDB } from "@/lib/offlineUserToDB";
@@ -13,7 +12,7 @@ import { XynexaNavbar } from "@/components/global/XynexaNavbar";
 import Footer from "@/components/global/Footer";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "sonner";
-import { setUser } from "@/redux/features/Slice/userSlice";
+import { logout, setUser } from "@/redux/features/Slice/userSlice";
 import "./globals.css";
 
 export default function ContentWithLogic({ children }) {
