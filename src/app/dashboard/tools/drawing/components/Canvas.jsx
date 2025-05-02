@@ -1,56 +1,61 @@
-'use client'
+'use client';
 
-import { Button } from "@/components/ui/button";
-import { Eraser, Pen, Redo, RotateCcw, Save, Trash2, Pencil } from "lucide-react";
 import { useRef, useState } from "react";
 import { ReactSketchCanvas } from "react-sketch-canvas";
+import { Button } from "@/components/ui/button";
+import {
+  Eraser,
+  Pen,
+  Redo,
+  RotateCcw,
+  Save,
+  Trash2,
+  Pencil,
+} from "lucide-react";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 const Canvas = () => {
   const colorInputRef = useRef(null);
   const canvasRef = useRef(null);
-  const [strokeColor, setStrokeColor] = useState("#a855f7");
+  const [strokeColor, setStrokeColor] = useState("#014E4E");
   const [strokeWidth, setStrokeWidth] = useState(4);
   const [eraserWidth, setEraserWidth] = useState(10);
   const [eraseMode, setEraseMode] = useState(false);
 
-  
-
-  // Color functionality
   const handleStrokeColorChange = (e) => {
     setStrokeColor(e.target.value);
   };
 
-  // Drawing Pen function
   const handlePenClick = () => {
     setEraseMode(false);
     canvasRef.current?.eraseMode(false);
   };
 
-  // Drawing erase Function
   const handleEraseClick = () => {
     setEraseMode(true);
     canvasRef.current?.eraseMode(true);
-    
   };
 
-  // Undo click
   const handleUndoClick = () => {
     canvasRef.current?.undo();
   };
 
-  // Redo Click
   const handleRedoClick = () => {
     canvasRef.current?.redo();
   };
 
-  // Save
   const handleSave = async () => {
-    const dataURL = await canvasRef.current?.exportImage('png');
+    const dataURL = await canvasRef.current?.exportImage("png");
     if (dataURL) {
-      const link = Object.assign(document.createElement('a'), {
+      const link = Object.assign(document.createElement("a"), {
         href: dataURL,
-        style: { display: 'none' },
-        download: 'xynexadocument.png'
+        style: { display: "none" },
+        download: "xynexadocument.png",
       });
       document.body.appendChild(link);
       link.click();
@@ -58,7 +63,6 @@ const Canvas = () => {
     }
   };
 
-  // Clear canvas
   const handleClearCanvas = () => {
     canvasRef.current?.clearCanvas();
   };
@@ -99,105 +103,139 @@ const Canvas = () => {
         </div>
       </div>
 
-      <div className="flex flex-col lg:flex-row gap-6 lg:gap-4">
-  {/* Canvas Area */}
-  <div className="w-full">
-    <ReactSketchCanvas
-      width="100%"
-      height="400px"
-      ref={canvasRef}
-      canvasColor="transparent"
-      strokeColor={eraseMode ? 'white' : strokeColor}
-       strokeWidth={eraseMode ? eraserWidth : strokeWidth}
-      className="!rounded-2xl !border-purple-500 dark:!border-purple-800 w-full"
-    />
-  </div>
+      <TooltipProvider>
+        <div className="flex flex-col lg:flex-row gap-6 lg:gap-4">
+          {/* Canvas Area */}
+          <div className="w-full">
+            <ReactSketchCanvas
+              width="100%"
+              height="400px"
+              ref={canvasRef}
+              canvasColor="transparent"
+              strokeColor={eraseMode ? "white" : strokeColor}
+              strokeWidth={eraseMode ? eraserWidth : strokeWidth}
+              className="!rounded-2xl !border-[#014E4E] dark:!border-[#014E4E] w-full"
+            />
+          </div>
 
-{/* Controls Area */}
-<div className="w-full lg:w-1/4 flex sm:flex-row sm:gap-2 sm:justify-center lg:flex-col lg:items-start gap-6">
-  {/* Color picker */}
-  <Button
-    size="icon"
-    onClick={() => colorInputRef.current?.click()}
-    style={{ backgroundColor: strokeColor }}
-    className="lg:w-12 lg:h-12 w-8 h-8"
-    disabled={eraseMode}
-  >
-    <input
-      type="color"
-      ref={colorInputRef}
-      className="sr-only"
-      value={strokeColor}
-      onChange={handleStrokeColorChange}
-    />
-  </Button>
+          {/* Controls Area */}
+          <div className="w-full lg:w-1/4 flex sm:flex-row sm:gap-2 sm:justify-center lg:flex-col lg:items-start gap-6">
+            {/* Color Picker */}
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  size="icon"
+                  onClick={() => colorInputRef.current?.click()}
+                  style={{ backgroundColor: strokeColor }}
+                  className="lg:w-12 lg:h-12 w-8 h-8"
+                  disabled={eraseMode}
+                >
+                  <input
+                    type="color"
+                    ref={colorInputRef}
+                    className="sr-only"
+                    value={strokeColor}
+                    onChange={handleStrokeColorChange}
+                  />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>Pick Color</TooltipContent>
+            </Tooltip>
 
-  {/* Drawing Modes */}
-  <div className="flex gap-3 sm:flex-row sm:gap-2 lg:flex-col">
-    <Button
-      size="icon"
-      variant="outline"
-      disabled={!eraseMode}
-      onClick={handlePenClick}
-      className="w-8 h-8 sm:w-10 sm:h-10"
-    >
-      <Pen size={16} />
-    </Button>
-    <Button
-      size="icon"
-      variant="outline"
-      disabled={eraseMode}
-      onClick={handleEraseClick}
-      className="w-8 h-8 sm:w-10 sm:h-10"
-    >
-      <Eraser size={16} />
+            {/* Drawing Modes */}
+            <div className="flex gap-3 sm:flex-row sm:gap-2 lg:flex-col">
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button
+                    size="icon"
+                    variant="outline"
+                    disabled={!eraseMode}
+                    onClick={handlePenClick}
+                    className="w-8 h-8 sm:w-10 sm:h-10"
+                  >
+                    <Pen size={16} />
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent>Pen Tool</TooltipContent>
+              </Tooltip>
 
-    </Button>
-  </div>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button
+                    size="icon"
+                    variant="outline"
+                    disabled={eraseMode}
+                    onClick={handleEraseClick}
+                    className="w-8 h-8 sm:w-10 sm:h-10"
+                  >
+                    <Eraser size={16} />
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent>Eraser</TooltipContent>
+              </Tooltip>
+            </div>
 
-  {/* Actions */}
-  <div className="flex gap-3 sm:flex-row sm:gap-2 lg:flex-col">
-    <Button
-      size="icon"
-      variant="outline"
-      onClick={handleUndoClick}
-      className="w-8 h-8 sm:w-10 sm:h-10"
-    >
-      <Redo size={16} />
-    </Button>
-    <Button
-      size="icon"
-      variant="outline"
-      onClick={handleRedoClick}
-      className="w-8 h-8 sm:w-10 sm:h-10"
-    >
-      <RotateCcw size={16} />
-    </Button>
-    <Button
-      size="icon"
-      variant="outline"
-      onClick={handleSave}
-      className="w-8 h-8 sm:w-10 sm:h-10"
-    >
-      <Save size={16} />
-    </Button>
-    <button
-      onClick={handleClearCanvas}
-      className="px-3 py-3 bg-red-500 hover:bg-red-600 hover:shadow-lg text-white rounded w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center"
-    >
-      {/* Delete branch added */}
-      <Trash2 size={16} />
+            {/* Actions */}
+            <div className="flex gap-3 sm:flex-row sm:gap-2 lg:flex-col">
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button
+                    size="icon"
+                    variant="outline"
+                    onClick={handleUndoClick}
+                    className="w-8 h-8 sm:w-10 sm:h-10"
+                  >
+                    <Redo size={16} />
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent>Undo</TooltipContent>
+              </Tooltip>
 
-    </button>
-  </div>
-</div>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button
+                    size="icon"
+                    variant="outline"
+                    onClick={handleRedoClick}
+                    className="w-8 h-8 sm:w-10 sm:h-10"
+                  >
+                    <RotateCcw size={16} />
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent>Redo</TooltipContent>
+              </Tooltip>
 
-</div>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button
+                    size="icon"
+                    variant="outline"
+                    onClick={handleSave}
+                    className="w-8 h-8 sm:w-10 sm:h-10"
+                  >
+                    <Save size={16} />
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent>Save Image</TooltipContent>
+              </Tooltip>
 
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <button
+                    onClick={handleClearCanvas}
+                    className="px-3 py-3 bg-red-500 hover:bg-red-600 hover:shadow-lg text-white rounded w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center"
+                  >
+                    <Trash2 size={16} />
+                  </button>
+                </TooltipTrigger>
+                <TooltipContent>Clear Canvas</TooltipContent>
+              </Tooltip>
+            </div>
+          </div>
+        </div>
+      </TooltipProvider>
     </div>
   );
 };
-
-
 
 export default Canvas;

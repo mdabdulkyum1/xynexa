@@ -55,44 +55,48 @@ const data = {
     },
     {
       title: "Users",
-      url: "/users",
+      url: "/admin-dashbaord/users",
       icon: UsersIcon,
     },
     {
       title: "Teams",
-      url: "/teams",
+      url: "/admin-dashbaord/teams",
       icon: FolderIcon,
     },
     {
       title: "Tasks",
-      url: "/tasks",
+      url: "/admin-dashbaord/tasks",
       icon: ClipboardListIcon,
     },
     
     {
       title: "Billing",
-      url: "/billings",
+      url: "/admin-dashbaord/billings",
       icon: DollarSignIcon,
     },
     
     {
       title: "Feedback",
-      url: "/feedback",
+      url: "/admin-dashbaord/feedback",
       icon: MessageSquareIcon,
     },
     {
       title: "Support",
-      url: "/support",
+      url: "/admin-dashbaord/support",
       icon: HelpCircleIcon,
+      items: [
+        {title: "support", url: "/admin-dashbaord/support"}
+      ]
+    },
+    {
+      title: "Settings",
+      url: "/admin-dashbaord",
+      icon: SettingsIcon,
     },
   ],
  
   navSecondary: [
-    {
-      title: "Settings",
-      url: "#",
-      icon: SettingsIcon,
-    },
+    
     {
       title: "Get Help",
       url: "#",
@@ -130,7 +134,7 @@ export function AppSidebar({ ...props }) {
       <SidebarContent>
         <NavMain items={data.navMain} />
         
-        <NavSecondary items={data.navSecondary} className="mt-auto" />
+        
       </SidebarContent>
       <SidebarFooter>
         <NavUser user={data.user} />

@@ -1,52 +1,55 @@
-// import Loading from '@/components/loading/Loading';
-// import Faq from './components/home/Faq/Faq';
-// import Features from './components/home/Features';
+'use client';
+
+import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import { useUser } from '@clerk/nextjs';
+import { useUserDataFromClerk } from '@/hooks/useUserDataFromClerk';
+
 import Hero from './components/home/Hero/Hero';
 import WorkFlow from './landingPage/WorkFlow';
 import EssyCollab from './landingPage/EssyCollab';
 import MuchMore from './landingPage/MuchMore';
-// import LeastStressed from './components/home/Hero/LeastStressed';
-// import Pricing from './components/home/Pricing/Pricing';
-// import Reviews from './components/home/Reviews/Reviews';
-// import Service from './components/home/Services/Service';
-// import TrackProgress from './components/home/TrackProgress/TrackProgress';
-// import Welcome from './components/home/WellcomeMsg/Welcome';
 import OthersFeatures from './landingPage/OthersFeatures';
 import SimpleAnlytics from './landingPage/SimpleAnlytics';
 import FavriteApps from './landingPage/FavriteApps';
-import Today from './landingPage/Today';
 import Pricing from './landingPage/Pricing';
 import Testimonials from './landingPage/Testimonials';
 import BlogSection from './landingPage/BlogSection';
 import FAQSection from './landingPage/FAQSection';
 
 export default function Home() {
+  const router = useRouter();
+  const { user: mainUser, isLoaded } = useUser();
+  const userEmail = mainUser?.emailAddresses[0]?.emailAddress;
+
+  const { userData, isLoading } = useUserDataFromClerk(userEmail);
+  const userRole = userData?.user?.role;
+
+  // useEffect(() => {
+  //   // Wait for Clerk and user data to load
+  //   if (!isLoaded || isLoading || !mainUser) return;
+
+  //   // Redirect based on role
+  //   if (userRole === 'admin') {
+  //     router.push('/admin-dashbaord');
+  //   } else if (userRole === 'member') {
+  //     router.push('/dashboard');
+  //   }
+  // }, [isLoaded, isLoading, mainUser, userRole, router]);
+
   return (
     <>
-    {/* <Welcome></Welcome> */}
-      <Hero></Hero>
-
-     
-    <OthersFeatures></OthersFeatures>
-     <MuchMore></MuchMore>
-     <SimpleAnlytics></SimpleAnlytics>
-     <EssyCollab></EssyCollab>
-     <WorkFlow></WorkFlow>
-     <FavriteApps></FavriteApps>
-     <Pricing></Pricing>
-     <Testimonials></Testimonials>
-     <BlogSection></BlogSection>
-     <FAQSection></FAQSection>
-     {/* <Today></Today> */}
-
-      
-     
-      {/* <Features></Features> */}
-      {/* <Service></Service> */}
-      {/* <Pricing></Pricing> */}
-      {/* <Reviews></Reviews> */}
-      {/* <Faq></Faq> */}
-      {/* <TrackProgress></TrackProgress> */}
+      <Hero />
+      <OthersFeatures />
+      <MuchMore />
+      <SimpleAnlytics />
+      <EssyCollab />
+      <WorkFlow />
+      <FavriteApps />
+      <Pricing />
+      <Testimonials />
+      <BlogSection />
+      <FAQSection />
     </>
   );
 }
