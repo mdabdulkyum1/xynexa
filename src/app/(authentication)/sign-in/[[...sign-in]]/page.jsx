@@ -39,6 +39,8 @@ export default function Page() {
           >
             Sign up
           </Link>
+
+          
         </div>
       </div>
     </div>
