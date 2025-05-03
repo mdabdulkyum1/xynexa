@@ -16,7 +16,7 @@ import Pricing from './landingPage/Pricing';
 import Testimonials from './landingPage/Testimonials';
 import BlogSection from './landingPage/BlogSection';
 import FAQSection from './landingPage/FAQSection';
-
+import Image from 'next/image'; 
 export default function Home() {
   const router = useRouter();
   const { user: mainUser, isLoaded } = useUser();
@@ -38,8 +38,21 @@ export default function Home() {
   // }, [isLoaded, isLoading, mainUser, userRole, router]);
 
   return (
-    <>
-      <Hero />
+    <div className='max-w-[1400px] mx-auto'>
+       <div className='relative'><Hero /></div>
+
+{/* Place image right after Hero */}
+<div className="mt-[-100px] flex justify-center z-0">
+  <div className="bg-white/20 rounded-xl backdrop-blur-md p-2 shadow-lg">
+    <Image
+      src="/reDash.png"
+      width={1200}
+      height={600}
+      alt="Dashboard Preview"
+      className="rounded-xl"
+    />
+  </div>
+</div>
       <OthersFeatures />
       <MuchMore />
       <SimpleAnlytics />
@@ -50,6 +63,6 @@ export default function Home() {
       <Testimonials />
       <BlogSection />
       <FAQSection />
-    </>
+    </div>
   );
 }

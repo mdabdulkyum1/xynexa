@@ -4,7 +4,7 @@ import Tab from './components/Tab';
 
 const OthersFeatures = () => {
     return (
-        <div className='my-10 lg:my-28'>
+        <div className='z-20 '>
           <FeatureButton></FeatureButton>
           <div className='dark:text-white text-center my-4'>
             <h2 className='text-3xl lg:text-5xl font-bold mb-4 dm-font'>Other features</h2>
