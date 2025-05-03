@@ -15,8 +15,13 @@ import FavriteApps from './landingPage/FavriteApps';
 import Pricing from './landingPage/Pricing';
 import Testimonials from './landingPage/Testimonials';
 import BlogSection from './landingPage/BlogSection';
-import FAQSection from './landingPage/FAQSection';
+
 import Image from 'next/image'; 
+import { motion } from 'framer-motion';
+import Company from './landingPage/components/Company';
+import TaskFeatures from './landingPage/components/Task';
+import FAQSection from './contact-us/components/FAQSection';
+import InsightsSection from './contact-us/components/InsightsSection';
 export default function Home() {
   const router = useRouter();
   const { user: mainUser, isLoaded } = useUser();
@@ -36,32 +41,42 @@ export default function Home() {
   //     router.push('/dashboard');
   //   }
   // }, [isLoaded, isLoading, mainUser, userRole, router]);
-
+  const imageVariants = {
+    initial: { y: 100, opacity: 0 },
+    animate: { y: -100, opacity: 1, transition: { duration: 0.8, ease: "easeInOut" } },
+  };
   return (
-    <div className='max-w-[1400px] mx-auto'>
-       <div className='relative'><Hero /></div>
+    <div className=''>
+       <div className='relative max-w-[1400px] mx-auto'><Hero /></div>
 
 {/* Place image right after Hero */}
-<div className="mt-[-100px] flex justify-center z-0">
-  <div className="bg-white/20 rounded-xl backdrop-blur-md p-2 shadow-lg">
-    <Image
-      src="/reDash.png"
-      width={1200}
-      height={600}
-      alt="Dashboard Preview"
-      className="rounded-xl"
-    />
-  </div>
-</div>
+<motion.div
+        className="flex justify-center z-0"
+        initial="initial"
+        animate="animate"
+        variants={imageVariants}
+      >
+        <div className="bg-white/20 rounded-xl backdrop-blur-md p-2 shadow-lg">
+          <Image
+            src="/reDash.png"
+            width={1200}
+            height={600}
+            alt="Dashboard Preview"
+            className="rounded-xl"
+          />
+        </div>
+      </motion.div>
+      <Company/>
       <OthersFeatures />
+      <TaskFeatures/>
       <MuchMore />
-      <SimpleAnlytics />
-      <EssyCollab />
+      {/* <SimpleAnlytics /> */}
+      {/* <EssyCollab /> */}
       <WorkFlow />
       <FavriteApps />
       <Pricing />
       <Testimonials />
-      <BlogSection />
+      <InsightsSection/>
       <FAQSection />
     </div>
   );

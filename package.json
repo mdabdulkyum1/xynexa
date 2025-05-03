@@ -76,11 +76,8 @@
     "motion": "^12.7.4",
     "next": "^15.2.3",
     "next-themes": "^0.4.6",
-<<<<<<< HEAD
-=======
     "openai": "^4.95.0",
     "quill-to-pdf": "^1.0.7",
->>>>>>> c297f177bc0ff37bcbf0490a15a6f66c167d0ade
     "react": "^18.3.1",
     "react-big-calendar": "^1.18.0",
     "react-color": "^2.19.3",
