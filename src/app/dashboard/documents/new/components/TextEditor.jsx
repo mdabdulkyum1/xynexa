@@ -1,18 +1,17 @@
-"use client";
+// "use client";
+"use client"; 
+
 import React, { useState, useRef, useEffect } from "react";
-import dynamic from "next/dynamic";
+// import ReactQuill from "react-quill-new";
 import { MdOutlineSaveAlt } from "react-icons/md";
 import { FaFilePdf } from "react-icons/fa6";
-import "react-quill-new/dist/quill.snow.css";
+// import "react-quill-new/dist/quill.snow.css"; 
 import DocumentHeading from "./DocumentHeading";
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
-import { useDocumentCreateMutation } from "@/redux/features/Api/documentApi";
-import { useUserDataFromClerk } from "@/hooks/useUserDataFromClerk";
-import { useRouter } from "next/navigation";
-import "./editor.css"; // Custom styles for the editor
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
 
-const ReactQuill = dynamic(() => import("react-quill-new"), { ssr: false });
 
 const TextEditor = () => {
     const router = useRouter();
