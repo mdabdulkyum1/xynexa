@@ -27,7 +27,7 @@ const FAQSection = () => {
     const pathname = usePathname(); // Get the current route
 
     // Hide FAQ section completely if pathname is "/"
-    if (pathname === "/") return null;
+   
 
     const toggleFAQ = (index) => {
         setOpenIndex(openIndex === index ? null : index);
@@ -36,7 +36,7 @@ const FAQSection = () => {
     return (
         <section className="container mx-auto p-6 md:p-10 max-w-4xl my-10">
             {/* Heading and description, only visible when not on home page */}
-            {pathname !== "/" && (
+            
                 <>
                     <h2 className="text-2xl md:text-4xl  font-bold text-center">
                         Do you have any questions?
@@ -45,7 +45,7 @@ const FAQSection = () => {
                         Find answers to the most common questions about our team management system.
                     </p>
                 </>
-            )}
+            
 
             {/* FAQ Items */}
             <div className="mt-8 space-y-4">
