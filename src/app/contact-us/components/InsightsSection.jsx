@@ -50,7 +50,7 @@ const InsightsSection = () => {
                 </div>
 
                 <div className="mt-6">
-                    <a href="#" className="text-[#014E4E] dark:text-white font-semibold">
+                    <a href="/" className="text-[#014E4E] dark:text-white font-semibold">
                         View more articles →
                     </a>
                 </div>

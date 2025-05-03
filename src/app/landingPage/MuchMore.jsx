@@ -4,54 +4,77 @@ import { RiColorFilterAiFill } from 'react-icons/ri';
 import { MdArrowForwardIos } from 'react-icons/md';
 import { FaRegPlayCircle } from "react-icons/fa";
 import { RiBox3Line } from "react-icons/ri";
-
 import Image from 'next/image';
 
-
 const MuchMore = () => {
-    return (
-        <div className='my-10 lg:my-28 w-11/12 lg:w-3/4 mx-auto'>
-            <FeatureButton></FeatureButton>
-            <div className='dark:text-white text-center my-4'>
-                <h2 className='text-3xl lg:text-5xl font-bold mb-4 dm-font'>And so much more</h2>
-                <p className='w-full lg:w-1/2 mx-auto dark:text-gray-400'> All the features you need to build a better experience, explore the possibilities, and unlock the full potential of what we have to offer.</p>
+  return (
+    <div className='py-16 max-w-7xl  lg:py-12  mx-auto'>
+
+      <div className='grid grid-cols-1 lg:grid-cols-2 gap-16  items-center'>
+        <div className="relative w-full h-[400px] lg:h-[450px]">
+          <Image
+            src="/ai.jpeg"
+            alt="ai assistant interface"
+            fill
+            className="rounded-xl object-cover shadow-lg"
+          />
+
+<div className="absolute bottom-6 right-6 bg-white bg-opacity-80 rounded-md shadow-md p-4">
+          <h3 className="text-sm font-semibold text-gray-900 flex items-center space-x-2">
+            <RiColorFilterAiFill className="h-4 w-4 text-teal-500" aria-hidden="true" />
+            <span>AI-Powered  Suggestions</span>
+          </h3>
+          <p className="text-xs text-gray-500 ml-6">
+            Smart recommendations to boost your productivity.
+          </p>
+        </div>
+
+        <div className="absolute bottom-24 right-6 bg-white bg-opacity-80 rounded-md shadow-md p-3">
+          <div className="flex items-center space-x-2">
+            <RiColorFilterAiFill className="h-4 w-4 text-teal-500" aria-hidden="true" />
+            <div className=" pb-2   rounded">Automated Prioritization</div>
+          </div>
+        </div>
+          
+        </div>
+        <div className='flex flex-col justify-center'>
+          <div className='flex gap-4 items-center mb-6'>
+            <button className='p-4 text-teal-500 border-2 border-teal-500 rounded-lg text-2xl'>
+              <RiColorFilterAiFill />
+            </button>
+            <p className='text-teal-500 font-bold text-3xl'>AI Assistant</p>
+          </div>
+          <h2 className='text-2xl lg:text-3xl font-bold mb-6 dm-font dark:text-white'>
+            Your new ultimate productivity companion
+          </h2>
+          <p className='dark:text-gray-500 leading-relaxed mb-8 text-lg'>
+            Our AI Assistant is meticulously crafted to seamlessly integrate into both your personal and professional spheres, poised to revolutionize the way you manage tasks and boost your efficiency.
+          </p>
+          
+          <div className='mt-12 grid grid-cols-1 md:grid-cols-2 gap-8'>
+            <div>
+              <p className='text-teal-500 text-3xl mb-3'>
+                <FaRegPlayCircle />
+              </p>
+              <h3 className='font-bold text-lg mb-3 dark:text-white'>Video Editing</h3>
+              <p className='dark:text-gray-500 leading-relaxed text-sm'>
+                Transform your raw video content into captivating, polished narratives with our intuitive editing tools.
+              </p>
             </div>
             <div>
-                <div className='grid grid-cols-1 lg:grid-cols-2 gap-8 p-4 mt-6 lg:mt-12'>
-                    <div>
-                        <div className='flex gap-2 justify-items-start items-center'>
-                            <button className='p-2 lg:p-4 text-[#20B7AB] border-2 border-[#20B7AB] rounded-lg text-xl'><RiColorFilterAiFill /></button>
-                            <p className='text-[#20B7AB] font-bold'>Ai Assistant</p>
-                        </div>
-                        <h2 className='text-3xl font-bold my-2 dm-font'>Your new ultimate productivity companion</h2>
-                        <p className='dark:text-gray-500'>Designed to seamlessly integrate into your personal and professional life, our AI Assistant is here to revolutionize the way you accomplish tasks.</p>
-
-                        <button className='btn mt-4 lg:mt-8  items-center rounded-2xl dark:text-white border-2 dark:border-white dark:bg-transparent'>Learn More <MdArrowForwardIos /></button>
-                        <div className='flex gap-2 mt-4 lg:mt-8'>
-                            <div>
-                                <p className='text-[#20B7AB] text-xl lg:text-2xl'><FaRegPlayCircle /></p>
-                                <h2 className='font-bold my-4'>Video editing</h2>
-                                <p className='dark:text-gray-500'>Seamlessly transform raw footage into polished masterpieces.</p>
-                            </div>
-                            <div>
-                                <p className='text-[#20B7AB] text-xl lg:text-2xl'><RiBox3Line /></p>
-                                <h2 className='font-bold my-4'>Video editing</h2>
-                                <p className='dark:text-gray-500'>Seamlessly transform raw footage into polished masterpieces.</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="relative w-full h-[400px] lg:h-[500px] ">
-                        <Image
-                            src="/assets/images/chatbot.png"
-                            alt="ai"
-                            fill
-                            className="object-cover"
-                        />
-                    </div>
-                </div>
+              <p className='text-teal-500 text-3xl mb-3'>
+                <RiBox3Line />
+              </p>
+              <h3 className='font-bold text-lg mb-3 dark:text-white'>3D Modeling</h3>
+              <p className='dark:text-gray-500 leading-relaxed text-sm'>
+                Unleash your creative vision and build immersive digital worlds with our powerful 3D modeling capabilities.
+              </p>
             </div>
+          </div>
         </div>
-    );
+      </div>
+    </div>
+  );
 };
 
 export default MuchMore;
