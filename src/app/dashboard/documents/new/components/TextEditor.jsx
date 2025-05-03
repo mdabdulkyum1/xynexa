@@ -7,10 +7,14 @@ import { MdOutlineSaveAlt } from "react-icons/md";
 import { FaFilePdf } from "react-icons/fa6";
 // import "react-quill-new/dist/quill.snow.css"; 
 import DocumentHeading from "./DocumentHeading";
-import jsPDF from "jspdf";
-import html2canvas from "html2canvas";
-import ReactQuill from "react-quill";
-import "react-quill/dist/quill.snow.css";
+import { toast } from "react-hot-toast";
+import { useDocumentCreateMutation } from "@/redux/features/Api/documentApi";
+import { useUserDataFromClerk } from "@/hooks/useUserDataFromClerk";
+import { useRouter } from "next/navigation";
+import "./editor.css"; 
+import { pdfExporter } from 'quill-to-pdf';
+import { saveAs } from 'file-saver';
+
 
 
 const TextEditor = () => {
@@ -24,9 +28,9 @@ const TextEditor = () => {
     const [isBrowser, setIsBrowser] = useState(false);
     const quillRef = useRef(null);
 
-    useEffect(() => {
-        setIsBrowser(typeof window !== 'undefined');
-    }, []);
+    // useEffect(() => {
+    //     setIsBrowser(typeof window !== 'undefined');
+    // }, []);
 
     // Save the document as HTML
     const saveDocument = () => {
@@ -38,10 +42,10 @@ const TextEditor = () => {
             a.download = `${title}.html`;
             a.click();
             URL.revokeObjectURL(url);
-            alert("Document saved successfully!");
+            toast.success("Document saved successfully!");
         } catch (error) {
             console.error("Error saving document:", error);
-            alert("Failed to save the document.");
+            toast.error("Failed to save the document.");
         }
     };
 
@@ -50,44 +54,26 @@ const TextEditor = () => {
         setContent(value);
         // Extracting plain text from Quill editor
         const plainText = quillRef.current ? quillRef.current.getEditor().getText() : "";
-        console.log("document title", title, "Editor Content:", plainText.trim());
+        // console.log("document title", title, "Editor Content:", plainText.trim());
 
     };
 
     // Save as PDF (placeholder)
-    const saveAsPDF = () => {
-        const input = document.querySelector(".ql-editor"); // Quill editor content
-        if (!input) {
-            alert("Error: Editor content not found.");
-            return;
-        }
-
-        html2canvas(input, {
-            backgroundColor: "#ffffff", // Ensures proper background color
-            scale: 2, // Increases resolution for better quality
-            useCORS: true, // Fixes cross-origin image issues
-        }).then((canvas) => {
-            const imgData = canvas.toDataURL("image/png");
-            const pdf = new jsPDF("p", "mm", "a4");
-            const imgWidth = 190; // Adjust image width for A4
-            const pageHeight = 297; // A4 height in mm
-            const imgHeight = (canvas.height * imgWidth) / canvas.width;
-            let heightLeft = imgHeight;
-            let position = 0;
-
-            pdf.addImage(imgData, "PNG", 10, position, imgWidth, imgHeight);
-            heightLeft -= pageHeight;
-
-            while (heightLeft > 0) {
-                position = heightLeft - imgHeight;
-                pdf.addPage();
-                pdf.addImage(imgData, "PNG", 10, position, imgWidth, imgHeight);
-                heightLeft -= pageHeight;
-            }
-
-            pdf.save(`${title}.pdf`);
-        });
+    const savePdf = async () => {
+        if (!quillRef.current) return;
+    
+        const editor = quillRef.current.getEditor(); 
+        const delta = editor.getContents(); 
+    
+        const pdfAsBlob = await pdfExporter.generatePdf(delta);
+        saveAs(pdfAsBlob, `${title || 'Untitled Document'}.pdf`); 
     };
+    
+    
+    
+    
+    
+    
 
 
 
@@ -103,11 +89,11 @@ const TextEditor = () => {
                 });
                 console.log("Document shared successfully");
             } else {
-                alert("Sharing is not supported on this browser. Copy the content manually.");
+                toast.error("Sharing is not supported on this browser. Copy the content manually.");
             }
         } catch (error) {
             console.error("Error sharing document:", error);
-            alert("Failed to share the document.");
+            toast.error("Failed to share the document.");
         }
     };
 
@@ -128,11 +114,11 @@ const TextEditor = () => {
 
             const res = await documentCreate(docData).unwrap();
             console.log("Document saved to DB:", res);
-            alert("Document saved to database!");
+            toast.success("Document saved to database!");
             router.push(`/dashboard/documents`);
         } catch (err) {
             console.error("Error saving to DB:", err);
-            alert("Failed to save document to database.");
+            toast.error("Failed to save document to database.");
         }
     };
 
@@ -160,7 +146,7 @@ const TextEditor = () => {
 
                         </button>
                         <button
-                            onClick={saveAsPDF}
+                            onClick={savePdf}
                             className="btn px-2 py-1 lg:px-4 lg:py-2 bg-gradient-to-r border-fuchsia-700 from-fuchsia-700 to-pink-200 text-white rounded-md dark:border-none"
                         >
                             <FaFilePdf />
@@ -182,7 +168,7 @@ const TextEditor = () => {
                         theme="snow"
                         value={content}
                         onChange={handleContentChange}
-                        className=" quill-custom"
+                        className=" quill-custom ql-editor"
                         modules={{
                             toolbar: [
                                 [{ font: [] }, { size: [] }],

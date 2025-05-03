@@ -16,10 +16,15 @@ const CreateModalBtn = () => {
     return (
         <>
             <div
-                onClick={openModal}
-                className='border-2 p-4 rounded-lg'>
-                <h1>Add New Board</h1>
-                <p>Click here to add new board</p>
+                
+                className=' rounded-lg  flex flex-col justify-center items-center'>
+               
+                <div onClick={openModal} className="p-4 cursor-pointer rounded-lg shadow border-dashed border-2 border-gray-400 flex items-center justify-center ">
+            <div className="text-center">
+            
+            <p>Create a new team</p>
+            </div>
+        </div>
             </div>
             <TeamCreateModal
                 closeModal={closeModal}

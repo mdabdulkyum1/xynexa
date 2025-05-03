@@ -96,7 +96,7 @@ const [active, setActive] = useState(false);
 
 
   return (
-    <div className="flex border-r-2 border-l-2  dark:border-gray-700  border-pink-600 ">
+    <div className="flex border-r-2 border-l-2  dark:border-gray-700 ">
       {/* Sidebar */}
       <div className="relative w-40 md:w-80">
         <Card className="p-4 h-[90vh] flex flex-col bg-blue-50/50">

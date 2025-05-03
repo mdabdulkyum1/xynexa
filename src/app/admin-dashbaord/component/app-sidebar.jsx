@@ -84,6 +84,9 @@ const data = {
       title: "Support",
       url: "/admin-dashbaord/support",
       icon: HelpCircleIcon,
+      items: [
+        {title: "support", url: "/admin-dashbaord/support"}
+      ]
     },
     {
       title: "Settings",

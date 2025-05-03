@@ -67,19 +67,7 @@ const Navbar = () => {
           Pricing
         </Link>
       </li>
-      {/* {user && (
-        <li>
-          <Link
-            href={userRole === "admin" ? "/admin-dashbaord" : "/dashboard"}
-            className={clsx(
-              "hover:text-primary dark:hover:text-[#014E4E]",
-              pathName === "/dashboard" && activeClass
-            )}
-          >
-            Dashboard
-          </Link>
-        </li>
-      )} */}
+      
       <li>
         <Link
           href="/contact-us"

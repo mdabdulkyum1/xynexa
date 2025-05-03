@@ -2,32 +2,35 @@
 import { useState, useEffect } from "react";
 
 const useScrollDirection = () => {
-  const [isVisible, setIsVisible] = useState(true); // Navbar visibility
-  const [lastScrollY, setLastScrollY] = useState(0); // Last scroll position
+  const [isVisible, setIsVisible] = useState(true);
+  const [lastScrollY, setLastScrollY] = useState(0);
 
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
+      const scrollHeight = document.body.scrollHeight - window.innerHeight;
+      const scrollThreshold = scrollHeight * 0.1;
 
-      if (currentScrollY > lastScrollY && currentScrollY > 50) {
-        // Hide when scrolling down
+      if (currentScrollY < scrollThreshold) {
+        setIsVisible(true);
+        setLastScrollY(currentScrollY);
+        return;
+      }
+
+      if (currentScrollY > lastScrollY) {
         setIsVisible(false);
       } else {
-        // Show when scrolling up
         setIsVisible(true);
       }
 
-      setLastScrollY(currentScrollY); // Update last scroll position
+      setLastScrollY(currentScrollY);
     };
 
     window.addEventListener("scroll", handleScroll);
-
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
+    return () => window.removeEventListener("scroll", handleScroll);
   }, [lastScrollY]);
 
-  return isVisible; // Return the visibility status
+  return isVisible;
 };
 
 export default useScrollDirection;
