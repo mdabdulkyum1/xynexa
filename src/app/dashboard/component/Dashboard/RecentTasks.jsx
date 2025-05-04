@@ -1,57 +1,60 @@
+'use client';
 import React from 'react';
+import { useGetTaskByCurrentUserEmailQuery } from '@/redux/features/Api/TaskApi';
+import { useUser } from '@clerk/nextjs';
+import moment from 'moment';
 
 const RecentTasks = () => {
-  const tasks = [
-    {
-      image: 'https://images.rawpixel.com/image_800/czNmcy1wcml2YXRlL3Jhd3BpeGVsX2ltYWdlcy93ZWJzaXRlX2NvbnRlbnQvbHIvcm0zMjgtMzY2LXRvbmctMDhfMS5qcGc.jpg', 
-      name: 'John Doe',
-      email: 'john.doe@example.com',
-      date: '2023-10-26',
-    },
-    {
-      image: 'https://images.rawpixel.com/image_800/czNmcy1wcml2YXRlL3Jhd3BpeGVsX2ltYWdlcy93ZWJzaXRlX2NvbnRlbnQvbHIvcm0zMjgtMzY2LXRvbmctMDhfMS5qcGc.jpg', 
-      name: 'Jane Smith',
-      email: 'jane.smith@example.com',
-      date: '2023-10-25',
-    },
-    {
-      image: 'https://images.rawpixel.com/image_800/czNmcy1wcml2YXRlL3Jhd3BpeGVsX2ltYWdlcy93ZWJzaXRlX2NvbnRlbnQvbHIvcm0zMjgtMzY2LXRvbmctMDhfMS5qcGc.jpg', 
-      name: 'David Lee',
-      email: 'david.lee@example.com',
-      date: '2023-10-24',
-    },
-   
-    {
-      image: 'https://images.rawpixel.com/image_800/czNmcy1wcml2YXRlL3Jhd3BpeGVsX2ltYWdlcy93ZWJzaXRlX2NvbnRlbnQvbHIvcm0zMjgtMzY2LXRvbmctMDhfMS5qcGc.jpg', 
-      name: 'John Doe',
-      email: 'john.doe@example.com',
-      date: '2023-10-26',
-    },
-    
-    
-   
-  ];
+    const { user } = useUser();
+    const userEmail = user?.emailAddresses[0]?.emailAddress;
 
-  return (
-    <div className="mt-6  flex flex-col   p-4 rounded-xl">
-    
-   
-    <div className="space-y-4 overflow-y-auto h-[calc(100%-60px)]"> 
-      {tasks.map((task, index) => (
-       <div key={index} className="flex flex-col justify-between items-center">
-         <div  className="flex items-center space-x-4 bg-gray-100 dark:bg-black rounded-lg p-4 shadow-md">
-          <img src={task.image} alt={task.name} className="w-10 h-10 rounded-full" />
-          <div>
-            <h3 className="text-lg font-semibold">{task.name}</h3>
-            <p className="text-sm text-gray-500">{task.email}</p>
-            <p className="text-xs text-gray-500">{task.date}</p>
-          </div>
+    const { data: allTasks, isLoading, isError } = useGetTaskByCurrentUserEmailQuery(userEmail);
+    console.log(allTasks);
+
+    if (isLoading) {
+        return <div>Loading recent tasks...</div>;
+    }
+
+    if (isError) {
+        return <div>Error loading recent tasks.</div>;
+    }
+
+    // Get the last 4 tasks
+    const lastFourTasks = allTasks?.slice(-5);
+
+    return (
+        <div className="mt-3 flex flex-col p-4 rounded-xl shadow-md bg-white dark:bg-gray-800">
+            <h2 className="text-xl font-semibold mb-4 dark:text-white">Recent Tasks</h2>
+            <div className="space-y-4 overflow-y-auto h-[calc(100%-60px)]">
+                {lastFourTasks?.map((task, index) => (
+                    <div key={index} className="flex justify-between items-center bg-gray-100 dark:bg-black rounded-lg p-4">
+                        <div className="flex items-center space-x-4">
+                            {task?.members?.[0]?.imageUrl && (
+                                <img
+                                    src={task.members[0].imageUrl}
+                                    alt={task.members[0].firstName}
+                                    className="w-10 h-10 rounded-full"
+                                />
+                            )}
+                            <div>
+                                <h3 className="text-lg font-semibold dark:text-white">{task.title}</h3>
+                                {task?.members?.[0]?.email && (
+                                    <p className="text-sm text-gray-500 dark:text-gray-400">{task.members[0].email}</p>
+                                )}
+                                <p className="text-xs text-gray-500 dark:text-gray-400">
+                                    {task.createdAt && moment(task.createdAt).format('MMM D, YYYY h:mm A')}
+                                </p>
+                            </div>
+                        </div>
+                        
+                    </div>
+                ))}
+                {lastFourTasks?.length === 0 && (
+                    <p className="text-gray-500 dark:text-gray-400">No recent tasks found.</p>
+                )}
+            </div>
         </div>
-       </div>
-      ))}
-    </div>
-  </div>
-  );
+    );
 };
 
 export default RecentTasks;
