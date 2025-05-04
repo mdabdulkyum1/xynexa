@@ -1,11 +1,9 @@
-// "use client";
-"use client"; 
-
+"use client";
 import React, { useState, useRef, useEffect } from "react";
-import ReactQuill from "react-quill-new";
+import dynamic from "next/dynamic";
 import { MdOutlineSaveAlt } from "react-icons/md";
 import { FaFilePdf } from "react-icons/fa6";
-import "react-quill-new/dist/quill.snow.css"; 
+import "react-quill-new/dist/quill.snow.css";
 import DocumentHeading from "./DocumentHeading";
 import { toast } from "react-hot-toast";
 import { useDocumentCreateMutation } from "@/redux/features/Api/documentApi";
@@ -16,6 +14,7 @@ import { pdfExporter } from 'quill-to-pdf';
 import { saveAs } from 'file-saver';
 
 
+const ReactQuill = dynamic(() => import("react-quill-new"), { ssr: false });
 
 const TextEditor = () => {
     const router = useRouter();

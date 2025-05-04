@@ -1,21 +1,20 @@
 /* You can add this to your global CSS file */
 .quill-custom .ql-toolbar {
-    margin-bottom: 1rem;
-    background-color: whitesmoke; /* space between toolbar and editor */
-  }
-  
-  .quill-custom .ql-container {
-    border: 2px solid #ccc;
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
-    background-color: #fff; /* content background */
-    min-height: 900px;
-  }
-  
-  @media (prefers-color-scheme: dark) {
-    .ql-editor {
-      background-color: black; /* for dark mode */
-    }
-  }
-  
+  margin-bottom: 1rem;
+  background-color: whitesmoke; /* space between toolbar and editor */
+}
 
-  
+.quill-custom .ql-container {
+  border: 2px solid #ccc;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+  background-color: #fff; /* content background */
+  min-height: 900px;
+}
+
+@media (prefers-color-scheme: dark) {
+  .ql-editor {
+    background-color: black; /* for dark mode */
+  }
+}
+
+

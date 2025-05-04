@@ -4,11 +4,11 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 
 const services = [
-    { name: "Call", description: "Make and receive calls directly in Teams with features like group calling, voicemail, and call transfers.", image: "/assets/images/collaborate.png" },
+    { name: "Dashboard", description: "This is dashboard", image: "/assets/images/dashboard.png" },
+    { name: "Chat", description: "Stay connected with instant messaging and group chats.", image: "/assets/images/chat.png" },
+    { name: "Meet", description: "Make and receive calls directly in Teams with features like group calling, voicemail, and call transfers.", image: "/assets/images/meett.png" },
     { name: "Collaborate", description: "Work together in real-time with integrated tools.", image: "/assets/images/services1.png" },
-    { name: "Chat", description: "Stay connected with instant messaging and group chats.", image: "/assets/images/services2.png" },
     { name: "Services", description: "Stay connected with instant messaging and group chats.", image: "/assets/images/services3.png" },
-    { name: "Dashboard", description: "Stay connected with instant messaging and group chats.", image: "/assets/images/services4.png" },
 ];
 
 const WorkFlowComponent = () => {
