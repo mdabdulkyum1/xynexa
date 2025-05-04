@@ -52,6 +52,8 @@ export const teamApi = baseApi.injectEndpoints({
             query: (userEmail) => `/teams/get-teams-by-email/${userEmail}`,
             providesTags: ['Team'],
         }),
+        
+        
     }),
 });
 

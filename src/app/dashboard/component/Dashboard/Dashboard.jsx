@@ -1,3 +1,4 @@
+'use client'
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -23,8 +24,14 @@ import Progress from "./Progess";
 import RecentTasks from "./RecentTasks";
 import WelcomeBanner from "./WelcomeBanner";
 import { ScratchToRevealDemo } from "./ScratchToRevealDemo";
-
+import { useUser } from "@clerk/nextjs";
+import { useGetUserFullSummaryQuery } from "@/redux/features/Api/TaskApi";
 export default function Page() {
+  const { user } = useUser();
+    const userEmail = user?.emailAddresses[0]?.emailAddress;
+    const {data:userData}=useGetUserFullSummaryQuery(userEmail)
+    console.log({userData})
+
   return (
     <SidebarInset>
       <div className=" bg-muted/50  min-h-screen">
@@ -54,19 +61,16 @@ export default function Page() {
         </div>
         <div className="flex flex-col lg:flex-row gap-10 ">
           <div className="w-full lg:w-[75%]">
-            <OverViewCard />
+            <OverViewCard summary={userData} />
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-10">
-              <TotalTaskChart />
-              <TaskPercent />
+              <TotalTaskChart summary={userData} />
+              <TaskPercent summary={userData} />
             </div>
           </div>
-          <div className=" light:bg-white rounded-lg mt-6 p-4">
-            <div className="flex justify-between items-center mb-2">
-              <h2 className="text-xl font-semibold ">Recent Tasks</h2>
-              <p className="text-blue-500">SeeAll</p>
-            </div>
+          <div className=" light:bg-white rounded-lg   p-4">
+            
 
-            <hr className="my-4 mb-6" />
+            
             <RecentTasks />
           </div>
         </div>

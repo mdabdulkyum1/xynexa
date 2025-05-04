@@ -66,6 +66,10 @@ export const boardApi = baseApi.injectEndpoints({
       query: (userEmail) => `boards/task/email/${userEmail}`,
       providesTags: ['Board'],
   }),
+  getUserFullSummary: builder.query({
+    query: (userEmail) => `/boards/task/user/full-summary/${userEmail}`,
+    providesTags: ['Board'],
+}),
   }),
 });
 
@@ -79,5 +83,6 @@ export const {
   useAddCommentToBoardMutation,
   useAddAttachmentToBoardMutation,
   useUpdateBoardStatusMutation,
-  useGetTaskByCurrentUserEmailQuery
+  useGetTaskByCurrentUserEmailQuery,
+  useGetUserFullSummaryQuery
 } = boardApi;
