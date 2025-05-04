@@ -27,7 +27,7 @@ const OthersFeatures = () => {
 
   return (
     <motion.div
-      className='z-20 py-12 bg-gradient-to-b from-white to-teal-50'
+      className='z-20 py-12 bg-gradient-to-b from-white to-teal-100'
       variants={containerVariants}
       initial='hidden'
       animate='visible'
