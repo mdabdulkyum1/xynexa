@@ -4,13 +4,33 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 
 const services = [
-    { name: "Dashboard", description: "This is dashboard", image: "/assets/images/dashboard.png" },
-    { name: "Chat", description: "Stay connected with instant messaging and group chats.", image: "/assets/images/chat.png" },
-    { name: "Meet", description: "Make and receive calls directly in Teams with features like group calling, voicemail, and call transfers.", image: "/assets/images/meett.png" },
-    { name: "Collaborate", description: "Work together in real-time with integrated tools.", image: "/assets/images/services1.png" },
-    { name: "Services", description: "Stay connected with instant messaging and group chats.", image: "/assets/images/services3.png" },
-];
-
+    {
+      name: "Dashboard",
+      description: "Monitor key metrics and access tools all in one place.",
+      image: "/assets/images/dashboard.png",
+    },
+    {
+      name: "Task Board",
+      description: "Organize tasks efficiently with visual boards and progress tracking.",
+      image: "/assets/images/task-board.png",
+    },
+    {
+      name: "Chat",
+      description: "Communicate instantly through messaging and group chats.",
+      image: "/assets/images/chat.png",
+    },
+    {
+      name: "Meet",
+      description: "Host and join meetings with features like group calls, voicemail, and transfers.",
+      image: "/assets/images/meett.png",
+    },
+    {
+      name: "AI Support",
+      description: "Get real-time assistance and collaboration powered by AI.",
+      image: "/assets/images/ai-s.png",
+    },
+  ];
+  
 const WorkFlowComponent = () => {
     const [selectedService, setSelectedService] = useState(services[0]);
     const [activeIndex, setActiveIndex] = useState(0);
@@ -53,7 +73,7 @@ const WorkFlowComponent = () => {
                                     ${activeIndex === index ? "bg-primary text-white" : "bg-background "}`}
                                 >
                                     <span className="absolute left-0 top-0 bottom-0 transition-all duration-300"
-                                        style={{ width: activeIndex === index ? "4px" : "0px", backgroundColor: "#014E4E" }}
+                                        style={{ width: activeIndex === index ? "4px" : "0px", backgroundColor: "#4bc8b7" }}
                                     />
                                     <span className="ml-4">{service.name}</span>
                                     <span className={`text-primary transition-transform duration-300 ${activeIndex === index ? "rotate-180" : ""}`}>
@@ -71,15 +91,15 @@ const WorkFlowComponent = () => {
                 </div>
 
                 {/* Dynamic Content Section */}
-                <div className="w-full lg:w-2/3 flex flex-col items-center text-center relative">
+                <div className="w-full lg:w-2/3 flex flex-col items-center text-center relative border border-primary rounded-lg">
                     <div className="relative w-full h-[300px] flex justify-center items-center overflow-hidden">
                         {/* Fading Out Image */}
                         {imageTransition && (
                             <Image
                                 src={selectedService.image}
                                 alt={selectedService.name}
-                                width={400}
-                                height={300}
+                                width={700}
+                                height={400}
                                 className="absolute transition-all duration-500 transform translate-x-0 opacity-100"
                             />
                         )}
@@ -87,13 +107,13 @@ const WorkFlowComponent = () => {
                         <Image
                             src={selectedService.image}
                             alt={selectedService.name}
-                            width={400}
-                            height={300}
+                            width={700}
+                            height={400}
                             className={`absolute transition-all duration-500 transform 
                                 ${imageTransition ? "translate-x-full opacity-0" : "translate-x-0 opacity-100"}`}
                         />
                     </div>
-                    <p className="mt-4 dark:text-white">{selectedService.description}</p>
+                    <p className="my-4 dark:text-white">{selectedService.description}</p>
                 </div>
             </div>
         </div>
