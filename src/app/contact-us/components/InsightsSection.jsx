@@ -26,7 +26,7 @@ const insights = [
 
 const InsightsSection = () => {
     return (
-        <section className="bg-beige md:py-20 md:mt-20 bg-secondary dark:bg-gray-950 dark:mb-16">
+        <section className=" md:py-20 md:mt-20  dark:bg-gray-950 dark:mb-16">
             <div className="container mx-auto text-center p-10">
                 <h2 className="text-2xl md:text-4xl font-bold mb-4 lg:mb-16">Gain valuable insights</h2>
 

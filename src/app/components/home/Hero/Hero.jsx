@@ -4,8 +4,11 @@ import { Button } from "@/components/ui/button";
 import "./Hero.css";
 import Image from "next/image";
 import { motion } from "framer-motion";
+import { useRouter } from 'next/navigation'; // Import the useRouter hook
 
 const Hero = () => {
+  const router = useRouter(); // Initialize the router
+
   const containerVariants = {
     initial: { opacity: 0 },
     animate: { opacity: 1, transition: { duration: 0.8, delayChildren: 0.2, staggerChildren: 0.1 } },
@@ -49,6 +52,14 @@ const Hero = () => {
   const reviewsVariants = {
     initial: { opacity: 0, y: 10 },
     animate: { opacity: 1, y: 0, transition: { duration: 0.4 } },
+  };
+
+  const handleTryFreeClick = () => {
+    router.push('/dashboard'); // Navigate to the /dashboard route
+  };
+
+  const handleSeeFeaturesClick = () => {
+    router.push('/dashboard'); // Also navigate to /dashboard for this button
   };
 
   return (
@@ -135,22 +146,22 @@ const Hero = () => {
         {/* Animated CTA Buttons */}
         <motion.div
           variants={buttonsVariants}
-          className="z-10 mt-8 flex gap-4 flex-wrap justify-center"
+          className="z-10 mt-8 flex gap-4 flex-wrap mb-5 justify-center"
         >
-          <Button variants={buttonVariants} className="text-base">
+          <Button variants={buttonVariants} className="text-base cursor-pointer" onClick={handleTryFreeClick}>
             Try Xynexa Free →
           </Button>
           <Button
             variant="outline"
             variants={buttonVariants}
-            className="text-base"
+            className="text-base cursor-pointer"
+            onClick={handleSeeFeaturesClick}
           >
             See Features →
           </Button>
         </motion.div>
 
         {/* Animated Reviews */}
-        
       </div>
       {/* <div className="mx-auto flex justify-center absolute bottom-0 left-0 right-0 top-[80%]">
         <div className=" ">
