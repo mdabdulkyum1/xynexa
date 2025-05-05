@@ -104,10 +104,11 @@ const PricingCards = () => {
     <div className="my-10 lg:my-20 w-11/12 mx-auto">
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {plans.map((plan) => (
-          <div
-            key={plan.name}
+          
+          <div className="rounded-2xl border border-[#4bc8b7]/20 dark:border-white/20  p-6" key={plan.name}>
+            <div
             className={`rounded-2xl border border-white/20 dark:border-white/10 
-           dark:bg-white/10 backdrop-blur-md shadow-md 
+           dark:bg-white/10 -md shadow-md 
           hover:scale-[1.02] transform transition-all duration-300 
           p-6 sm:p-8 flex flex-col justify-between ${plan.bgColor}`}
           >
@@ -184,7 +185,9 @@ const PricingCards = () => {
                 </button>
               )}
             </div>
+            </div>
           </div>
+
         ))}
       </div>
 
