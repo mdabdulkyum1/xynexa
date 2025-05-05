@@ -6,7 +6,7 @@ import { useUser } from '@clerk/nextjs';
 import { useUserDataFromClerk } from '@/hooks/useUserDataFromClerk';
 
 import Hero from './components/home/Hero/Hero';
-import FavriteApps from './landingPage/FavriteApps';
+// import FavriteApps from './landingPage/FavriteApps';
 import MuchMore from './landingPage/MuchMore';
 import OthersFeatures from './landingPage/OthersFeatures';
 import Testimonials from './landingPage/Testimonials';
@@ -98,7 +98,7 @@ export default function Home() {
       <TaskFeatures />
       <MuchMore />
       <WorkFlow />
-      <FavriteApps />
+      {/* <FavriteApps /> */}
       <Pricing />
       <PricingCards />
       <Testimonials />

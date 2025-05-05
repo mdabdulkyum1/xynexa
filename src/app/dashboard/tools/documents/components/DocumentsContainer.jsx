@@ -16,10 +16,8 @@ const DocumentsContainer = () => {
   const { user } = useUser();
   const [availableDocuments, setAvailableDocuments] = useState([]);
   const userEmail = user?.emailAddresses[0]?.emailAddress;
-  console.log(userEmail)
 
 const {data:availableDocumentsData=[], isError, error, isLoading:isFetchingLoading} = useDocumentGetByEmailQuery(userEmail)
-console.log(availableDocumentsData.documents)
   useEffect(() => {
     if (userEmail) {
       const fetchDocuments = async () => {
@@ -29,7 +27,6 @@ console.log(availableDocumentsData.documents)
           setTimeout(() => {
             if (response.data.documents.length > 0) {
               setAvailableDocuments(response.data.documents);
-              // console.log('Documents fetched successfully:', response.data);
             } else {
               console.error('Expected an array of documents, but got:', response.data);
               setAvailableDocuments([]);
@@ -49,7 +46,6 @@ console.log(availableDocumentsData.documents)
     }
   }, [userEmail]);
 
-  // console.log(availableDocuments)
 
 const [documentDelete, {isLoading:isDeleting}] =  useDocumentDeleteMutation()
 

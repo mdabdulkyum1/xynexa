@@ -39,7 +39,6 @@ const chartConfig = {
 
 const TaskPercent = ({ summary }) => {
     const overallSummary = summary?.overallSummary || {};
-    console.log(overallSummary);
 
     const { totalTasks, todoTasks, inProgressTasks, doneTasks } = overallSummary;
 

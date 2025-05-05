@@ -84,7 +84,6 @@ const DetailsPage = () => {
     //   toast.error("No changes made to the document.");
     //   return;
     // }
-// console.log(updatedContent, title, id)
     try {
       await documentUpdate({ id, title, content: updatedContent });
       toast.success("Document updated successfully!");

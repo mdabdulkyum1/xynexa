@@ -13,19 +13,13 @@ export async function POST(req) {
   try {
     const { messages } = await req.json();
 
-    // Log the received messages for debugging
-    console.log("Received messages:", messages);
-
-    // Basic input validation on the server-side
     const lastMessageContent = messages[messages.length - 1]?.content;
     if (lastMessageContent?.trim() === "{}" || lastMessageContent?.trim() === "") {
-      console.log("Rejected invalid input: Empty object or empty string");
       return new Response("Invalid input. Please enter a meaningful message.", {
         status: 400,
       });
     }
 
-    // Prepare the messages for OpenAI API
     const combinedMessages = [
       { role: "system", content: initialMessages.content },
       ...messages.map((m) => ({
@@ -34,15 +28,12 @@ export async function POST(req) {
       })),
     ];
 
-    console.log("Sending to OpenAI:", combinedMessages);
-
     const stream = await streamText({
       model: "gpt-3.5-turbo",
       messages: combinedMessages,
       temperature: 1,
     });
 
-    // Return the response from OpenAI to the client
     return new Response(stream);
   } catch (error) {
     console.error("Error in OpenAI API:", error);

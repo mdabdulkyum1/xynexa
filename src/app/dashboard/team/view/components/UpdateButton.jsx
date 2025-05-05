@@ -32,7 +32,6 @@ const UpdateButton = ({ team, isOpen, setIsOpen }) => {
   const [updateTeam, { isLoading: isUpdating }] = useUpdateTeamMutation();
 
   const onSubmit = async (data) => {
-    // console.log('onSubmit called'); 
     try {
       const teamData = {
         id: team?._id,
@@ -42,7 +41,6 @@ const UpdateButton = ({ team, isOpen, setIsOpen }) => {
       };
 
       const result = await updateTeam(teamData).unwrap();
-      // console.log('Team updated successfully:', result);
 
       toast.success('Team updated successfully!', {
         duration: 1500,

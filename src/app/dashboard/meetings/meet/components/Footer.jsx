@@ -16,7 +16,6 @@ function Footer() {
   const hmsActions = useHMSActions();
   // Use HMS store to check if screen sharing is active
   const isScreenShareEnabled = useHMSStore((state) => state.localPeer?.isScreenShared);
-  console.log("isScreenShareEnabled>>>>>>>>", isScreenShareEnabled);
 
   const handleToggleAudio = async () => {
     try {
@@ -49,7 +48,6 @@ function Footer() {
   const handleScreenShare = async () => {
     try {
       const isShare =  await hmsActions.setScreenShareEnabled(!isScreenShareEnabled);
-      console.log("Screen share toggled:", isShare);
     } catch (error) {
       console.error("Failed to toggle screen share:", error);
       alert("Unable to toggle screen share. Please try again.");
