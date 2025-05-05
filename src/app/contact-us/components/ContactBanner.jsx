@@ -2,6 +2,8 @@
 import Image from 'next/image';
 import { useRef } from 'react';
 import emailjs from '@emailjs/browser';
+import toast from 'react-hot-toast';
+import Swal from 'sweetalert2';
 
 const ContactBanner = () => {
     const form = useRef();
@@ -18,11 +20,23 @@ const ContactBanner = () => {
                 process.env.NEXT_PUBLIC_EMAILJS_API_KEY
             );
             console.log(result.text);
-            alert('Message sent successfully to all team members!');
+            Swal.fire({
+                icon: 'success',
+                title: 'Success!',
+                text: 'Message sent successfully to admin!',
+                confirmButtonColor: '#14b8a6',
+                confirmButtonText: 'OK'
+              });
             form.current.reset();
         } catch (error) {
             console.error(error.text);
-            alert('Failed to send the message. Please try again!');
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Failed to send the message. Please try again!',
+                confirmButtonColor: '#14b8a6', 
+                confirmButtonText: 'OK'
+              });
         }
     };
 
