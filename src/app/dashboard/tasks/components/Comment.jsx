@@ -29,8 +29,6 @@ const Comment = ({ task }) => {
   const userId = userData?.user?._id;
   const boardId = task?._id;
 
-  // console.log(userId, boardId);
-
   const [
     addCommentToBoard,
     {

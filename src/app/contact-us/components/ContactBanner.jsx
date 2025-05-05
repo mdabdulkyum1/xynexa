@@ -2,7 +2,6 @@
 import Image from 'next/image';
 import { useRef } from 'react';
 import emailjs from '@emailjs/browser';
-import toast from 'react-hot-toast';
 import Swal from 'sweetalert2';
 
 const ContactBanner = () => {
@@ -19,7 +18,6 @@ const ContactBanner = () => {
                 
                 process.env.NEXT_PUBLIC_EMAILJS_API_KEY
             );
-            console.log(result.text);
             Swal.fire({
                 icon: 'success',
                 title: 'Success!',

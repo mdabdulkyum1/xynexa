@@ -13,9 +13,6 @@ const TeamCreateModal = ({ isOpen, closeModal }) => {
     const user = useSelector((state) => state.user.user);
 
     const onSubmit = (data) => {
-        console.log('Form Data:', data);
-        
-    
         closeModal();
     };
 

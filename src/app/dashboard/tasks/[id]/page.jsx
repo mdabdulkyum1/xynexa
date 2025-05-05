@@ -16,7 +16,6 @@ const TaskSingleBoard = () => {
     const { data: team, isLoading, isError, error } = useGetTeamQuery(teamId);
 
     const { data: allTasks, isLoading: taskLoading , isError : taskIsError, error: task } = useGetBoardByTeamIdQuery(teamId);
-    // console.log("------------------------------",tasksData);
     
   return (
     <div>

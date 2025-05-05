@@ -3,8 +3,6 @@
 import { useVideo, useHMSStore, selectIsPeerVideoEnabled } from "@100mslive/react-sdk";
 
 export default function Peer({ peer }) {
-    console.log("peer", peer);
-    //   console.log("peer", peer.name);
 
     let profileImage = "";
     try {

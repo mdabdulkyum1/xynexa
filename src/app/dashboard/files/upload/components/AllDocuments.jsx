@@ -144,9 +144,8 @@ export default function DocumentsTable() {
                       </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
-                      <DropdownMenuItem onClick={() => console.log("Update", doc.name)}>Update</DropdownMenuItem>
+                      <DropdownMenuItem >Update</DropdownMenuItem>
                       <DropdownMenuItem
-                        onClick={() => console.log("Delete", doc.name)}
                         className="text-red-500"
                       >
                         Delete

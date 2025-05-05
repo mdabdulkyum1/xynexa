@@ -15,8 +15,7 @@ export default function TeamView() {
 
     const { userData, isLoading, isError, error } = useUserDataFromClerk();
 
-    const userId = userData?.user?._id
-    console.log(userId);
+    const userId = userData?.user?._id;
 
     // const { data: teamData } = useGetUseTeamsQuery(userId);
     const { data: teamData } = useGetTeamsByCurrentUserQuery(userId);
@@ -37,7 +36,6 @@ export default function TeamView() {
         </div>
     );
 
-    console.log(teamData);
 
     return (
         <div>

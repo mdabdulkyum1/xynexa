@@ -32,7 +32,6 @@
 //     error,
 //   } = useChat({ api: "/api/gemini" });
 
-//   console.log(messages, "messages", error, "error");
 
 //   useEffect(() => {
 //     const handleScroll = () => {

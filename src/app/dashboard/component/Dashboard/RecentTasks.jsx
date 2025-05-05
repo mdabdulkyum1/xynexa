@@ -9,7 +9,6 @@ const RecentTasks = () => {
     const userEmail = user?.emailAddresses[0]?.emailAddress;
 
     const { data: allTasks, isLoading, isError } = useGetTaskByCurrentUserEmailQuery(userEmail);
-    console.log(allTasks);
 
     if (isLoading) {
         return <div>Loading recent tasks...</div>;
