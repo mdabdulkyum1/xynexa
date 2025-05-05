@@ -41,7 +41,7 @@ export default function ContentWithLogic({ children }) {
   }, [userData?.user, user, isLoaded, dispatch]);
 
   return (
-    <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
+    <ThemeProvider attribute="class" defaultTheme="light"  enableSystem={true} >
       {shouldShowNavbarFooter && <XynexaNavbar />}
       <main className="min-h-screen">
         <SaveUserToDB />
