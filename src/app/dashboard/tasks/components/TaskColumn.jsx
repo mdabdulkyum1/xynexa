@@ -20,7 +20,6 @@ const TaskColumn = ({ title, taskCategory, team ,teamId}) => {
   
   const dynamicColorClass = colorMap[title] || "bg-gray-200";
 
-console.log(taskCategory)
   return (
     <div
       ref={setNodeRef}

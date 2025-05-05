@@ -67,11 +67,9 @@ function JoinForm() {
     socket.emit("createRoom", meetUserData)
 
     socket.on("RoomCreated", (roomCode, name, timestamp) => {
-      console.log("Room Created", roomCode, name, timestamp)
-
-
 
       router.push("/dashboard/meetings/meet/" + roomCode);
+      
     })
 
 

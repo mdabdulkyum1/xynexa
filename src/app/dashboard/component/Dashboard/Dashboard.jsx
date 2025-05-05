@@ -29,8 +29,7 @@ import { useGetUserFullSummaryQuery } from "@/redux/features/Api/TaskApi";
 export default function Page() {
   const { user } = useUser();
     const userEmail = user?.emailAddresses[0]?.emailAddress;
-    const {data:userData}=useGetUserFullSummaryQuery(userEmail)
-    console.log({userData})
+    const {data:userData}=useGetUserFullSummaryQuery(userEmail);
 
   return (
     <SidebarInset>

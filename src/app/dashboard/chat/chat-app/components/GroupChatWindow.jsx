@@ -96,7 +96,6 @@ const GroupChatWindow = () => {
         socket.emit("joinGroup", { groupId });
 
         const handleReceiveGroupMessage = (message) => {
-            console.log("Received group message:", message);
             if (!message) return;
             if (message.senderId === currentUserId) return;
             if (message.groupId !== groupId) return;
@@ -118,8 +117,6 @@ const GroupChatWindow = () => {
 
 
     }, [groupId, currentUserId, newMessage])
-
-    console.log("groupMsg", groupMsg)
 
     return (
         <div className="flex flex-col w-full h-[80vh] mx-4 shadow-xl rounded-2xl bg-white overflow-hidden">

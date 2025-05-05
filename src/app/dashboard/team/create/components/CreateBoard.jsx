@@ -28,7 +28,6 @@ const CreateBoard = ({ open, setOpen }) => {
   const { register, handleSubmit, setValue, formState: { errors } } = useForm();
 
   const onSubmit = (data) => {
-    console.log(data);
     setOpen(false); // Close the dialog after submission
   };
 

@@ -51,10 +51,7 @@ const TextEditor = () => {
     //   show contnt in console
     const handleContentChange = (value) => {
         setContent(value);
-        // Extracting plain text from Quill editor
         const plainText = quillRef.current ? quillRef.current.getEditor().getText() : "";
-        // console.log("document title", title, "Editor Content:", plainText.trim());
-
     };
 
     // Save as PDF (placeholder)
@@ -86,7 +83,6 @@ const TextEditor = () => {
                     title: title,
                     text: textContent,
                 });
-                console.log("Document shared successfully");
             } else {
                 toast.error("Sharing is not supported on this browser. Copy the content manually.");
             }
@@ -112,7 +108,6 @@ const TextEditor = () => {
             };
 
             const res = await documentCreate(docData).unwrap();
-            console.log("Document saved to DB:", res);
             toast.success("Document saved to database!");
             router.push(`/dashboard/documents`);
         } catch (err) {

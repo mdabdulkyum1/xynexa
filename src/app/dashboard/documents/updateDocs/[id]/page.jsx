@@ -45,7 +45,6 @@ const TextEditor = () => {
     const handleContentChange = (value) => {
         setContent(value);
         const plainText = quillRef.current ? quillRef.current.getEditor().getText() : "";
-        // console.log("document title", title, "Editor Content:", plainText.trim());
     };
 
     const shareDocument = async () => {
@@ -56,7 +55,6 @@ const TextEditor = () => {
                     title: title,
                     text: textContent,
                 });
-                // console.log("Document shared successfully");
             } else {
                 toast.error("Failed to share the document.");
             }
@@ -83,7 +81,6 @@ const TextEditor = () => {
                 },
             }).unwrap();
     
-            // console.log("Document updated successfully!");
             Swal.fire({
                 icon: "success",
                 title: "Document Updated!",

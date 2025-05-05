@@ -49,7 +49,6 @@ const Attachment = ({ task }) => {
                     filename: data.attachmentName.trim() || data.attachmentUrl.substring(data.attachmentUrl.lastIndexOf('/') + 1),
                 }).unwrap();
                 reset();
-                console.log("Attachment added successfully!");
                 // Optionally, refetch task data
             } catch (err) {
                 console.error("Failed to add attachment:", err);

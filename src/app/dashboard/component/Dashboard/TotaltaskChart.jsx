@@ -49,7 +49,6 @@ const CustomTooltipContent = ({ active, payload, label }) => {
 };
 
 const TotalTaskChart = ({ summary }) => {
-    console.log(summary?.teamSummaries);
 
     const hasData = summary?.teamSummaries && summary.teamSummaries.length > 0;
 
