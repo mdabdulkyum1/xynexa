@@ -3,7 +3,7 @@ import React from "react";
 const PricingBanner = () => {
   return (
     <div
-      className="h-[400px] flex items-center justify-center bg-cover bg-center relative"
+      className="h-[400px] flex items-center justify-center bg-cover bg-center relative rounded-2xl"
       style={{ backgroundImage: "url('https://i.ibb.co.com/8gDgjJcM/simple-background-with-gradient-shape-green-vector.jpg')" }}
     >
      

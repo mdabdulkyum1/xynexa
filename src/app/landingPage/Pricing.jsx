@@ -1,55 +1,55 @@
 'use client'
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { CiDollar } from "react-icons/ci";
 
 const Pricing = () => {
-    const [isYearly, setIsYearly] = useState(false);
+    // const [isYearly, setIsYearly] = useState(false);
 
-    const pricingData = {
-        Starter: {
-            title: 'Starter',
-            description: 'For driven individuals who want to start with essential features and resources to kickstart your journey.',
-            price: isYearly ? 90 : 9,
-            features: [
-                'Standard analytics',
-                'Unlimited tracking',
-                'Basic AI model',
-                'Standard integrations',
-                'Email support'
-            ],
-            buttonText: 'Get started'
-        },
-        Pro: {
-            title: 'Pro',
-            description: 'For ambitious professionals who require more innovative and additional tools to stay ahead of the competition.',
-            price: isYearly ? 190 : 19,
-            features: [
-                'Advanced analytics',
-                'Unlimited tracking',
-                'Custom AI model',
-                'Custom integrations',
-                'Premium support'
-            ],
-            buttonText: 'Get started',
-            popular: true
-        },
-        Enterprise: {
-            title: 'Enterprise',
-            description: 'For companies who want advanced features with specific needs to achieve better business results.',
-            price: 'Custom',
-            features: [
-                'Advanced analytics',
-                'Unlimited tracking',
-                'Custom AI model',
-                'Custom integrations',
-                'Premium support'
-            ],
-            buttonText: 'Contact us'
-        }
-    };
+    // const pricingData = {
+    //     Starter: {
+    //         title: 'Starter',
+    //         description: 'For driven individuals who want to start with essential features and resources to kickstart your journey.',
+    //         price: isYearly ? 90 : 9,
+    //         features: [
+    //             'Standard analytics',
+    //             'Unlimited tracking',
+    //             'Basic AI model',
+    //             'Standard integrations',
+    //             'Email support'
+    //         ],
+    //         buttonText: 'Get started'
+    //     },
+    //     Pro: {
+    //         title: 'Pro',
+    //         description: 'For ambitious professionals who require more innovative and additional tools to stay ahead of the competition.',
+    //         price: isYearly ? 190 : 19,
+    //         features: [
+    //             'Advanced analytics',
+    //             'Unlimited tracking',
+    //             'Custom AI model',
+    //             'Custom integrations',
+    //             'Premium support'
+    //         ],
+    //         buttonText: 'Get started',
+    //         popular: true
+    //     },
+    //     Enterprise: {
+    //         title: 'Enterprise',
+    //         description: 'For companies who want advanced features with specific needs to achieve better business results.',
+    //         price: 'Custom',
+    //         features: [
+    //             'Advanced analytics',
+    //             'Unlimited tracking',
+    //             'Custom AI model',
+    //             'Custom integrations',
+    //             'Premium support'
+    //         ],
+    //         buttonText: 'Contact us'
+    //     }
+    // };
 
     return (
-        <div className=' text-white py-10 px-4'>
+        <div className=' text-white px-4'>
             <div className='flex justify-center items-center mb-4'>
                 <button className='flex items-center gap-1 text-[#20B7AB] border-2 border-[#20B7AB] px-4 py-2 rounded-full'>
                     <CiDollar className='text-2xl' />
@@ -62,7 +62,7 @@ const Pricing = () => {
                 Whether you're a small startup, a growing mid-sized business, or a large enterprise, we have plans tailored to your specific demands.
             </p>
 
-            <div className='flex justify-center my-6'>
+            {/* <div className='flex justify-center my-6'>
                 <div className='flex dark:bg-[#1F1F1F] bg-gray-400 rounded-full p-1'>
                     <button 
                         className={`px-4 py-1 rounded-full transition ${!isYearly ? 'bg-[#20B7AB] dark:text-white text-black font-semibold' : 'dark:text-gray-400'}`}
@@ -110,7 +110,7 @@ const Pricing = () => {
                         </button>
                     </div>
                 ))}
-            </div>
+            </div> */}
         </div>
     );
 };

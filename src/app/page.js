@@ -1,27 +1,24 @@
 'use client';
 
-import { useEffect } from 'react';
-import { useRouter } from 'next/navigation';
-import { useUser } from '@clerk/nextjs';
 import { useUserDataFromClerk } from '@/hooks/useUserDataFromClerk';
+import { useUser } from '@clerk/nextjs';
+import { useRouter } from 'next/navigation';
 
 import Hero from './components/home/Hero/Hero';
-import WorkFlow from './landingPage/WorkFlow';
-import EssyCollab from './landingPage/EssyCollab';
+import FavriteApps from './landingPage/FavriteApps';
 import MuchMore from './landingPage/MuchMore';
 import OthersFeatures from './landingPage/OthersFeatures';
-import SimpleAnlytics from './landingPage/SimpleAnlytics';
-import FavriteApps from './landingPage/FavriteApps';
-import Pricing from './landingPage/Pricing';
 import Testimonials from './landingPage/Testimonials';
-import BlogSection from './landingPage/BlogSection';
+import WorkFlow from './landingPage/WorkFlow';
 
-import Image from 'next/image'; 
 import { motion } from 'framer-motion';
-import Company from './landingPage/components/Company';
-import TaskFeatures from './landingPage/components/Task';
+import Image from 'next/image';
 import FAQSection from './contact-us/components/FAQSection';
 import InsightsSection from './contact-us/components/InsightsSection';
+import Company from './landingPage/components/Company';
+import TaskFeatures from './landingPage/components/Task';
+import PricingCards from './pricing/components/PricingCards';
+import Pricing from './landingPage/Pricing';
 export default function Home() {
   const router = useRouter();
   const { user: mainUser, isLoaded } = useUser();
@@ -70,11 +67,10 @@ export default function Home() {
       <OthersFeatures />
       <TaskFeatures/>
       <MuchMore />
-      {/* <SimpleAnlytics /> */}
-      {/* <EssyCollab /> */}
       <WorkFlow />
       <FavriteApps />
       <Pricing />
+      <PricingCards />
       <Testimonials />
       <InsightsSection/>
       <FAQSection />

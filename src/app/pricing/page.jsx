@@ -11,7 +11,7 @@ import Productivity from './components/Productivity';
 const Pricing = () => {
   
   return (
-    <div className='mt-20 container mx-auto'>
+    <div className=''>
       <PricingBanner></PricingBanner>
       <PricingCards></PricingCards>
       <PackageFeature></PackageFeature>
