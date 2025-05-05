@@ -55,11 +55,11 @@ const Hero = () => {
   };
 
   const handleTryFreeClick = () => {
-    router.push('/dashboard'); // Navigate to the /dashboard route
+    router.push('/dashboard'); 
   };
 
   const handleSeeFeaturesClick = () => {
-    router.push('/dashboard'); // Also navigate to /dashboard for this button
+    router.push('/dashboard'); 
   };
 
   return (
@@ -70,11 +70,11 @@ const Hero = () => {
       animate="animate"
     >
       <div className="relative rounded-xl z-0 flex flex-col items-center text-center px-6 bg-white dark:bg-background py-[100px] transition-colors">
-        {/* Animated Grid Background with Color Overlay */}
+       
         <div className="absolute inset-0 bg-gradient-to-b from-white to-teal-400 opacity-50 motion-reduce:opacity-100" />
         <div className="absolute inset-0 bg-grid-pattern pointer-events-none motion-reduce:bg-none" />
 
-        {/* Animated Profile Images */}
+        
         <motion.div
           className='absolute top-[20%] left-[10%]'
           variants={profileVariants}

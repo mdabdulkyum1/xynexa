@@ -4,7 +4,7 @@ import Image from 'next/image';
 
 const TaskFeatures = () => {
   return (
-    <div className="py-20 max-w-7xl mx-auto px-6 flex gap-8 items-center justify-between">
+    <div className="py-20 max-w-7xl mx-auto px-6 flex flex-col md:flex-row gap-8 items-center justify-between">
       <div className="w-full md:w-1/2">
         <h2 className="text-3xl font-bold text-gray-900 mb-6">
           Create and Assign Tasks <br />
@@ -47,7 +47,7 @@ const TaskFeatures = () => {
       </div>
       <div className="w-full md:w-1/2 relative">
         <div className="relative w-full h-auto aspect-video">
-          <Image src='/gotzha-tcs-banner.e389d6c.jpg' alt="Teamly Task Features" width={700} height={800} className="rounded-md " />
+          <Image src='/gotzha-tcs-banner.e389d6c.jpg' alt="Teamly Task Features" width={700} height={800} className="rounded-md object-cover" />
         </div>
         {/* Text overlay 1 */}
         <div className="absolute bottom-4 right-4 bg-white bg-opacity-80 rounded-md shadow-md p-3">
