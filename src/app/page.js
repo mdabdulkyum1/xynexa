@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useUser } from '@clerk/nextjs';
 import { useUserDataFromClerk } from '@/hooks/useUserDataFromClerk';
-
+import { ClerkLoaded, ClerkLoading } from '@clerk/nextjs'
 import Hero from './components/home/Hero/Hero';
 import FavriteApps from './landingPage/FavriteApps';
 import MuchMore from './landingPage/MuchMore';
@@ -21,7 +21,8 @@ import PricingCards from './pricing/components/PricingCards';
 import Pricing from './landingPage/Pricing';
 
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowUp, ArrowDown} from 'lucide-react'; // Import arrow icons
+import { ArrowUp, ArrowDown} from 'lucide-react'; 
+// import Load from '@/components/Loader/Load';
 
 
 
@@ -72,6 +73,9 @@ export default function Home() {
 
   return (
     <div className="relative">
+      <ClerkLoading>
+        {/* <Load/> */}
+      </ClerkLoading>
       <div className="relative max-w-[1400px] mx-auto">
         <Hero />
       </div>

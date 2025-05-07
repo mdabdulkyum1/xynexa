@@ -59,7 +59,7 @@ export default function Page() {
           </div>
           
         </div>
-        <div className="flex flex-col lg:flex-row gap-10 ">
+        <div className="flex flex-col lg:flex-row gap-5 ">
           <div className="w-full lg:w-[75%]">
             <OverViewCard summary={userData} />
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-10">
@@ -67,7 +67,7 @@ export default function Page() {
               <TaskPercent summary={userData} />
             </div>
           </div>
-          <div className=" light:bg-white rounded-lg   p-4">
+          <div className=" light:bg-white w-[25%]  rounded-lg   p-4">
             
 
             

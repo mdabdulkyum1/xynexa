@@ -2,7 +2,7 @@
 
 import React from "react";
 import { BadgeCheck, Bell, ChevronsUpDown, CreditCard, LogOut, Sparkles, Home } from "lucide-react";
-import { useClerk } from "@clerk/nextjs";
+import { useClerk, useUser } from "@clerk/nextjs";
 
 import {
   Avatar,
@@ -25,10 +25,18 @@ import {
   useSidebar
 } from "@/components/ui/sidebar";
 import Link from "next/link";
-
+import { useGetUserByEmailQuery } from '@/redux/features/Api/userApi';
 export function NavUser({ user }) {
   const { isMobile } = useSidebar();
   const { signOut } = useClerk();
+
+  const { user:mainUser } = useUser();
+  
+      const userEmail = mainUser?.emailAddresses[0]?.emailAddress;
+      
+      const {data:userData}=useGetUserByEmailQuery(userEmail)
+      const creator=userData?.user
+      
 
   return (
     <SidebarMenu>
@@ -37,36 +45,26 @@ export function NavUser({ user }) {
           <DropdownMenuTrigger asChild>
             <SidebarMenuButton size="lg">
               <Avatar className="h-8 w-8 rounded-lg">
-                <AvatarImage src={user.avatar} alt={user.name} />
+                <AvatarImage src={creator?.imageUrl} alt={creator?.firstName} />
                 <AvatarFallback className="rounded-lg">CN</AvatarFallback>
               </Avatar>
               <div className="grid flex-1 text-left text-sm leading-tight">
-                <span className="truncate font-semibold">{user.name}</span>
-                <span className="truncate text-xs">{user.email}</span>
+                <span className="truncate font-semibold">{creator?.firstName}</span>
+                <span className="truncate text-xs">{creator?.email}</span>
               </div>
               <ChevronsUpDown className="ml-auto size-4" />
             </SidebarMenuButton>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
-            <DropdownMenuLabel>{user.name}</DropdownMenuLabel>
+            <DropdownMenuLabel>{creator?.firstName}</DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
               <DropdownMenuItem>
                 <Home />
                 <Link href="/">Home</Link>
               </DropdownMenuItem>
-              <DropdownMenuItem>
-                <BadgeCheck />
-                Account
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <CreditCard />
-                Billing
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <Bell />
-                Notifications
-              </DropdownMenuItem>
+              
+              
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuItem>
