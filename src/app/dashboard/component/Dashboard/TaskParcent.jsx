@@ -63,7 +63,7 @@ const TaskPercent = ({ summary }) => {
                 <CardDescription>
                     {hasData
                         ? `Total Task: ${totalTasks || 0}, Running: ${inProgressTasks || 0}, Pending: ${todoTasks || 0}, Completed: ${doneTasks || 0}`
-                        : "This data is not available." 
+                        : "" 
                     }
                 </CardDescription>
             </CardHeader>
@@ -96,7 +96,7 @@ const TaskPercent = ({ summary }) => {
                     </ChartContainer>
                 ) : (
                     <div className="flex justify-center items-center h-32 text-gray-500">
-                       No Data
+                       This data is not available
                     </div>
                 )}
             </CardContent>
@@ -107,9 +107,7 @@ const TaskPercent = ({ summary }) => {
                         : null
                     }
                 </div>
-                <div className="leading-none text-muted-foreground">
-                    {hasData ? "Showing task status." : "টাস্কের কোনো ডেটা উপলব্ধ নেই।"}
-                </div>
+                
             </CardFooter>
         </Card>
     );
