@@ -66,10 +66,7 @@ const TotalTaskChart = ({ summary }) => {
             <CardHeader className="flex flex-col items-start gap-1">
                 <CardTitle className="text-xl font-semibold">Total work</CardTitle>
                 <div className="flex items-center justify-between w-full">
-                    <CardDescription>Tasks</CardDescription>
-                    <div className="flex items-center gap-2">
-                        <span className="text-sm">Monthly</span>
-                    </div>
+                   
                 </div>
             </CardHeader>
             <CardContent>
@@ -126,11 +123,7 @@ const TotalTaskChart = ({ summary }) => {
                                 </>
                             )}
                         </div>
-                        <div className="flex items-center gap-2 leading-none text-muted-foreground">
-                            {hasData
-                                ? "Showing total visitors for the last 6 months"
-                                : "No data available."}
-                        </div>
+                        
                     </div>
                 </div>
             </CardFooter>
