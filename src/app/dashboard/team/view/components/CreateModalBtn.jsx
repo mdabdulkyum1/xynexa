@@ -1,6 +1,7 @@
 "use client"
-import TeamCreateModal from '@/app/dashboard/component/Modals/TeamCreateModal';
+
 import { useState } from 'react';
+import TeamCreateModal from './TeamCreateModal';
 
 const CreateModalBtn = () => {
     const [isOpen, setIsOpen] = useState(false)

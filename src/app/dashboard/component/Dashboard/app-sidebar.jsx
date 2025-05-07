@@ -212,18 +212,18 @@ export function AppSidebar(props) {
       //     { title: "Tracking", url: "/dashboard/tasks/tracking" },
       //   ],
       // },
-      {
-        title: "Files",
-        url: "/dashboard/files",
-        icon: File, // Standard File Icon
-        items: [
-          // { title: "Share File", url: "/dashboard/files" },
-          { title: "Upload", url: "/dashboard/files/upload" },
-          { title: "Share File", url: "/dashboard/files" },
-          // { title: "Upload", url: "/dashboard/files/upload" },
-          // { title: "Cloud Sync", url: "/dashboard/files/sync" },
-        ],
-      },
+      // {
+      //   title: "Files",
+      //   url: "/dashboard/files",
+      //   icon: File, // Standard File Icon
+      //   items: [
+      //     // { title: "Share File", url: "/dashboard/files" },
+      //     { title: "Upload", url: "/dashboard/files/upload" },
+      //     { title: "Share File", url: "/dashboard/files" },
+      //     // { title: "Upload", url: "/dashboard/files/upload" },
+      //     // { title: "Cloud Sync", url: "/dashboard/files/sync" },
+      //   ],
+      // },
       {
         title: "Meetings",
         url: "/dashboard/meetings",
@@ -235,14 +235,14 @@ export function AppSidebar(props) {
           { title: "Team Meet", url: "/dashboard/meetings/meet" },
         ],
       },
-      {
-        title: "Alerts",
-        url: "/dashboard/alerts",
-        icon: Settings2, // Standard Settings/Alerts Icon
-        items: [
-          { title: "Notifications", url: "/dashboard/alerts/notifications" },
-        ],
-      },
+      // {
+      //   title: "Alerts",
+      //   url: "/dashboard/alerts",
+      //   icon: Settings2, // Standard Settings/Alerts Icon
+      //   items: [
+      //     { title: "Notifications", url: "/dashboard/alerts/notifications" },
+      //   ],
+      // },
       // {
       //   title: "Member",
       //   url: "/dashboard/users",
