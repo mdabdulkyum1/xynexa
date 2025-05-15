@@ -42,10 +42,10 @@ export function TeamSwitcher({ teams }) {
                             className="data-[state=open]:bg-sidebar-accent cursor-pointer data-[state=open]:text-sidebar-accent-foreground"
                         >
                             <Image
-                                src='/logo-dark.png'
+                                src='/logo.png'
                                 alt="Logo"
-                                width={30} 
-                                height={30} 
+                                width={40} 
+                                height={40} 
                             />
                             <div className="grid flex-1 text-left text-xl leading-tight">
                                 <span className="truncate font-semibold">
