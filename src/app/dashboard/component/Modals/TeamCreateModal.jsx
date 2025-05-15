@@ -15,12 +15,6 @@ const TeamCreateModal = ({ isOpen, closeModal }) => {
     
     const {data:userData}=useGetUserByEmailQuery(userEmail)
     const creator=userData?.user?._id
-    console.log(creator)
-
-
-
-  
-    
 
     const user = useSelector((state) => state.user.user);
 
