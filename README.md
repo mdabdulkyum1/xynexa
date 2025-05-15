@@ -68,16 +68,22 @@ Follow these steps to set up the project locally:
 git clone https://github.com/mdabdulkyum1/xynexa.git
 cd xynexa
 
+```
 
 ### Install dependencies
 
 Using npm:
+```bash
 npm install
+```
 Or using yarn:
+```bash
 yarn install
-
+```
 ### Environment Variables
  - Create a .env.local file in the root directory and add the following keys (replace placeholder values with your actual keys):
+
+```bash
 
 NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=your-clerk-publishable-key
 CLERK_SECRET_KEY=your-clerk-secret-key
@@ -90,20 +96,26 @@ NEXT_PUBLIC_SERVER_URL=http://localhost:5000
 
 NEXT_PUBLIC_HMS_APP_ID=your-hms-app-id
 CLERK_JWT_DEV_MODE=false
+```
 
 ### Running the Project
 Start the development server:
 
 Using npm:
+```bash
 npm run dev
+```
 Or using yarn:
+```bash
 yarn dev
+```
 
 ### Building for Production
 To build the optimized production version:
+```bash
 npm run build
 npm start
-
+```
 
 ### Contributing
 Contributions are welcome! Please follow these steps:
