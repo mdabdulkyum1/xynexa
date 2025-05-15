@@ -109,6 +109,9 @@ Or using yarn:
 ```bash
 yarn dev
 ```
+- Then open your browser and go to:
+  👉 http://localhost:3000
+
 
 ### Building for Production
 To build the optimized production version:
@@ -127,8 +130,8 @@ Contributions are welcome! Please follow these steps:
  - Open a Pull Request
 
 
-License
-This project is licensed under the MIT License. See the LICENSE file for details.
+### License
+- This project is licensed under the MIT License. See the LICENSE file for details.
 
-Contact
-If you have any questions or feedback, feel free to open an issue or contact me directly.
+### Contact
+ - If you have any questions or feedback, feel free to open an issue or contact me directly.
