@@ -68,20 +68,17 @@ Follow these steps to set up the project locally:
 git clone https://github.com/mdabdulkyum1/xynexa.git
 cd xynexa
 
-2. **Install dependencies**
+
+### Install dependencies
 
 Using npm:
-bash
 npm install
-
 Or using yarn:
-
 yarn install
 
-Create environment variables
-Create a .env.local file in the root directory and add the following keys (replace placeholder values with your actual keys):
+### Environment Variables
+ - Create a .env.local file in the root directory and add the following keys (replace placeholder values with your actual keys):
 
-env
 NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=your-clerk-publishable-key
 CLERK_SECRET_KEY=your-clerk-secret-key
 
@@ -93,34 +90,33 @@ NEXT_PUBLIC_SERVER_URL=http://localhost:5000
 
 NEXT_PUBLIC_HMS_APP_ID=your-hms-app-id
 CLERK_JWT_DEV_MODE=false
-Note: Do not share your secret keys publicly.
 
-Running the Project
-Start the development server
+### Running the Project
+Start the development server:
 
+Using npm:
 npm run dev
-Or
-
+Or using yarn:
 yarn dev
-Open your browser and go to http://localhost:3000 to see the app running.
 
-Building for Production
+### Building for Production
 To build the optimized production version:
-
 npm run build
 npm start
 
-## Contributing
-  Contributions are welcome! Please follow these steps:
 
-  - Fork the repository
-  - Create your feature branch (git checkout -b feature/YourFeature)
-  - Commit your changes (git commit -m 'Add some feature')
-  - Push to the branch (git push origin feature/YourFeature)
-  - Open a Pull Request
+### Contributing
+Contributions are welcome! Please follow these steps:
 
-## License
-## nThis project is licensed under the MIT License. See the LICENSE file for details.
+ - Fork the repository
+ - Create your feature branch (git checkout -b feature/YourFeature)
+ - Commit your changes (git commit -m 'Add some feature')
+ - Push to the branch (git push origin feature/YourFeature)
+ - Open a Pull Request
 
-## Contact
+
+License
+This project is licensed under the MIT License. See the LICENSE file for details.
+
+Contact
 If you have any questions or feedback, feel free to open an issue or contact me directly.
