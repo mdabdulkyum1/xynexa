@@ -6,7 +6,6 @@ import { useDispatch } from "react-redux";
 import { useUser } from "@clerk/nextjs";
 import { useGetUserByEmailQuery } from "@/redux/features/Api/userApi";
 import { LoginUserToDB } from "@/lib/loginUserToDB";
-import { OfflineUserToDB } from "@/lib/offlineUserToDB";
 import { SaveUserToDB } from "@/lib/saveUserToDB";
 import { XynexaNavbar } from "@/components/global/XynexaNavbar";
 import Footer from "@/components/global/Footer";
@@ -14,6 +13,7 @@ import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "sonner";
 import { logout, setUser } from "@/redux/features/Slice/userSlice";
 import "./globals.css";
+import SocketAuthManager from "@/components/SocketAuthManager/SocketAuthManager";
 
 export default function ContentWithLogic({ children }) {
   const dispatch = useDispatch();
@@ -45,8 +45,8 @@ export default function ContentWithLogic({ children }) {
       {shouldShowNavbarFooter && <XynexaNavbar />}
       <main className="min-h-screen">
         <SaveUserToDB />
-        <OfflineUserToDB />
         <LoginUserToDB />
+        <SocketAuthManager />
         <Toaster position="top-right" />
         {children}
       </main>
