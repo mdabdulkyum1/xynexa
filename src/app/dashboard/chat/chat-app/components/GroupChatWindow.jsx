@@ -7,8 +7,8 @@ import { useUserDataFromClerk } from "@/hooks/useUserDataFromClerk";
 import { useGetTeamQuery } from "@/redux/features/Api/teamApi";
 import { AnimatedTooltip } from "@/components/ui/animated-tooltip";
 import useAxiosPublic from "@/hooks/AxiosPublic/useAxiosPublic";
-import { io } from "socket.io-client";
-const socket = io(process.env.NEXT_PUBLIC_SERVER_URL);
+import { socket } from "../../../../../lib/socket";
+
 
 const GroupChatWindow = () => {
 
