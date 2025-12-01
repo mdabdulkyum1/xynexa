@@ -9,12 +9,11 @@ export default function SocketAuthManager() {
   const { user, isLoaded } = useUser();
 
   useEffect(() => {
-    
+
     if (!isLoaded) return;
 
     if (!isSignedIn || !user) {
       if (socket.connected) {
-        
         const email = user?.primaryEmailAddress?.emailAddress;
         if (email) {
           socket.emit("user-offline", { email });
@@ -25,8 +24,9 @@ export default function SocketAuthManager() {
     }
 
     const email = user.primaryEmailAddress?.emailAddress;
+    const userId = user.id; 
 
-    if (!email) return;
+    if (!email || !userId) return;
 
     if (!socket.connected) {
       socket.connect();
@@ -34,16 +34,25 @@ export default function SocketAuthManager() {
 
     socket.emit("join", { email });
 
+    socket.emit("joinUserRoom", userId);
+
+    console.log(`Connected: ${email} | UserID Room: ${userId}`);
+
     const handleBeforeUnload = () => {
       socket.emit("user-offline", { email });
+      socket.emit("leaveUserRoom", userId);
     };
 
     window.addEventListener("beforeunload", handleBeforeUnload);
 
     return () => {
       socket.emit("user-offline", { email });
+      socket.emit("leaveUserRoom", userId);
       window.removeEventListener("beforeunload", handleBeforeUnload);
-      // socket.disconnect(); // চাইলে এখানে নয়, শুধু logout এ ব্যবহার করতে পারিস
+
+      if (!isSignedIn) {
+        socket.disconnect();
+      }
     };
   }, [isSignedIn, isLoaded, user]);
 

@@ -231,7 +231,7 @@ return (
           {receiver?.firstName} {receiver?.lastName}
         </p>
         <p className="text-xs text-green-500">
-          {isTyping ? "Typing..." : "Online"}
+          {isTyping ? "Typing..." : `${user?.status}`}
         </p>
       </div>
       <div className="flex items-center space-x-2 text-gray-500">
