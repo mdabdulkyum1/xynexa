@@ -2,7 +2,6 @@
 
 import { useState, useEffect, useRef, useCallback } from "react";
 import { useUser } from "@clerk/clerk-react";
-import { io } from "socket.io-client";
 import {
   FaVideo,
   FaPhone,
@@ -16,13 +15,14 @@ import useAxiosPublic from "@/hooks/AxiosPublic/useAxiosPublic";
 import { useSelector } from "react-redux";
 import { format, isToday, parseISO } from "date-fns";
 import { MoreVertical } from "lucide-react";
+import { socket } from "../../../../../lib/socket";
 
-const socket = io(process.env.NEXT_PUBLIC_SERVER_URL);
 
 const ChatWindow = () => {
   const axiosPublic = useAxiosPublic();
   const { user } = useUser();
   const userId = user?.id;
+  const email = user?.primaryEmailAddress?.emailAddress;
 
   const receiverId = useSelector((state) => state.chat.selectedUserId);
   
@@ -53,7 +53,7 @@ const ChatWindow = () => {
   useEffect(() => {
     if (!userId) return;
 
-    socket.emit("join", { userId });
+    socket.emit("join", { email });
 
     const handleReceiveMessage = (message) => {
       // Only add the message if it belongs to the current chat
