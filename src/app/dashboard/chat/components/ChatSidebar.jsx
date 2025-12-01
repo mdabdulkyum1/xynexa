@@ -2,7 +2,6 @@
 
 import { Card } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { socket } from "@/lib/socket";
 import { useGetTeamsByEmailForGroupChatQuery } from "@/redux/features/Api/teamApi";
 import { setSelectedUserId } from "@/redux/features/Slice/chatSlice";
 import { setGroupChatId } from "@/redux/features/Slice/groupChatSlice";
@@ -12,6 +11,7 @@ import { Search, FaUsers } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
+import { socket } from "@/lib/socket";
 
 
 const ChatSidebar = () => {
