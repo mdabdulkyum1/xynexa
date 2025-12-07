@@ -11,7 +11,8 @@ import { Search, FaUsers } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { socket } from "@/lib/socket";
+import { socket } from "../../../../lib/socket";
+
 
 
 const ChatSidebar = () => {
