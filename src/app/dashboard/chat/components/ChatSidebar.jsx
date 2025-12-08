@@ -7,7 +7,7 @@ import { setSelectedUserId } from "@/redux/features/Slice/chatSlice";
 import { setGroupChatId } from "@/redux/features/Slice/groupChatSlice";
 import { useUser } from "@clerk/nextjs";
 import { format, isToday, isYesterday, parseISO } from "date-fns";
-import { Search, FaUsers } from "lucide-react";
+import { Search, Users } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
@@ -119,7 +119,7 @@ const ChatSidebar = () => {
             {/* Groups */}
             <div className="space-y-3 bg-white dark:bg-gray-800 rounded-lg p-4 shadow-sm">
               <h3 className="text-lg font-medium text-gray-800 dark:text-white mb-3 flex items-center">
-                <FaUsers className="mr-2" /> Groups
+                <Users className="mr-2" /> Groups
               </h3>
               {groups.map((group) => (
                 <Link href="/dashboard/chat/chat-app" key={group._id}>
@@ -132,7 +132,7 @@ const ChatSidebar = () => {
                     }`}
                   >
                     <div className="w-10 h-10 bg-gray-300 rounded-full mr-3 flex items-center justify-center">
-                      <FaUsers />
+                      <Users />
                     </div>
                     <p className="font-medium">{group.name}</p>
                   </div>
