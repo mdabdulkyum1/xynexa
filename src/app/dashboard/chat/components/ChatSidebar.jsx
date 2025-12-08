@@ -7,9 +7,9 @@ import { useGetTeamsByEmailForGroupChatQuery } from "@/redux/features/Api/teamAp
 import { setSelectedUserId } from "@/redux/features/Slice/chatSlice";
 import { setGroupChatId } from "@/redux/features/Slice/groupChatSlice";
 import { useUser } from "@clerk/nextjs";
-import { differenceInDays, format, isToday, isYesterday, parseISO } from "date-fns";
+import { format, isToday, isYesterday, parseISO } from "date-fns";
 import { Search, Users } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 const ChatSidebar = () => {
@@ -33,28 +33,53 @@ const ChatSidebar = () => {
     }).catch(console.error);
   }, [userEmail]);
 
-  // Socket status update
+  // Real-time online/offline status update
   useEffect(() => {
     const handleStatus = ({ email, status }) => {
-      setUsers(prev => prev.map(u => u.email === email ? { ...u, status, lastActive: new Date() } : u));
+      setUsers(prev =>
+        prev.map(u =>
+          u.email === email
+            ? { ...u, status, lastActive: status === "Online" ? new Date().toISOString() : u.lastActive }
+            : u
+        )
+      );
     };
+
     socket.on("user-online-status", handleStatus);
     socket.on("user-offline", handleStatus);
-    return () => { socket.off("user-online-status"); socket.off("user-offline"); };
+
+    return () => {
+      socket.off("user-online-status");
+      socket.off("user-offline");
+    };
   }, []);
 
-  const formatTime = (date) => {
+  // Format time
+  const formatTime = (timestamp) => {
+    const date = parseISO(timestamp);
     if (isToday(date)) return format(date, "h:mm a");
     if (isYesterday(date)) return "Yesterday";
-    if (differenceInDays(new Date(), date) < 7) return format(date, "EEE");
     return format(date, "MMM d");
   };
 
-  const filteredUsers = users.filter(u =>
-    `${u.firstName} ${u.lastName}`.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  // Filter + Sort Users by Last Active (Most Recent First)
+  const sortedAndFilteredUsers = useMemo(() => {
+    return users
+      .filter(u =>
+        `${u.firstName} ${u.lastName}`.toLowerCase().includes(searchQuery.toLowerCase())
+      )
+      .sort((a, b) => {
+        // Online users always come first
+        if (a.status === "Online" && b.status !== "Online") return -1;
+        if (a.status !== "Online" && b.status === "Online") return 1;
 
-  const filtered1042 = groups.filter(g =>
+        // Both online or both offline → sort by lastActive (newest first)
+        return new Date(b.lastActive) - new Date(a.lastActive);
+      });
+  }, [users, searchQuery]);
+
+  // Filter Groups
+  const filteredGroups = groups.filter(g =>
     g.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
@@ -104,7 +129,7 @@ const ChatSidebar = () => {
                 >
                   <div className="relative">
                     <div className="w-14 h-14 bg-gradient-to-br from-purple-500 to-pink-500 rounded-2xl flex items-center justify-center text-white text-xl font-bold shadow-lg">
-                      {group.name[0]}
+                      {group.name[0].toUpperCase()}
                     </div>
                     <div className="absolute -bottom-1 -right-1 bg-white dark:bg-gray-900 rounded-full p-1">
                       <Users className="w-4 h-4 text-purple-600" />
@@ -121,44 +146,48 @@ const ChatSidebar = () => {
             </div>
           )}
 
-          {/* Direct Messages */}
+          {/* Direct Messages - Sorted by Last Active */}
           <div>
             <h3 className="text-xs font-bold text-gray-500 uppercase tracking-wider px-3 mb-3">
               Direct Messages
             </h3>
-            {filteredUsers.map((user) => (
-              <div
-                key={user.clerkId}
-                onClick={() => {
-                  dispatch(setSelectedUserId(user.clerkId));
-                  dispatch(setGroupChatId(null));
-                }}
-                className={`flex items-center gap-4 p-4 rounded-2xl cursor-pointer transition-all duration-200 group
-                  ${selectedUserId === user.clerkId 
-                    ? "bg-blue-100 dark:bg-blue-900/50 shadow-md" 
-                    : "hover:bg-gray-100 dark:hover:bg-gray-800"
-                  }`}
-              >
-                <div className="relative">
-                  <img
-                    src={user.imageUrl || "/default-avatar.png"}
-                    alt={user.firstName}
-                    className="w-14 h-14 rounded-2xl object-cover ring-4 ring-white dark:ring-gray-900 shadow-lg"
-                  />
-                  {user.status === "Online" && (
-                    <div className="absolute bottom-0 right-0 w-4 h-4 bg-green-500 rounded-full border-4 border-white dark:border-gray-900"></div>
-                  )}
+            {sortedAndFilteredUsers.length === 0 ? (
+              <p className="text-center text-gray-500 py-8">No conversations found</p>
+            ) : (
+              sortedAndFilteredUsers.map((user) => (
+                <div
+                  key={user.clerkId}
+                  onClick={() => {
+                    dispatch(setSelectedUserId(user.clerkId));
+                    dispatch(setGroupChatId(null));
+                  }}
+                  className={`flex items-center gap-4 p-4 rounded-2xl cursor-pointer transition-all duration-200 group
+                    ${selectedUserId === user.clerkId 
+                      ? "bg-blue-100 dark:bg-blue-900/50 shadow-md" 
+                      : "hover:bg-gray-100 dark:hover:bg-gray-800"
+                    }`}
+                >
+                  <div className="relative">
+                    <img
+                      src={user.imageUrl || "/default-avatar.png"}
+                      alt={user.firstName}
+                      className="w-14 h-14 rounded-2xl object-cover ring-4 ring-white dark:ring-gray-900 shadow-lg"
+                    />
+                    {user.status === "Online" && (
+                      <div className="absolute bottom-0 right-0 w-4 h-4 bg-green-500 rounded-full border-4 border-white dark:border-gray-900 animate-pulse"></div>
+                    )}
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="font-semibold text-gray-900 dark:text-white truncate">
+                      {user.firstName} {user.lastName}
+                    </p>
+                    <p className={`text-sm truncate ${user.status === "Online" ? "text-green-600 font-medium" : "text-gray-500"}`}>
+                      {user.status === "Online" ? "● Active now" : `Active ${formatTime(parseISO(user.lastActive))}`}
+                    </p>
+                  </div>
                 </div>
-                <div className="flex-1 min-w-0">
-                  <p className="font-semibold text-gray-900 dark:text-white truncate">
-                    {user.firstName} {user.lastName}
-                  </p>
-                  <p className={`text-sm truncate ${user.status === "Online" ? "text-green-600 font-medium" : "text-gray-500"}`}>
-                    {user.status === "Online" ? "● Active now" : formatTime(parseISO(user.lastActive))}
-                  </p>
-                </div>
-              </div>
-            ))}
+              ))
+            )}
           </div>
         </div>
       </ScrollArea>
