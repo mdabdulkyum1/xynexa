@@ -2,6 +2,7 @@
 
 import { ScrollArea } from "@/components/ui/scroll-area";
 import useAxiosPublic from "@/hooks/AxiosPublic/useAxiosPublic";
+import { socket } from "@/lib/socket";
 import { useGetTeamsByEmailForGroupChatQuery } from "@/redux/features/Api/teamApi";
 import { setSelectedUserId } from "@/redux/features/Slice/chatSlice";
 import { setGroupChatId } from "@/redux/features/Slice/groupChatSlice";
@@ -10,7 +11,8 @@ import { differenceInDays, format, isToday, isYesterday, parseISO } from "date-f
 import { Search, Users } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { socket } from "../../../lib/socket";
+
+
 
 const ChatSidebar = () => {
   const axiosPublic = useAxiosPublic();
