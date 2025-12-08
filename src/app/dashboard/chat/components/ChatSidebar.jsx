@@ -13,8 +13,6 @@ import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { socket } from "../../../../lib/socket";
 
-
-
 const ChatSidebar = () => {
   const { user } = useUser();
   const dispatch = useDispatch();
@@ -22,10 +20,10 @@ const ChatSidebar = () => {
 
   const { data: groups = [] } = useGetTeamsByEmailForGroupChatQuery(userEmail);
 
-
-  const [onlineUsers, setOnlineUsers] = useState([]); 
+  const [onlineUsers, setOnlineUsers] = useState([]);
   const [active, setActive] = useState(null);
 
+  // Fetch initial online users from API
   useEffect(() => {
     const fetchAllUsers = async () => {
       if (!userEmail) return;
@@ -43,41 +41,74 @@ const ChatSidebar = () => {
         console.error("Error loading users:", err);
       }
     };
-
     fetchAllUsers();
   }, [userEmail]);
 
+  // Socket listeners
   useEffect(() => {
+    const handleUserStatus = ({ email, status }) => {
+      setOnlineUsers((prev) => {
+        const exists = prev.find((u) => u.email === email);
+        if (exists) {
+          // Update existing user
+          return prev.map((u) =>
+            u.email === email ? { ...u, status, lastActive: new Date() } : u
+          );
+        } else {
+          // Add new user
+          return [
+            ...prev,
+            {
+              _id: email,
+              clerkId: email,
+              email,
+              firstName: email.split("@")[0],
+              lastName: "",
+              imageUrl: "/default-avatar.png",
+              status,
+              lastActive: new Date(),
+            },
+          ];
+        }
+      });
+    };
 
-    socket.on("user-online-status", ({ email, status }) => {
-      setOnlineUsers((prev) =>
-        prev.map((u) =>
-          u.email === email ? { ...u, status, lastActive: new Date() } : u
-        )
-      );
-    });
+    const handleOnlineUsers = (emails) => {
+      setOnlineUsers((prev) => {
+        const updatedUsers = [...prev];
 
-    socket.on("user-offline", ({ email }) => {
-      setOnlineUsers((prev) =>
-        prev.map((u) =>
-          u.email === email ? { ...u, status: "Offline", lastActive: new Date() } : u
-        )
-      );
-    });
+        // Add new users who are online
+        emails.forEach((email) => {
+          if (!updatedUsers.find((u) => u.email === email)) {
+            updatedUsers.push({
+              _id: email,
+              clerkId: email,
+              email,
+              firstName: email.split("@")[0],
+              lastName: "",
+              imageUrl: "/default-avatar.png",
+              status: "Online",
+              lastActive: new Date(),
+            });
+          }
+        });
 
-    socket.on("online-users", (emails) => {
-      setOnlineUsers((prev) =>
-        prev.map((u) => ({
+        // Update status for existing users
+        return updatedUsers.map((u) => ({
           ...u,
           status: emails.includes(u.email) ? "Online" : "Offline",
-        }))
-      );
-    });
+        }));
+      });
+    };
+
+    socket.on("user-online-status", handleUserStatus);
+    socket.on("user-offline", handleUserStatus);
+    socket.on("online-users", handleOnlineUsers);
 
     return () => {
-      socket.off("user-online-status");
-      socket.off("user-offline");
-      socket.off("online-users");
+      socket.off("user-online-status", handleUserStatus);
+      socket.off("user-offline", handleUserStatus);
+      socket.off("online-users", handleOnlineUsers);
     };
   }, []);
 
@@ -157,7 +188,7 @@ const ChatSidebar = () => {
                   >
                     <div className="relative">
                       <img
-                        src={u.imageUrl}
+                        src={u.imageUrl || "/default-avatar.png"}
                         alt={u.firstName}
                         className="w-10 h-10 rounded-full object-cover"
                       />
