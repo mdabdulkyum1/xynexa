@@ -2,7 +2,8 @@
 
 import { useEffect } from "react";
 import { useAuth, useUser } from "@clerk/nextjs";
-import { socket } from "@/lib/socket";
+import { socket } from "../../lib/socket";
+
 
 export default function SocketAuthManager() {
   const { isSignedIn } = useAuth();
