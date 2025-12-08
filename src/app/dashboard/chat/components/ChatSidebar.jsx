@@ -14,9 +14,26 @@ import { useDispatch, useSelector } from "react-redux";
 
 const ChatSidebar = () => {
   const dispatch = useDispatch();
-  const { user } = useUser();
-  const userEmail = user?.emailAddresses[0]?.emailAddress;
+  const { user, isLoaded } = useUser();
 
+
+  if (!isLoaded) {
+    return (
+      <div className="flex h-full items-center justify-center bg-gray-50 dark:bg-gray-900">
+        <p className="text-gray-500 animate-pulse">Loading chats...</p>
+      </div>
+    );
+  }
+
+  if (!user) {
+    return (
+      <div className="flex h-full items-center justify-center bg-gray-50 dark:bg-gray-900">
+        <p className="text-red-500">Please sign in to view chats</p>
+      </div>
+    );
+  }
+
+  const userEmail = user?.emailAddresses?.[0]?.emailAddress;
   const { data: groups = [] } = useGetTeamsByEmailForGroupChatQuery(userEmail || "");
   const selectedUserId = useSelector((state) => state.chat.selectedUserId);
   const groupChatId = useSelector((state) => state.groupChat.groupChatId);
@@ -28,18 +45,25 @@ const ChatSidebar = () => {
   // Fetch online users
   useEffect(() => {
     if (!userEmail) return;
-    axiosPublic.get(`/api/online/users/${userEmail}`).then(res => {
-      setUsers(res.data.uniqueMembers || []);
-    }).catch(console.error);
-  }, [userEmail]);
+    axiosPublic
+      .get(`/api/online/users/${userEmail}`)
+      .then((res) => {
+        setUsers(res.data.uniqueMembers || []);
+      })
+      .catch(console.error);
+  }, [userEmail, axiosPublic]);
 
-  // Real-time online/offline status update
+  // Real-time online/offline status
   useEffect(() => {
     const handleStatus = ({ email, status }) => {
-      setUsers(prev =>
-        prev.map(u =>
+      setUsers((prev) =>
+        prev.map((u) =>
           u.email === email
-            ? { ...u, status, lastActive: status === "Online" ? new Date().toISOString() : u.lastActive }
+            ? {
+                ...u,
+                status,
+                lastActive: status === "Online" ? new Date().toISOString() : u.lastActive || new Date().toISOString(),
+              }
             : u
         )
       );
@@ -54,33 +78,32 @@ const ChatSidebar = () => {
     };
   }, []);
 
-  // Format time
+  // Format time safely
   const formatTime = (timestamp) => {
+    if (!timestamp) return "Never";
     const date = parseISO(timestamp);
     if (isToday(date)) return format(date, "h:mm a");
     if (isYesterday(date)) return "Yesterday";
     return format(date, "MMM d");
   };
 
-  // Filter + Sort Users by Last Active (Most Recent First)
+  // Filter + Sort Users (Online first → then by lastActive)
   const sortedAndFilteredUsers = useMemo(() => {
     return users
-      .filter(u =>
-        `${u.firstName} ${u.lastName}`.toLowerCase().includes(searchQuery.toLowerCase())
-      )
+      .filter((u) => {
+        const fullName = `${u.firstName || ""} ${u.lastName || ""}`.trim().toLowerCase();
+        return fullName.includes(searchQuery.toLowerCase());
+      })
       .sort((a, b) => {
-        // Online users always come first
         if (a.status === "Online" && b.status !== "Online") return -1;
         if (a.status !== "Online" && b.status === "Online") return 1;
-
-        // Both online or both offline → sort by lastActive (newest first)
-        return new Date(b.lastActive) - new Date(a.lastActive);
+        return new Date(b.lastActive || 0).getTime() - new Date(a.lastActive || 0).getTime();
       });
   }, [users, searchQuery]);
 
   // Filter Groups
-  const filteredGroups = groups.filter(g =>
-    g.name.toLowerCase().includes(searchQuery.toLowerCase())
+  const filteredGroups = groups.filter((g) =>
+    g.name?.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   return (
@@ -122,21 +145,23 @@ const ChatSidebar = () => {
                     dispatch(setSelectedUserId(null));
                   }}
                   className={`flex items-center gap-4 p-4 rounded-2xl cursor-pointer transition-all duration-200
-                    ${groupChatId === group._id 
-                      ? "bg-blue-100 dark:bg-blue-900/50 shadow-md" 
+                    ${groupChatId === group._id
+                      ? "bg-blue-100 dark:bg-blue-900/50 shadow-md"
                       : "hover:bg-gray-100 dark:hover:bg-gray-800"
                     }`}
                 >
                   <div className="relative">
                     <div className="w-14 h-14 bg-gradient-to-br from-purple-500 to-pink-500 rounded-2xl flex items-center justify-center text-white text-xl font-bold shadow-lg">
-                      {group.name[0].toUpperCase()}
+                      {group.name?.[0]?.toUpperCase() || "G"}
                     </div>
                     <div className="absolute -bottom-1 -right-1 bg-white dark:bg-gray-900 rounded-full p-1">
                       <Users className="w-4 h-4 text-purple-600" />
                     </div>
                   </div>
                   <div className="flex-1">
-                    <p className="font-semibold text-gray-900 dark:text-white">{group.name}</p>
+                    <p className="font-semibold text-gray-900 dark:text-white truncate">
+                      {group.name || "Unnamed Group"}
+                    </p>
                     <p className="text-xs text-gray-500 dark:text-gray-400">
                       {group.members?.length || 0} members
                     </p>
@@ -146,11 +171,12 @@ const ChatSidebar = () => {
             </div>
           )}
 
-          {/* Direct Messages - Sorted by Last Active */}
+          {/* Direct Messages */}
           <div>
             <h3 className="text-xs font-bold text-gray-500 uppercase tracking-wider px-3 mb-3">
               Direct Messages
             </h3>
+
             {sortedAndFilteredUsers.length === 0 ? (
               <p className="text-center text-gray-500 py-8">No conversations found</p>
             ) : (
@@ -162,27 +188,30 @@ const ChatSidebar = () => {
                     dispatch(setGroupChatId(null));
                   }}
                   className={`flex items-center gap-4 p-4 rounded-2xl cursor-pointer transition-all duration-200 group
-                    ${selectedUserId === user.clerkId 
-                      ? "bg-blue-100 dark:bg-blue-900/50 shadow-md" 
+                    ${selectedUserId === user.clerkId
+                      ? "bg-blue-100 dark:bg-blue-900/50 shadow-md"
                       : "hover:bg-gray-100 dark:hover:bg-gray-800"
                     }`}
                 >
                   <div className="relative">
                     <img
                       src={user.imageUrl || "/default-avatar.png"}
-                      alt={user.firstName}
+                      alt={user.firstName || "User"}
                       className="w-14 h-14 rounded-2xl object-cover ring-4 ring-white dark:ring-gray-900 shadow-lg"
                     />
                     {user.status === "Online" && (
                       <div className="absolute bottom-0 right-0 w-4 h-4 bg-green-500 rounded-full border-4 border-white dark:border-gray-900 animate-pulse"></div>
                     )}
                   </div>
+
                   <div className="flex-1 min-w-0">
                     <p className="font-semibold text-gray-900 dark:text-white truncate">
-                      {user.firstName} {user.lastName}
+                      {user.firstName || "Unknown"} {user.lastName || ""}
                     </p>
                     <p className={`text-sm truncate ${user.status === "Online" ? "text-green-600 font-medium" : "text-gray-500"}`}>
-                      {user.status === "Online" ? "● Active now" : `Active ${formatTime(parseISO(user.lastActive))}`}
+                      {user.status === "Online"
+                        ? "Active now"
+                        : `Active ${formatTime(user.lastActive)}`}
                     </p>
                   </div>
                 </div>
