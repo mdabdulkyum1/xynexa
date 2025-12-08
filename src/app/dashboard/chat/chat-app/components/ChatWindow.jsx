@@ -218,120 +218,70 @@ const ChatWindow = () => {
   };
 
 return (
-  <div className="flex flex-col justify-between w-full mx-2  bg-white shadow-md rounded-lg dark:bg-black">
-    {/* Header */}
-    <div className="flex items-center p-4 border-b border-gray-200 dark:border-gray-700">
-      <img
-        src={receiver?.imageUrl}
-        alt={`${receiver?.firstName} ${receiver?.lastName}`}
-        className="w-12 h-12 rounded-full mr-3"
-      />
-      <div className="flex-1">
-        <p className="text-sm font-medium text-gray-800 dark:text-gray-400">
-          {receiver?.firstName} {receiver?.lastName}
-        </p>
-        <p className="text-xs text-green-500">
-          {isTyping ? "Typing..." : `${receiver?.status}`}
-        </p>
-      </div>
-      <div className="flex items-center space-x-2 text-gray-500">
-        <FaPhone className="text-xl cursor-pointer" aria-label="Call" />
-        <FaVideo className="text-xl cursor-pointer" aria-label="Video call" />
-        <FaEllipsisV className="text-xl cursor-pointer" aria-label="More options" />
-      </div>
+    <div className="flex flex-col h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-black">
+
+  {/* Header */}
+  <div className="bg-white dark:bg-gray-900 shadow-sm border-b border-gray-200 dark:border-gray-800 px-6 py-4 flex items-center gap-4">
+    <img src={receiver?.imageUrl} className="w-12 h-12 rounded-full ring-4 ring-gray-200 dark:ring-gray-800" />
+    <div className="flex-1">
+      <h3 className="font-bold text-lg text-gray-900 dark:text-white">
+        {receiver?.firstName} {receiver?.lastName}
+      </h3>
+      <p className="text-sm text-green-600 font-medium">
+        {isTyping ? "typing..." : receiver?.status === "Online" ? "Active now" : "Offline"}
+      </p>
     </div>
+    <div className="flex gap-4 text-gray-500">
+      <FaPhone className="w-6 h-6 hover:text-blue-600 cursor-pointer transition" />
+      <FaVideo className="w-6 h-6 hover:text-blue-600 cursor-pointer transition" />
+      <FaEllipsisV className="w-6 h-6 hover:text-blue-600 cursor-pointer transition" />
+    </div>
+  </div>
 
-    {/* Chat Body */}
-    <div className="flex-1 overflow-y-auto p-4 space-y-3" style={{ maxHeight: "350px" }}>
-      {messages.map((msg, index) => {
-        const isUser = msg.senderId === userId;
-
+  {/* Messages Area - Full Height */}
+  <ScrollArea className="flex-1 px-6 py-4">
+    <div className="space-y-4 max-w-4xl mx-auto">
+      {messages.map((msg) => {
+        const isMe = msg.senderId === userId;
         return (
-          <div
-            key={index}
-            className={`relative flex ${isUser ? "justify-end" : ""}`}
-          >
-            <div
-              className={`p-3 rounded-lg max-w-xs ${
-                isUser
-                  ? "bg-blue-500 text-white dark:bg-blue-700"
-                  : "bg-gray-200 text-gray-800 dark:bg-gray-700 dark:text-white"
-              }`}
-            >
-              <div className="flex justify-between gap-4 items-center">
-                <p className="whitespace-pre-wrap break-words">{msg.text}</p>
-                <div className="flex items-center gap-2">
-                  {msg?.timestamp && (
-                    <p className="text-xs text-gray-600 dark:text-gray-400">
-                      {formatLastActive(msg.timestamp)}
-                    </p>
-                  )}
-                  <span className="text-xs">{msg.read ? "✔️" : "⏳"}</span>
-                  {isUser && (
-                    <button
-                      onClick={() => toggleMenu(msg._id)}
-                      aria-label="Message options"
-                      className="cursor-pointer"
-                    >
-                      <MoreVertical />
-                    </button>
-                  )}
-                </div>
+          <div key={msg._id} className={`flex ${isMe ? "justify-end" : "justify-start"}`}>
+            <div className={`max-w-xs lg:max-w-md px-5 py-3 rounded-3xl shadow-sm ${
+              isMe 
+                ? "bg-blue-600 text-white rounded-tr-none" 
+                : "bg-white dark:bg-gray-800 text-gray-900 dark:text-white rounded-tl-none border border-gray-200 dark:border-gray-700"
+            }`}>
+              <p className="text-sm lg:text-base whitespace-pre-wrap break-words">{msg.text}</p>
+              <div className="flex items-center gap-2 mt-1 justify-end">
+                <span className="text-xs opacity-70">
+                  {format(parseISO(msg.timestamp), "h:mm a")}
+                </span>
+                {isMe && <span>{msg.read ? "Seen" : "Sent"}</span>}
               </div>
-
-              {isMenuOpen === msg._id && isUser && (
-                <div className="absolute right-0 mt-2 z-10">
-                  <button
-                    className="absolute top-0 right-0 p-1 text-red-500 cursor-pointer"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handleDeleteMessage(msg._id);
-                    }}
-                    aria-label="Delete message"
-                  >
-                    <FaTrashAlt />
-                  </button>
-                </div>
-              )}
             </div>
           </div>
         );
       })}
       <div ref={messagesEndRef} />
     </div>
+  </ScrollArea>
 
-    {/* Chat Input */}
-    <div className="flex items-center gap-4 p-3 border-t border-gray-200 dark:border-gray-700">
+  {/* Input */}
+  <div className="bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-800 p-4">
+    <div className="flex items-center gap-3 max-w-4xl mx-auto">
       <Input
         value={newMessage}
-        onChange={(e) => {
-          setNewMessage(e.target.value);
-          handleTyping();
-        }}
-        onKeyDown={(e) => {
-          if (e.key === "Enter") {
-            sendMessage();
-          }
-        }}
-        placeholder="Type your message..."
-        className="flex-1"
-        aria-label="Message input"
+        onChange={(e) => { setNewMessage(e.target.value); handleTyping(); }}
+        onKeyDown={(e) => e.key === "Enter" && !e.shiftKey && (e.preventDefault(), sendMessage())}
+        placeholder="Write a message..."
+        className="flex-1 h-12 rounded-full bg-gray-100 dark:bg-gray-800 border-0 focus:ring-2 focus:ring-blue-500"
       />
-      <Button className="dark:bg-gray-900" onClick={sendMessage} aria-label="Send message">
-        <FaPaperPlane className="dark:text-white" />
+      <Button size="icon" className="h-12 w-12 rounded-full bg-blue-600 hover:bg-blue-700 shadow-lg">
+        <FaPaperPlane className="w-5 h-5" />
       </Button>
     </div>
   </div>
+</div>
 );
-
-
-
-
-
-
-
-
-
 };
 
 export default ChatWindow;

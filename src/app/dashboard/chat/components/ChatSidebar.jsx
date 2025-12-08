@@ -7,113 +7,112 @@ import { useGetTeamsByEmailForGroupChatQuery } from "@/redux/features/Api/teamAp
 import { setSelectedUserId } from "@/redux/features/Slice/chatSlice";
 import { setGroupChatId } from "@/redux/features/Slice/groupChatSlice";
 import { useUser } from "@clerk/nextjs";
-import { differenceInDays, format, isToday, isYesterday, parseISO } from "date-fns";
+import { format, isToday, isYesterday, parseISO } from "date-fns";
 import { Search, Users } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-
-
 const ChatSidebar = () => {
-  const axiosPublic = useAxiosPublic();
-  const { user } = useUser();
   const dispatch = useDispatch();
-
+  const { user } = useUser();
   const userEmail = user?.emailAddresses[0]?.emailAddress;
-  const { data: groups = [] } = useGetTeamsByEmailForGroupChatQuery(userEmail || "");
 
+  const { data: groups = [] } = useGetTeamsByEmailForGroupChatQuery(userEmail || "");
   const selectedUserId = useSelector((state) => state.chat.selectedUserId);
   const groupChatId = useSelector((state) => state.groupChat.groupChatId);
 
   const [users, setUsers] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
+  const axiosPublic = useAxiosPublic();
 
-  // Fetch users
-  const fetchUsers = async () => {
-    if (!userEmail) return;
-    try {
-      const res = await axiosPublic.get(`/api/online/users/${userEmail}`);
-      setUsers(res.data.uniqueMembers || []);
-    } catch (error) {
-      console.error("Error fetching users:", error);
-    }
-  };
-
+  // Fetch online users
   useEffect(() => {
-    fetchUsers();
+    if (!userEmail) return;
+    axiosPublic.get(`/api/online/users/${userEmail}`).then(res => {
+      setUsers(res.data.uniqueMembers || []);
+    }).catch(console.error);
   }, [userEmail]);
 
-  // Socket listeners
+  // Real-time online/offline status update
   useEffect(() => {
-    const handleUserStatus = ({ email, status }) => {
-      setUsers((prev) =>
-        prev.map((u) => (u.email === email ? { ...u, status, lastActive: new Date() } : u))
+    const handleStatus = ({ email, status }) => {
+      setUsers(prev =>
+        prev.map(u =>
+          u.email === email
+            ? { ...u, status, lastActive: status === "Online" ? new Date().toISOString() : u.lastActive }
+            : u
+        )
       );
     };
 
-    const handleOnlineUsers = (emails) => {
-      setUsers((prev) =>
-        prev.map((u) => ({ ...u, status: emails.includes(u.email) ? "Online" : "Offline" }))
-      );
-    };
-
-    socket.on("user-online-status", handleUserStatus);
-    socket.on("user-offline", handleUserStatus);
-    socket.on("online-users", handleOnlineUsers);
+    socket.on("user-online-status", handleStatus);
+    socket.on("user-offline", handleStatus);
 
     return () => {
-      socket.off("user-online-status", handleUserStatus);
-      socket.off("user-offline", handleUserStatus);
-      socket.off("online-users", handleOnlineUsers);
+      socket.off("user-online-status");
+      socket.off("user-offline");
     };
   }, []);
 
-  const formatLastActive = (timestamp) => {
+  // Format time
+  const formatTime = (timestamp) => {
     const date = parseISO(timestamp);
     if (isToday(date)) return format(date, "h:mm a");
     if (isYesterday(date)) return "Yesterday";
-    if (differenceInDays(new Date(), date) < 7) return format(date, "EEE");
     return format(date, "MMM d");
   };
 
-  const filteredUsers = users.filter((u) =>
-    `${u.firstName} ${u.lastName}`.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  // Filter + Sort Users by Last Active (Most Recent First)
+  const sortedAndFilteredUsers = useMemo(() => {
+    return users
+      .filter(u =>
+        `${u.firstName} ${u.lastName}`.toLowerCase().includes(searchQuery.toLowerCase())
+      )
+      .sort((a, b) => {
+        // Online users always come first
+        if (a.status === "Online" && b.status !== "Online") return -1;
+        if (a.status !== "Online" && b.status === "Online") return 1;
 
-  const filteredGroups = groups.filter((g) =>
+        // Both online or both offline → sort by lastActive (newest first)
+        return new Date(b.lastActive) - new Date(a.lastActive);
+      });
+  }, [users, searchQuery]);
+
+  // Filter Groups
+  const filteredGroups = groups.filter(g =>
     g.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   return (
-    <div className="h-full flex flex-col bg-white">
+    <div className="flex flex-col h-full bg-gray-50 dark:bg-gray-900">
       {/* Header */}
-      <div className="p-4 border-b">
-        <h1 className="text-2xl font-bold text-gray-800">Chats</h1>
+      <div className="p-5 border-b border-gray-200 dark:border-gray-800">
+        <h1 className="text-2xl font-bold text-gray-800 dark:text-white">Messages</h1>
       </div>
 
       {/* Search */}
-      <div className="p-4">
-        <div className="flex items-center bg-gray-100 rounded-lg px-3 py-2">
-          <Search className="w-5 h-5 text-gray-500 mr-2" />
+      <div className="px-4 py-3">
+        <div className="flex items-center bg-white dark:bg-gray-800 rounded-xl shadow-sm px-4 py-3 border border-gray-200 dark:border-gray-700">
+          <Search className="w-5 h-5 text-gray-500 mr-3" />
           <input
             type="text"
-            placeholder="Search people or groups"
+            placeholder="Search conversations..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="bg-transparent outline-none flex-1 text-gray-700"
+            className="bg-transparent outline-none flex-1 text-gray-700 dark:text-gray-300 placeholder-gray-500"
           />
         </div>
       </div>
 
       {/* Scrollable List */}
-      <ScrollArea className="flex-1 px-2">
-        <div className="space-y-4 pb-4">
+      <ScrollArea className="flex-1">
+        <div className="p-3 space-y-6">
 
-          {/* Groups */}
+          {/* Groups Section */}
           {filteredGroups.length > 0 && (
             <div>
-              <h3 className="text-sm font-semibold text-gray-600 px-4 mb-2 flex items-center gap-2">
-                <Users className="w-4 h-4" /> Groups
+              <h3 className="text-xs font-bold text-gray-500 uppercase tracking-wider px-3 mb-3 flex items-center gap-2">
+                <Users className="w-4 h-4" /> Group Chats
               </h3>
               {filteredGroups.map((group) => (
                 <div
@@ -122,52 +121,73 @@ const ChatSidebar = () => {
                     dispatch(setGroupChatId(group._id));
                     dispatch(setSelectedUserId(null));
                   }}
-                  className={`flex items-center gap-3 p-3 rounded-lg cursor-pointer transition
-                    ${groupChatId === group._id ? "bg-blue-100" : "hover:bg-gray-100"}`}
+                  className={`flex items-center gap-4 p-4 rounded-2xl cursor-pointer transition-all duration-200
+                    ${groupChatId === group._id 
+                      ? "bg-blue-100 dark:bg-blue-900/50 shadow-md" 
+                      : "hover:bg-gray-100 dark:hover:bg-gray-800"
+                    }`}
                 >
-                  <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full flex items-center justify-center text-white font-bold">
-                    {group.name[0].toUpperCase()}
+                  <div className="relative">
+                    <div className="w-14 h-14 bg-gradient-to-br from-purple-500 to-pink-500 rounded-2xl flex items-center justify-center text-white text-xl font-bold shadow-lg">
+                      {group.name[0].toUpperCase()}
+                    </div>
+                    <div className="absolute -bottom-1 -right-1 bg-white dark:bg-gray-900 rounded-full p-1">
+                      <Users className="w-4 h-4 text-purple-600" />
+                    </div>
                   </div>
-                  <div>
-                    <p className="font-medium">{group.name}</p>
-                    <p className="text-xs text-gray-500">{group.members?.length} members</p>
+                  <div className="flex-1">
+                    <p className="font-semibold text-gray-900 dark:text-white">{group.name}</p>
+                    <p className="text-xs text-gray-500 dark:text-gray-400">
+                      {group.members?.length || 0} members
+                    </p>
                   </div>
                 </div>
               ))}
             </div>
           )}
 
-          {/* People */}
+          {/* Direct Messages - Sorted by Last Active */}
           <div>
-            <h3 className="text-sm font-semibold text-gray-600 px-4 mb-2">People</h3>
-            {filteredUsers.map((user) => (
-              <div
-                key={user.clerkId}
-                onClick={() => {
-                  dispatch(setSelectedUserId(user.clerkId));
-                  dispatch(setGroupChatId(null));
-                }}
-                className={`flex items-center gap-3 p-3 rounded-lg cursor-pointer transition
-                  ${selectedUserId === user.clerkId ? "bg-blue-100" : "hover:bg-gray-100"}`}
-              >
-                <div className="relative">
-                  <img
-                    src={user.imageUrl || "/default-avatar.png"}
-                    alt={user.firstName}
-                    className="w-12 h-12 rounded-full object-cover"
-                  />
-                  {user.status === "Online" && (
-                    <div className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 rounded-full border-2 border-white"></div>
-                  )}
+            <h3 className="text-xs font-bold text-gray-500 uppercase tracking-wider px-3 mb-3">
+              Direct Messages
+            </h3>
+            {sortedAndFilteredUsers.length === 0 ? (
+              <p className="text-center text-gray-500 py-8">No conversations found</p>
+            ) : (
+              sortedAndFilteredUsers.map((user) => (
+                <div
+                  key={user.clerkId}
+                  onClick={() => {
+                    dispatch(setSelectedUserId(user.clerkId));
+                    dispatch(setGroupChatId(null));
+                  }}
+                  className={`flex items-center gap-4 p-4 rounded-2xl cursor-pointer transition-all duration-200 group
+                    ${selectedUserId === user.clerkId 
+                      ? "bg-blue-100 dark:bg-blue-900/50 shadow-md" 
+                      : "hover:bg-gray-100 dark:hover:bg-gray-800"
+                    }`}
+                >
+                  <div className="relative">
+                    <img
+                      src={user.imageUrl || "/default-avatar.png"}
+                      alt={user.firstName}
+                      className="w-14 h-14 rounded-2xl object-cover ring-4 ring-white dark:ring-gray-900 shadow-lg"
+                    />
+                    {user.status === "Online" && (
+                      <div className="absolute bottom-0 right-0 w-4 h-4 bg-green-500 rounded-full border-4 border-white dark:border-gray-900 animate-pulse"></div>
+                    )}
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="font-semibold text-gray-900 dark:text-white truncate">
+                      {user.firstName} {user.lastName}
+                    </p>
+                    <p className={`text-sm truncate ${user.status === "Online" ? "text-green-600 font-medium" : "text-gray-500"}`}>
+                      {user.status === "Online" ? "● Active now" : `Active ${formatTime(parseISO(user.lastActive))}`}
+                    </p>
+                  </div>
                 </div>
-                <div className="flex-1">
-                  <p className="font-medium">{user.firstName} {user.lastName}</p>
-                  <p className="text-xs text-gray-500">
-                    {user.status === "Online" ? "Online" : formatLastActive(user.lastActive)}
-                  </p>
-                </div>
-              </div>
-            ))}
+              ))
+            )}
           </div>
         </div>
       </ScrollArea>

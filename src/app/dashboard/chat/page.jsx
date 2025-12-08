@@ -1,9 +1,10 @@
 "use client";
 
 import { useSelector } from "react-redux";
-
 import Image from "next/image";
+import GroupChatWindow from "./chat-app/components/GroupChatWindow";
 import ChatWindow from "./chat-app/components/ChatWindow";
+
 
 export default function ChatPage() {
   const selectedUserId = useSelector((state) => state.chat.selectedUserId);
@@ -14,7 +15,13 @@ export default function ChatPage() {
   return (
     <div className="flex-1 flex flex-col bg-gray-50 dark:bg-gray-900">
       {isChatOpen ? (
-        <ChatWindow />
+        <>
+          {groupChatId ? (
+            <GroupChatWindow />
+          ) : (
+            <ChatWindow />
+          )}
+        </>
       ) : (
         <div className="flex-1 flex items-center justify-center p-8">
           <div className="text-center max-w-md">
