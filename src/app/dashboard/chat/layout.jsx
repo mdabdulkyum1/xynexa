@@ -1,16 +1,16 @@
-import ChatSidebar from "./components/ChatSidebar";
-import Sidebar from "./components/Sidebar";
+import ChatSidebar from "@/components/chat/ChatSidebar";
 
 export default function ChatLayout({ children }) {
   return (
-    <div className="flex bg-gray-100 dark:bg-black">
-      {/* <Sidebar /> */}
-      <main className="w-full">
-        {/* Main Chat Section */}
-        <div className="flex flex-1 overflow-hidden">
-          <ChatSidebar />
-          <div className="flex-1 flex flex-col">{children}</div>
-        </div>
+    <div className="flex h-screen bg-gray-100 dark:bg-black">
+
+      <div className="w-full md:w-96 border-r border-gray-300 dark:border-gray-800 bg-white dark:bg-gray-900">
+        <ChatSidebar />
+      </div>
+
+
+      <main className="flex-1 flex flex-col overflow-hidden">
+        {children}
       </main>
     </div>
   );

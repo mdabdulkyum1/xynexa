@@ -1,52 +1,37 @@
 "use client";
 
-import { Card } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import useAxiosPublic from "@/hooks/AxiosPublic/useAxiosPublic";
 import { useGetTeamsByEmailForGroupChatQuery } from "@/redux/features/Api/teamApi";
 import { setSelectedUserId } from "@/redux/features/Slice/chatSlice";
 import { setGroupChatId } from "@/redux/features/Slice/groupChatSlice";
 import { useUser } from "@clerk/nextjs";
-import {
-  differenceInDays,
-  differenceInWeeks,
-  format,
-  isToday,
-  isYesterday,
-  parseISO,
-} from "date-fns";
-import { Search } from "lucide-react";
-import Link from "next/link";
+import { differenceInDays, format, isToday, isYesterday, parseISO } from "date-fns";
+import { Search, Users } from "lucide-react";
 import { useEffect, useState } from "react";
-import { FaUsers } from "react-icons/fa";
-import { useDispatch } from "react-redux";
-import { socket } from "../../../../lib/socket"; // <<=== IMPORT socket
+import { useDispatch, useSelector } from "react-redux";
+import { socket } from "../../../lib/socket";
 
 const ChatSidebar = () => {
   const axiosPublic = useAxiosPublic();
   const { user } = useUser();
-  const [users, setUsers] = useState([]);
-
-  const userEmail = user?.emailAddresses[0]?.emailAddress;
-  const { data: groups = [] } = useGetTeamsByEmailForGroupChatQuery(userEmail);
-
   const dispatch = useDispatch();
 
-  // ---- fetch initial users using axios ----
+  const userEmail = user?.emailAddresses[0]?.emailAddress;
+  const { data: groups = [] } = useGetTeamsByEmailForGroupChatQuery(userEmail || "");
+
+  const selectedUserId = useSelector((state) => state.chat.selectedUserId);
+  const groupChatId = useSelector((state) => state.groupChat.groupChatId);
+
+  const [users, setUsers] = useState([]);
+  const [searchQuery, setSearchQuery] = useState("");
+
+  // Fetch users
   const fetchUsers = async () => {
     if (!userEmail) return;
     try {
       const res = await axiosPublic.get(`/api/online/users/${userEmail}`);
-      const fetchedUsers = res.data.uniqueMembers;
-
-      const sortedUsers = fetchedUsers.sort((a, b) => {
-        if (a.status === b.status) {
-          return new Date(b.lastActive) - new Date(a.lastActive);
-        }
-        return a.status === "Online" ? -1 : 1;
-      });
-
-      setUsers(sortedUsers);
+      setUsers(res.data.uniqueMembers || []);
     } catch (error) {
       console.error("Error fetching users:", error);
     }
@@ -56,24 +41,18 @@ const ChatSidebar = () => {
     fetchUsers();
   }, [userEmail]);
 
-
-  // Socket listeners here
+  // Socket listeners
   useEffect(() => {
     const handleUserStatus = ({ email, status }) => {
-      setUsers((prevUsers) =>
-        prevUsers.map((u) =>
-          u.email === email ? { ...u, status, lastActive: new Date() } : u
-        )
+      setUsers((prev) =>
+        prev.map((u) => (u.email === email ? { ...u, status, lastActive: new Date() } : u))
       );
     };
 
     const handleOnlineUsers = (emails) => {
-      setUsers((prevUsers) => {
-        return prevUsers.map((u) => ({
-          ...u,
-          status: emails.includes(u.email) ? "Online" : "Offline",
-        }));
-      });
+      setUsers((prev) =>
+        prev.map((u) => ({ ...u, status: emails.includes(u.email) ? "Online" : "Offline" }))
+      );
     };
 
     socket.on("user-online-status", handleUserStatus);
@@ -87,105 +66,109 @@ const ChatSidebar = () => {
     };
   }, []);
 
-
   const formatLastActive = (timestamp) => {
     const date = parseISO(timestamp);
-
     if (isToday(date)) return format(date, "h:mm a");
     if (isYesterday(date)) return "Yesterday";
-    if (differenceInWeeks(new Date(), date) < 1) {
-      return `${differenceInDays(new Date(), date)}d`;
-    }
-    return format(date, "MMM d, yyyy");
+    if (differenceInDays(new Date(), date) < 7) return format(date, "EEE");
+    return format(date, "MMM d");
   };
 
+  const filteredUsers = users.filter((u) =>
+    `${u.firstName} ${u.lastName}`.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
-  const [active, setActive] = useState(false);
-
-  const handleUserSelect = (id) => {
-    setActive(id);
-    dispatch(setSelectedUserId(id));
-    dispatch(setGroupChatId(null));
-  };
-
-  const handleGroupSelect = (id) => {
-    setActive(id);
-    dispatch(setGroupChatId(id));
-    dispatch(setSelectedUserId(null));
-  };
-
+  const filteredGroups = groups.filter((g) =>
+    g.name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   return (
-    <div className="flex border-r-2 border-l-2 border-pink-600 dark:border-gray-700">
-      <div className="relative w-40 md:w-80">
-        <Card className="p-4 h-[90vh] flex flex-col bg-blue-50/50">
-
-          <div className="flex items-center bg-white rounded-2xl shadow-sm px-4 py-2 border border-gray-200">
-            <Search className="text-gray-400 w-5 h-5 mr-2" />
-            <input type="text" placeholder="Search"
-              className="outline-none w-full bg-transparent text-gray-700 placeholder-gray-400" />
-          </div>
-
-          <ScrollArea className="flex-1">
-
-            {/* Groups */}
-            <div className="space-y-3 bg-white rounded-lg p-4 shadow-sm">
-              <h3 className="text-lg font-medium text-gray-800 mb-3 flex items-center">
-                <FaUsers className="mr-2" /> Groups
-              </h3>
-
-              {groups.map((group) => (
-                <Link href="/dashboard/chat/chat-app" key={group._id}>
-                  <div
-                    className={`flex items-center p-2 rounded-md cursor-pointer border-b-2 ${
-                      active === group._id ? "bg-blue-500" : "hover:bg-gray-100"
-                    }`}
-                    onClick={() => handleGroupSelect(group._id)}
-                  >
-                    <p className="capitalize">{group.name}</p>
-                  </div>
-                </Link>
-              ))}
-            </div>
-
-
-            {/* People */}
-            <div className="space-y-3 bg-white rounded-lg p-4 shadow-sm mt-4">
-              <h3 className="text-lg font-medium text-gray-800 mb-3">People</h3>
-
-              {users.map((user) => (
-                <Link href="/dashboard/chat/chat-app" key={user._id}>
-                  <div
-                    onClick={() => handleUserSelect(user.clerkId)}
-                    className="flex items-center p-2 rounded-md hover:bg-gray-100 cursor-pointer border-b-2"
-                  >
-                    <img
-                      src={user.imageUrl}
-                      className="w-10 h-10 rounded-full object-cover mr-3"
-                    />
-
-                    <div className="flex-1">
-                      <div className="flex justify-between">
-                        <p>{user.firstName} {user.lastName}</p>
-                        <p className="text-xs">{formatLastActive(user.lastActive)}</p>
-                      </div>
-
-                      <p
-                        className={`text-xs ${
-                          user.status === "Online" ? "text-green-500" : "text-gray-500"
-                        }`}
-                      >
-                        {user.status}
-                      </p>
-                    </div>
-                  </div>
-                </Link>
-              ))}
-            </div>
-
-          </ScrollArea>
-        </Card>
+    <div className="h-full flex flex-col bg-white">
+      {/* Header */}
+      <div className="p-4 border-b">
+        <h1 className="text-2xl font-bold text-gray-800">Chats</h1>
       </div>
+
+      {/* Search */}
+      <div className="p-4">
+        <div className="flex items-center bg-gray-100 rounded-lg px-3 py-2">
+          <Search className="w-5 h-5 text-gray-500 mr-2" />
+          <input
+            type="text"
+            placeholder="Search people or groups"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="bg-transparent outline-none flex-1 text-gray-700"
+          />
+        </div>
+      </div>
+
+      {/* Scrollable List */}
+      <ScrollArea className="flex-1 px-2">
+        <div className="space-y-4 pb-4">
+
+          {/* Groups */}
+          {filteredGroups.length > 0 && (
+            <div>
+              <h3 className="text-sm font-semibold text-gray-600 px-4 mb-2 flex items-center gap-2">
+                <Users className="w-4 h-4" /> Groups
+              </h3>
+              {filteredGroups.map((group) => (
+                <div
+                  key={group._id}
+                  onClick={() => {
+                    dispatch(setGroupChatId(group._id));
+                    dispatch(setSelectedUserId(null));
+                  }}
+                  className={`flex items-center gap-3 p-3 rounded-lg cursor-pointer transition
+                    ${groupChatId === group._id ? "bg-blue-100" : "hover:bg-gray-100"}`}
+                >
+                  <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full flex items-center justify-center text-white font-bold">
+                    {group.name[0].toUpperCase()}
+                  </div>
+                  <div>
+                    <p className="font-medium">{group.name}</p>
+                    <p className="text-xs text-gray-500">{group.members?.length} members</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+
+          {/* People */}
+          <div>
+            <h3 className="text-sm font-semibold text-gray-600 px-4 mb-2">People</h3>
+            {filteredUsers.map((user) => (
+              <div
+                key={user.clerkId}
+                onClick={() => {
+                  dispatch(setSelectedUserId(user.clerkId));
+                  dispatch(setGroupChatId(null));
+                }}
+                className={`flex items-center gap-3 p-3 rounded-lg cursor-pointer transition
+                  ${selectedUserId === user.clerkId ? "bg-blue-100" : "hover:bg-gray-100"}`}
+              >
+                <div className="relative">
+                  <img
+                    src={user.imageUrl || "/default-avatar.png"}
+                    alt={user.firstName}
+                    className="w-12 h-12 rounded-full object-cover"
+                  />
+                  {user.status === "Online" && (
+                    <div className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 rounded-full border-2 border-white"></div>
+                  )}
+                </div>
+                <div className="flex-1">
+                  <p className="font-medium">{user.firstName} {user.lastName}</p>
+                  <p className="text-xs text-gray-500">
+                    {user.status === "Online" ? "Online" : formatLastActive(user.lastActive)}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </ScrollArea>
     </div>
   );
 };
