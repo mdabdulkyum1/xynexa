@@ -1,8 +1,9 @@
 "use client";
 
 import { useSelector } from "react-redux";
-import ChatWindow from "@/components/chat/ChatWindow"; 
+
 import Image from "next/image";
+import ChatWindow from "./chat-app/components/ChatWindow";
 
 export default function ChatPage() {
   const selectedUserId = useSelector((state) => state.chat.selectedUserId);
