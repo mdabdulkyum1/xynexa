@@ -23,6 +23,8 @@ const ChatSidebar = () => {
   const [onlineUsers, setOnlineUsers] = useState([]);
   const [active, setActive] = useState(null);
 
+  console.log("onlineUsers >>>> ", onlineUsers);
+  
   // Fetch initial online users from API
   useEffect(() => {
     const fetchAllUsers = async () => {
