@@ -1,21 +1,17 @@
 "use client";
 
 import { useState, useEffect, useRef, useCallback } from "react";
-import { useUser } from "@clerk/nextjs"; 
+import { useSession } from "next-auth/react"; 
 import { FaVideo, FaPhone, FaPaperPlane, FaEllipsisV } from "react-icons/fa";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import useAxiosPublic from "@/hooks/AxiosPublic/useAxiosPublic";
-import { useSelector } from "react-redux";
-import { format, parseISO } from "date-fns";
+// ... imports
 import { socket } from "../../../../../lib/socket";
 
 const ChatWindow = () => {
   const axiosPublic = useAxiosPublic();
-  const { user, isLoaded } = useUser(); 
+  const { data: session, status } = useSession();
+  const isLoaded = status !== "loading"; 
 
-  const userId = user?.id;
+  const userId = session?.user?.id;
   const receiverId = useSelector((state) => state.chat.selectedUserId);
 
   const [receiver, setReceiver] = useState(null);
@@ -60,7 +56,7 @@ const ChatWindow = () => {
   useEffect(() => {
     if (!userId) return;
 
-    socket.emit("join", { email: user?.primaryEmailAddress?.emailAddress });
+    socket.emit("join", { email: session?.user?.email });
 
     const handleReceiveMessage = (message) => {
       if (

@@ -6,7 +6,7 @@ import { socket } from "@/lib/socket";
 import { useGetTeamsByEmailForGroupChatQuery } from "@/redux/features/Api/teamApi";
 import { setSelectedUserId } from "@/redux/features/Slice/chatSlice";
 import { setGroupChatId } from "@/redux/features/Slice/groupChatSlice";
-import { useUser } from "@clerk/nextjs";
+import { useSession } from "next-auth/react";
 import { format, isToday, isYesterday, parseISO } from "date-fns";
 import { Search, Users } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
@@ -14,7 +14,9 @@ import { useDispatch, useSelector } from "react-redux";
 
 const ChatSidebar = () => {
   const dispatch = useDispatch();
-  const { user, isLoaded } = useUser();
+  const { data: session, status } = useSession();
+  const user = session?.user;
+  const isLoaded = status !== "loading";
 
 
   if (!isLoaded) {
@@ -33,7 +35,7 @@ const ChatSidebar = () => {
     );
   }
 
-  const userEmail = user?.emailAddresses?.[0]?.emailAddress;
+  const userEmail = user?.email;
   const { data: groups = [] } = useGetTeamsByEmailForGroupChatQuery(userEmail || "");
   const selectedUserId = useSelector((state) => state.chat.selectedUserId);
   const groupChatId = useSelector((state) => state.groupChat.groupChatId);
@@ -182,13 +184,13 @@ const ChatSidebar = () => {
             ) : (
               sortedAndFilteredUsers.map((user) => (
                 <div
-                  key={user.clerkId}
+                  key={user._id || user.id}
                   onClick={() => {
-                    dispatch(setSelectedUserId(user.clerkId));
+                    dispatch(setSelectedUserId(user._id || user.id));
                     dispatch(setGroupChatId(null));
                   }}
                   className={`flex items-center gap-4 p-4 rounded-2xl cursor-pointer transition-all duration-200 group
-                    ${selectedUserId === user.clerkId
+                    ${selectedUserId === (user._id || user.id)
                       ? "bg-blue-100 dark:bg-blue-900/50 shadow-md"
                       : "hover:bg-gray-100 dark:hover:bg-gray-800"
                     }`}

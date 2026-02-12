@@ -1,23 +1,22 @@
 import { useCreateTeamMutation } from "@/redux/features/Api/teamApi";
 import { useGetUserByEmailQuery } from "@/redux/features/Api/userApi";
-import { ClerkLoading, useAuth, useUser } from "@clerk/nextjs";
+import { useSession } from "next-auth/react";
 import { Dialog, Transition } from "@headlessui/react";
 import { Fragment, useMemo } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 const TeamCreateModal = ({ isOpen, closeModal }) => {
-  <ClerkLoading>
-    <p className="text-red-600">Loaded</p>
-  </ClerkLoading>;
+
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
 
-  const { user } = useUser();
+  const { data: session } = useSession();
+  const user = session?.user;
 
-  const userEmail = user?.emailAddresses[0]?.emailAddress;
+  const userEmail = user?.email;
   const {
     data: userData,
     isLoading,

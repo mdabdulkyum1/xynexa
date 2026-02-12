@@ -1,21 +1,22 @@
 "use client";
 
 import { useEffect } from "react";
-import { useAuth, useUser } from "@clerk/nextjs";
+import { useSession } from "next-auth/react";
 import { socket } from "../../lib/socket";
 
 
 export default function SocketAuthManager() {
-  const { isSignedIn } = useAuth();
-  const { user, isLoaded } = useUser();
+  const { data: session, status } = useSession();
+  const isAuthenticated = status === "authenticated";
+  const user = session?.user;
 
   useEffect(() => {
 
-    if (!isLoaded) return;
+    if (status === "loading") return;
 
-    if (!isSignedIn || !user) {
+    if (!isAuthenticated || !user) {
       if (socket.connected) {
-        const email = user?.primaryEmailAddress?.emailAddress;
+        const email = user?.email;
         if (email) {
           socket.emit("user-offline", { email });
         }
@@ -24,7 +25,7 @@ export default function SocketAuthManager() {
       return;
     }
 
-    const email = user.primaryEmailAddress?.emailAddress;
+    const email = user.email;
     const userId = user.id; 
 
     if (!email || !userId) return;
@@ -51,11 +52,11 @@ export default function SocketAuthManager() {
       socket.emit("leaveUserRoom", userId);
       window.removeEventListener("beforeunload", handleBeforeUnload);
 
-      if (!isSignedIn) {
+      if (!isAuthenticated) {
         socket.disconnect();
       }
     };
-  }, [isSignedIn, isLoaded, user]);
+  }, [isAuthenticated, status, user]);
 
   return null;
 }

@@ -2,7 +2,7 @@
 
 import Loading from '@/components/loading/Loading';
 import { useDocumentDeleteMutation, useDocumentGetByEmailQuery } from '@/redux/features/Api/documentApi';
-import { useUser } from '@clerk/nextjs';
+import { useSession } from "next-auth/react";
 import axios from 'axios';
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
@@ -13,9 +13,9 @@ import { FaEdit } from "react-icons/fa";
 const DocumentsContainer = () => {
   const [loading, setLoading] = useState(false);
 
-  const { user } = useUser();
+  const { data: session } = useSession();
+  const userEmail = session?.user?.email;
   const [availableDocuments, setAvailableDocuments] = useState([]);
-  const userEmail = user?.emailAddresses[0]?.emailAddress;
 
 const {data:availableDocumentsData=[], isError, error, isLoading:isFetchingLoading} = useDocumentGetByEmailQuery(userEmail)
   useEffect(() => {

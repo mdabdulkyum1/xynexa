@@ -1,14 +1,11 @@
 'use client'
 import { useGetTaskByCurrentUserEmailQuery } from '@/redux/features/Api/TaskApi';
-import { useUser } from '@clerk/nextjs';
-import TaskBoard from './components/TaskBoard ';
-import TaskControl from './components/TaskControl';
-
+import { useSession } from "next-auth/react";
 
 export default function Page() {
 
-      const { user } = useUser();
-      const userEmail = user?.emailAddresses[0]?.emailAddress;
+      const { data: session } = useSession();
+      const userEmail = session?.user?.email;
 
       const {data:allTasks}=useGetTaskByCurrentUserEmailQuery(userEmail);
 

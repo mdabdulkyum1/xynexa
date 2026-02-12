@@ -2,9 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { useUser } from '@clerk/nextjs';
 import { useUserDataFromClerk } from '@/hooks/useUserDataFromClerk';
-import { ClerkLoaded, ClerkLoading } from '@clerk/nextjs'
 import Hero from './components/home/Hero/Hero';
 // import FavriteApps from './landingPage/FavriteApps';
 import MuchMore from './landingPage/MuchMore';
@@ -21,7 +19,7 @@ import PricingCards from './pricing/components/PricingCards';
 import Pricing from './landingPage/Pricing';
 
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowUp, ArrowDown} from 'lucide-react'; 
+import { ArrowUp, ArrowDown } from 'lucide-react';
 // import Load from '@/components/Loader/Load';
 
 
@@ -30,10 +28,8 @@ import { ArrowUp, ArrowDown} from 'lucide-react';
 
 export default function Home() {
   const router = useRouter();
-  const { user: mainUser, isLoaded } = useUser();
-  const userEmail = mainUser?.emailAddresses[0]?.emailAddress;
 
-  const { userData, isLoading } = useUserDataFromClerk(userEmail);
+  const { userData, isLoading } = useUserDataFromClerk();
   const userRole = userData?.user?.role;
 
   const [showScrollDown, setShowScrollDown] = useState(true);
@@ -53,7 +49,7 @@ export default function Home() {
       // Show scroll-down if not at the very bottom and scrolled a bit from the top
       setShowScrollDown(scrollY < documentHeight - windowHeight - 50 && scrollY > 50);
 
-      
+
       setShowScrollUp(scrollY > 100);
     };
 
@@ -73,14 +69,11 @@ export default function Home() {
 
   return (
     <div className="relative">
-      <ClerkLoading>
-        {/* <Load/> */}
-      </ClerkLoading>
       <div className="relative max-w-[1400px] mx-auto">
         <Hero />
       </div>
 
-      
+
       <motion.div
         className="flex justify-center z-0"
         initial="initial"
@@ -109,7 +102,7 @@ export default function Home() {
       <InsightsSection />
       <FAQSection />
 
-      
+
       <AnimatePresence>
         {showScrollUp && (
           <motion.button
@@ -124,7 +117,7 @@ export default function Home() {
         )}
       </AnimatePresence>
 
-     
+
       <AnimatePresence>
         {showScrollDown && (
           <motion.button

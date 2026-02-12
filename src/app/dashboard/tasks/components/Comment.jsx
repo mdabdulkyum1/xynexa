@@ -10,15 +10,14 @@ import { MessageSquareText } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useAddCommentToBoardMutation } from "@/redux/features/Api/TaskApi";
-import { useUser } from "@clerk/nextjs";
+import { useSession } from "next-auth/react";
 import { useGetUserByEmailQuery } from "@/redux/features/Api/userApi";
 import moment from "moment";
 import Image from "next/image";
 
 const Comment = ({ task }) => {
-  const { user } = useUser();
-
-  const userEmail = user?.emailAddresses[0]?.emailAddress;
+  const { data: session } = useSession();
+  const userEmail = session?.user?.email;
   const {
     data: userData,
     isLoading,

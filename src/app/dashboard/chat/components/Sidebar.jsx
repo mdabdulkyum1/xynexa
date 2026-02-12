@@ -1,6 +1,6 @@
 "use client";
 
-import { useUser } from "@clerk/nextjs";
+import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { FaHome, FaComments, FaCog } from "react-icons/fa";
@@ -8,7 +8,8 @@ import { FaHome, FaComments, FaCog } from "react-icons/fa";
 
 const Sidebar = () => {
   const pathname = usePathname(); // Get the current route
-  const user = useUser();
+  const { data: session } = useSession();
+  const user = session?.user;
 
   const links = [
     { href: "/dashboard/chat", icon: <FaHome />, name: "Home" },
@@ -17,7 +18,7 @@ const Sidebar = () => {
 
   return (
     <aside className="w-12 bg-gray-100 dark:bg-black flex flex-col items-center py-5 rounded">
-      <img src={user?.user?.imageUrl} alt="User" className="w-10 h-10 rounded-full mb-5" />
+      <img src={user?.image} alt="User" className="w-10 h-10 rounded-full mb-5" />
 
       {links.map((link) => (
         <Link key={link.href} href={link.href} className="w-full">

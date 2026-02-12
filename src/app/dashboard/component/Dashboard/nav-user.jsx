@@ -2,7 +2,7 @@
 
 import React from "react";
 import { BadgeCheck, Bell, ChevronsUpDown, CreditCard, LogOut, Sparkles, Home } from "lucide-react";
-import { useClerk, useUser } from "@clerk/nextjs";
+
 
 import {
   Avatar,
@@ -26,16 +26,16 @@ import {
 } from "@/components/ui/sidebar";
 import Link from "next/link";
 import { useGetUserByEmailQuery } from '@/redux/features/Api/userApi';
+import { useSession, signOut } from "next-auth/react";
+
 export function NavUser({ user }) {
   const { isMobile } = useSidebar();
-  const { signOut } = useClerk();
-
-  const { user:mainUser } = useUser();
   
-      const userEmail = mainUser?.emailAddresses[0]?.emailAddress;
+  const { data: session } = useSession();
+  const userEmail = session?.user?.email;
       
-      const {data:userData}=useGetUserByEmailQuery(userEmail)
-      const creator=userData?.user
+  const {data:userData}=useGetUserByEmailQuery(userEmail)
+  const creator=userData?.user
       
 
   return (

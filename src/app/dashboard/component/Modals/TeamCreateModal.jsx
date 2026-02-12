@@ -1,5 +1,5 @@
 import { useGetUserByEmailQuery } from '@/redux/features/Api/userApi';
-import { useAuth, useUser } from '@clerk/nextjs';
+import { useSession } from "next-auth/react";
 import { Dialog, Transition } from '@headlessui/react';
 import { Fragment } from 'react';
 import { useForm } from 'react-hook-form';
@@ -8,10 +8,8 @@ import { useSelector } from 'react-redux';
 const TeamCreateModal = ({ isOpen, closeModal }) => {
     const { register, handleSubmit, formState: { errors } } = useForm();
     
-    const { isSignedIn } = useAuth();
-    const { user:mainUser } = useUser();
-
-    const userEmail = mainUser?.emailAddresses[0]?.emailAddress;
+    const { data: session } = useSession();
+    const userEmail = session?.user?.email;
     
     const {data:userData}=useGetUserByEmailQuery(userEmail)
     const creator=userData?.user?._id

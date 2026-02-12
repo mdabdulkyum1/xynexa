@@ -24,11 +24,11 @@ import Progress from "./Progess";
 import RecentTasks from "./RecentTasks";
 import WelcomeBanner from "./WelcomeBanner";
 import { ScratchToRevealDemo } from "./ScratchToRevealDemo";
-import { useUser } from "@clerk/nextjs";
+import { useSession } from "next-auth/react";
 import { useGetUserFullSummaryQuery } from "@/redux/features/Api/TaskApi";
 export default function Page() {
-  const { user } = useUser();
-    const userEmail = user?.emailAddresses[0]?.emailAddress;
+  const { data: session } = useSession();
+    const userEmail = session?.user?.email;
     const {data:userData}=useGetUserFullSummaryQuery(userEmail);
 
   return (

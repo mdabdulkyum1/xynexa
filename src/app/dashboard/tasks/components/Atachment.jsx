@@ -8,15 +8,14 @@ import {
     PopoverTrigger,
 } from "@/components/ui/popover";
 import { Paperclip } from "lucide-react";
-import { useUser } from "@clerk/nextjs";
+import { useSession } from "next-auth/react";
 import { useGetUserByEmailQuery } from "@/redux/features/Api/userApi";
 import { useAddAttachmentToBoardMutation } from "@/redux/features/Api/TaskApi";
 import { useForm } from "react-hook-form";
 
 const Attachment = ({ task }) => {
-    const { user } = useUser();
-
-    const userEmail = user?.emailAddresses[0]?.emailAddress;
+    const { data: session } = useSession();
+    const userEmail = session?.user?.email;
     const {
         data: userData,
         isLoading,

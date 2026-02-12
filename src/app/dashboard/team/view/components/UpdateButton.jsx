@@ -2,7 +2,8 @@
 
 import { useUpdateTeamMutation } from '@/redux/features/Api/teamApi';
 import { useGetUserByEmailQuery } from '@/redux/features/Api/userApi';
-import { useUser } from '@clerk/nextjs';
+import { useSession } from "next-auth/react";
+
 import { Dialog, Transition } from '@headlessui/react';
 import { Fragment } from 'react';
 import { useForm } from 'react-hook-form';
@@ -23,8 +24,8 @@ const UpdateButton = ({ team, isOpen, setIsOpen }) => {
     },
   });
 
-  const { user } = useUser();
-  const userEmail = user?.emailAddresses[0]?.emailAddress;
+  const { data: session } = useSession();
+  const userEmail = session?.user?.email;
   const { data: userData, isLoading: userLoading, isError: userError } = useGetUserByEmailQuery(userEmail, {
     skip: !userEmail,
   });

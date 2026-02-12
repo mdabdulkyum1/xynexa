@@ -1,10 +1,10 @@
 'use client'
-import { useUser } from "@clerk/nextjs";
+import { useSession } from "next-auth/react";
 import { useGetUserByEmailQuery } from "@/redux/features/Api/userApi";
 
 export const useUserDataFromClerk = () => {
-  const { user } = useUser();
-  const userEmail = user?.emailAddresses[0]?.emailAddress;
+  const { data: session } = useSession();
+  const userEmail = session?.user?.email;
 
   const {
     data: userData,

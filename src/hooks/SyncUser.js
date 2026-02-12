@@ -1,25 +1,27 @@
 import { logout, setUser } from '@/redux/features/Slice/userSlice';
-import { useUser } from '@clerk/nextjs';
+import { useSession } from "next-auth/react";
 import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 
 const SyncUser = () => {
-  const { user, isSignedIn } = useUser();
+  const { data: session, status } = useSession();
   const dispatch = useDispatch();
 
   useEffect(() => {
     const syncUser = async () => {
       try {
-        if (isSignedIn && user) {
+        if (status === "authenticated" && session?.user) {
           dispatch(
             setUser({
-              username: user.username || user.emailAddresses[0]?.emailAddress.split('@')[0],
-              email: user.emailAddresses[0]?.emailAddress,
-              photo: user.imageUrl,
+              username: session.user.name || session.user.email.split('@')[0],
+              email: session.user.email,
+              photo: session.user.image,
+              role: session.user.role,
+              id: session.user.id
             })
           );
-        }else{
-            dispatch(logout())
+        } else if (status === "unauthenticated") {
+          dispatch(logout())
         }
 
       } catch (error) {
@@ -27,8 +29,8 @@ const SyncUser = () => {
       }
     };
 
-    syncUser(); 
-  }, [isSignedIn, user, dispatch]);
+    syncUser();
+  }, [status, session, dispatch]);
 
   return null;
 };

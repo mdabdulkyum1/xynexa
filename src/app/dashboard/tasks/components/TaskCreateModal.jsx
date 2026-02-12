@@ -4,7 +4,7 @@ import { Dialog, Transition } from "@headlessui/react";
 import { Fragment, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
-import { useUser } from "@clerk/nextjs";
+
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import {
@@ -33,7 +33,7 @@ const TaskCreateModal = ({ isOpen, closeModal, team = {} }) => {
         },
     });
 
-    const { user } = useUser();
+
     const [startDate, setStartDate] = useState(null);
     const [selectedMembers, setSelectedMembers] = useState([]);
     const [createBoard, { isLoading }] = useCreateBoardMutation();

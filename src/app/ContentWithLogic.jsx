@@ -3,10 +3,8 @@
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import { useDispatch } from "react-redux";
-import { useUser } from "@clerk/nextjs";
+import { useSession } from "next-auth/react";
 import { useGetUserByEmailQuery } from "@/redux/features/Api/userApi";
-import { LoginUserToDB } from "@/lib/loginUserToDB";
-import { SaveUserToDB } from "@/lib/saveUserToDB";
 import { XynexaNavbar } from "@/components/global/XynexaNavbar";
 import Footer from "@/components/global/Footer";
 import { ThemeProvider } from "@/components/theme-provider";
@@ -17,8 +15,8 @@ import SocketAuthManager from "@/components/SocketAuthManager/SocketAuthManager"
 
 export default function ContentWithLogic({ children }) {
   const dispatch = useDispatch();
-  const { user, isLoaded } = useUser();
-  const userEmail = user?.emailAddresses[0]?.emailAddress;
+  const { data: session, status } = useSession();
+  const userEmail = session?.user?.email;
 
   const { data: userData, isLoading } = useGetUserByEmailQuery(userEmail, {
     skip: !userEmail,
@@ -35,17 +33,15 @@ export default function ContentWithLogic({ children }) {
   useEffect(() => {
     if (userData?.user) {
       dispatch(setUser(userData.user));
-    } else if (!user && isLoaded) {
+    } else if (status === "unauthenticated") {
       dispatch(logout());
     }
-  }, [userData?.user, user, isLoaded, dispatch]);
+  }, [userData?.user, status, dispatch]);
 
   return (
     <ThemeProvider attribute="class" defaultTheme="light"  enableSystem={true} >
       {shouldShowNavbarFooter && <XynexaNavbar />}
       <main className="min-h-screen">
-        <SaveUserToDB />
-        <LoginUserToDB />
         <SocketAuthManager />
         <Toaster position="top-right" />
         {children}

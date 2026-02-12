@@ -35,7 +35,7 @@ import { TeamSwitcher } from "./team-switcheer";
 import { NavUser } from "./nav-user";
 import { useUserDataFromClerk } from "@/hooks/useUserDataFromClerk";
 import { useGetTeamsByCurrentUserEmailQuery } from "@/redux/features/Api/teamApi";
-import { useUser } from "@clerk/nextjs";
+import { useSession } from "next-auth/react";
 
 // This is sample data.
 const data = {
@@ -158,16 +158,17 @@ projects: [
 };
 
 export function AppSidebar(props) {
-  const { user } = useUser();
-  const userEmail = user?.emailAddresses[0]?.emailAddress;
+  const { data: session } = useSession();
+  const user = session?.user;
+  const userEmail = user?.email;
 
   const { data: items } = useGetTeamsByCurrentUserEmailQuery(userEmail);
 
   const data = {
     user: {
-      name: user?.fullName || "Guest",
-      email: user?.emailAddresses[0]?.emailAddress || "No email",
-      avatar: user?.imageUrl || "/default-avatar.png",
+      name: user?.name || "Guest",
+      email: user?.email || "No email",
+      avatar: user?.image || "/default-avatar.png",
     },
     teams: [
       {

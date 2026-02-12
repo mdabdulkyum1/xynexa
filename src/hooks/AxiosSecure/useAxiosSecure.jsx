@@ -1,6 +1,6 @@
 import axios from 'axios'
-import useAuth from '../GetAuthInfo/useAuth';
-import { useNavigate } from 'react-router-dom';
+import { signOut } from "next-auth/react";
+import { useRouter } from 'next/navigation';
 
 
 const axiosInstance = axios.create({
@@ -10,8 +10,8 @@ const axiosInstance = axios.create({
 
   
 const useAxiosSecure = () => {
-  const {logOut} = useAuth();
-  const navigate = useNavigate();
+ 
+  const router = useRouter();
 
   axiosInstance.interceptors.request.use(function(config){
     const token = localStorage.getItem('access-token');
@@ -26,8 +26,8 @@ const useAxiosSecure = () => {
   }, async (error) =>{
     const status = error.response.status;
     if(status === 401 || status === 403){
-      await logOut();
-      navigate('/login')
+      await signOut();
+      router.push('/sign-in')
     }
     return Promise.reject(error);
   })
