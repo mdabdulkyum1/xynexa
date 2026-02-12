@@ -33,7 +33,6 @@ import { NavMain } from "./nav-main";
 import { NavProjects } from "./nav-project";
 import { TeamSwitcher } from "./team-switcheer";
 import { NavUser } from "./nav-user";
-import { useUserDataFromClerk } from "@/hooks/useUserDataFromClerk";
 import { useGetTeamsByCurrentUserEmailQuery } from "@/redux/features/Api/teamApi";
 import { useSession } from "next-auth/react";
 

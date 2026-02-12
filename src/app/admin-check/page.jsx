@@ -2,28 +2,28 @@
 
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { useUser } from '@clerk/nextjs';
+import { useSession } from "next-auth/react";
 import { useUserDataFromClerk } from '@/hooks/useUserDataFromClerk';
 
 const AdminCheck = () => {
   const router = useRouter();
-  const { user: mainUser, isLoaded } = useUser();
-  const userEmail = mainUser?.emailAddresses[0]?.emailAddress;
+  const { data: session, status } = useSession();
+  const userEmail = session?.user?.email;
 
   const { userData, isLoading } = useUserDataFromClerk(userEmail);
   const userRole = userData?.user?.role;
 
   useEffect(() => {
-    if (!isLoaded || isLoading || !mainUser) return;
+    if (status === "loading" || !session) return;
 
     if (userRole === 'admin') {
       router.push('/admin-dashbaord');
     } else if (userRole === 'member') {
       router.push('/dashboard');
     }
-  }, [isLoaded, isLoading, mainUser, userRole, router]);
+  }, [status, session, userRole, router]);
 
-  if (!isLoaded || isLoading) {
+  if (status === "loading" || isLoading) {
     return (
       <div className="h-screen flex items-center justify-center bg-gray-100">
         <p className="text-lg font-semibold text-gray-600">Loading...</p>

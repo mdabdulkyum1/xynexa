@@ -1,7 +1,7 @@
 'use client';
 import Loading from '@/components/loading/Loading';
 import { useDocumentDeleteMutation, useDocumentGetByEmailQuery } from '@/redux/features/Api/documentApi';
-import { useUser } from '@clerk/nextjs';
+import { useSession } from "next-auth/react";
 import Image from 'next/image';
 import React, {  useState } from 'react';
 import docsImg from '../../../../../../public/assets/images/dynamic-docs.png'
@@ -12,8 +12,8 @@ import Swal from 'sweetalert2';
 import Link from 'next/link';
 
 const DynamicDocsContainer = () => {
-    const { user } = useUser();
-    const userEmail = user?.emailAddresses[0]?.emailAddress;
+    const { data: session } = useSession();
+    const userEmail = session?.user?.email;
     const [openId, setOpenId] = useState(null);
     
 
