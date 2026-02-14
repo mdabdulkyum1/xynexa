@@ -9,24 +9,24 @@ import {
 } from "@/components/ui/popover";
 import { Paperclip } from "lucide-react";
 import { useSession } from "next-auth/react";
-import { useGetUserByEmailQuery } from "@/redux/features/Api/userApi";
-import { useAddAttachmentToBoardMutation } from "@/redux/features/Api/TaskApi";
+import useUserStore from "@/store/useUserStore";
+import useBoardStore from "@/store/useBoardStore";
 import { useForm } from "react-hook-form";
 
 const Attachment = ({ task }) => {
     const { data: session } = useSession();
     const userEmail = session?.user?.email;
-    const {
-        data: userData,
-        isLoading,
-        isError,
-        error,
-    } = useGetUserByEmailQuery(userEmail, { skip: !userEmail });
+    const { user: userData, fetchUserByEmail, isLoading } = useUserStore();
+    const { addAttachmentToBoard, isLoading: isAddingAttachment } = useBoardStore();
 
-    const userId = userData?.user?._id;
+    useEffect(() => {
+        if (userEmail) {
+            fetchUserByEmail(userEmail);
+        }
+    }, [userEmail, fetchUserByEmail]);
+
+    const userId = userData?._id || userData?.id;
     const boardId = task?._id;
-
-    const [addAttachmentToBoard, { isLoading: isAddingAttachment }] = useAddAttachmentToBoardMutation();
 
     const [localAttachments, setLocalAttachments] = useState([]);
 
@@ -46,7 +46,7 @@ const Attachment = ({ task }) => {
                     userId,
                     url: data.attachmentUrl,
                     filename: data.attachmentName.trim() || data.attachmentUrl.substring(data.attachmentUrl.lastIndexOf('/') + 1),
-                }).unwrap();
+                });
                 reset();
                 // Optionally, refetch task data
             } catch (err) {

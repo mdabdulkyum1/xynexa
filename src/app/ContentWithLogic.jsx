@@ -2,25 +2,25 @@
 
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
-import { useDispatch } from "react-redux";
 import { useSession } from "next-auth/react";
-import { useGetUserByEmailQuery } from "@/redux/features/Api/userApi";
+import useUserStore from "@/store/useUserStore";
 import { XynexaNavbar } from "@/components/global/XynexaNavbar";
 import Footer from "@/components/global/Footer";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "sonner";
-import { logout, setUser } from "@/redux/features/Slice/userSlice";
 import "./globals.css";
 import SocketAuthManager from "@/components/SocketAuthManager/SocketAuthManager";
 
 export default function ContentWithLogic({ children }) {
-  const dispatch = useDispatch();
   const { data: session, status } = useSession();
   const userEmail = session?.user?.email;
+  const { fetchUserByEmail, user: storeUser, isLoading } = useUserStore();
 
-  const { data: userData, isLoading } = useGetUserByEmailQuery(userEmail, {
-    skip: !userEmail,
-  });
+  useEffect(() => {
+    if (userEmail) {
+      fetchUserByEmail(userEmail);
+    }
+  }, [userEmail, fetchUserByEmail]);
 
   const pathname = usePathname();
   const [shouldShowNavbarFooter, setShouldShowNavbarFooter] = useState(true);
@@ -31,12 +31,12 @@ export default function ContentWithLogic({ children }) {
   }, [pathname]);
 
   useEffect(() => {
-    if (userData?.user) {
-      dispatch(setUser(userData.user));
-    } else if (status === "unauthenticated") {
-      dispatch(logout());
+    // If we need to handle global logout or state sync, we can do it here with useUserStore
+    if (status === "unauthenticated") {
+        // useUserStore doesn't strictly have a logout yet, but we can set user to null
+        useUserStore.setState({ user: null });
     }
-  }, [userData?.user, status, dispatch]);
+  }, [status]);
 
   return (
     <ThemeProvider attribute="class" defaultTheme="light"  enableSystem={true} >

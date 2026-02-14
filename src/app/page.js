@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { useUserDataFromClerk } from '@/hooks/useUserDataFromClerk';
 import Hero from './components/home/Hero/Hero';
 // import FavriteApps from './landingPage/FavriteApps';
 import MuchMore from './landingPage/MuchMore';
@@ -28,9 +27,6 @@ import { ArrowUp, ArrowDown } from 'lucide-react';
 
 export default function Home() {
   const router = useRouter();
-
-  const { userData, isLoading } = useUserDataFromClerk();
-  const userRole = userData?.user?.role;
 
   const [showScrollDown, setShowScrollDown] = useState(true);
   const [showScrollUp, setShowScrollUp] = useState(false);

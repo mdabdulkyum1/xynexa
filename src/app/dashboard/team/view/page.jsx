@@ -3,8 +3,9 @@
 import React from 'react';
 import Filter from './components/Filter';
 import CreateModalBtn from './components/CreateModalBtn';
-import { useUserDataFromClerk } from '@/hooks/useUserDataFromClerk';
-import { useGetTeamsByCurrentUserQuery } from '@/redux/features/Api/teamApi';
+import { useSession } from "next-auth/react";
+import useTeamStore from '@/store/useTeamStore';
+import { useEffect } from 'react';
 
 import Link from 'next/link';
 import Loading from '@/components/loading/Loading';
@@ -13,19 +14,24 @@ import { Avatar, AvatarGroup } from '@mui/material';
 
 export default function TeamView() {
 
-    const { userData, isLoading, isError, error } = useUserDataFromClerk();
+    const { data: session, status } = useSession();
+    const { teams: teamData, fetchUserTeamsByEmail, isLoading: isTeamsLoading, error: teamError } = useTeamStore();
 
-    const userId = userData?.user?._id;
+    useEffect(() => {
+        if (session?.user?.email) {
+            fetchUserTeamsByEmail(session.user.email);
+        }
+    }, [session?.user?.email, fetchUserTeamsByEmail]);
 
-    // const { data: teamData } = useGetUseTeamsQuery(userId);
-    const { data: teamData } = useGetTeamsByCurrentUserQuery(userId);
+    const isLoading = status === "loading" || isTeamsLoading;
+    const isError = !!teamError;
 
     if (isLoading) {
         return <div className='flex justify-center items-center h-screen'><Loading></Loading></div>;
     }
 
     if (isError) {
-        return <div>Error: {error?.message || 'Failed to load teams'}</div>;
+        return <div>Error: {teamError || 'Failed to load teams'}</div>;
     }
 
     const emptyCard = (

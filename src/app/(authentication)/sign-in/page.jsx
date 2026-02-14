@@ -13,6 +13,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useState } from "react";
 import { toast } from "sonner";
+import useAuthStore from "@/store/useAuthStore";
 
 const formSchema = z.object({
   email: z.string().email({
@@ -39,9 +40,12 @@ export default function SignInPage() {
     },
   });
 
+  const login = useAuthStore((state) => state.login);
+
   async function onSubmit(values) {
     setIsLoading(true);
     try {
+      // 1. Log in with NextAuth for session management
       const result = await signIn("credentials", {
         redirect: false,
         email: values.email,
@@ -51,9 +55,18 @@ export default function SignInPage() {
       if (result?.error) {
         toast.error("Invalid email or password");
       } else {
-        toast.success("Logged in successfully");
-        router.push("/dashboard");
-        router.refresh();
+        // 2. Log in with Zustand for client-side API state management
+        try {
+          await login(values.email, values.password);
+          toast.success("Logged in successfully");
+          router.push("/dashboard");
+          router.refresh();
+        } catch (authError) {
+          console.error("Zustand auth error:", authError);
+          // If Zustand fails but NextAuth succeeded, we might still want to proceed or handle it
+          toast.warning("Logged in, but some state failed to sync.");
+          router.push("/dashboard");
+        }
       }
     } catch (error) {
       toast.error("Something went wrong");

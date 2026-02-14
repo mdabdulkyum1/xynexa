@@ -25,7 +25,7 @@ import {
   useSidebar
 } from "@/components/ui/sidebar";
 import Link from "next/link";
-import { useGetUserByEmailQuery } from '@/redux/features/Api/userApi';
+import useUserStore from '@/store/useUserStore';
 import { useSession, signOut } from "next-auth/react";
 
 export function NavUser({ user }) {
@@ -34,8 +34,8 @@ export function NavUser({ user }) {
   const { data: session } = useSession();
   const userEmail = session?.user?.email;
       
-  const {data:userData}=useGetUserByEmailQuery(userEmail)
-  const creator=userData?.user
+  const { user: storeUser } = useUserStore();
+  const creator = storeUser?.user;
       
 
   return (

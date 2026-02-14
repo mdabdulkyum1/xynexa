@@ -16,7 +16,7 @@ import {
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { useCreateBoardMutation } from "@/redux/features/Api/TaskApi";
+import useBoardStore from "@/store/useBoardStore";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { format } from "date-fns";
@@ -36,7 +36,7 @@ const TaskCreateModal = ({ isOpen, closeModal, team = {} }) => {
 
     const [startDate, setStartDate] = useState(null);
     const [selectedMembers, setSelectedMembers] = useState([]);
-    const [createBoard, { isLoading }] = useCreateBoardMutation();
+    const { createBoard, isLoading } = useBoardStore();
 
     if (!team) {
         return <p>Loading....</p>;
@@ -53,11 +53,10 @@ const TaskCreateModal = ({ isOpen, closeModal, team = {} }) => {
 
             const result = await createBoard(boardData);
 
-            if (result.data) {
+            if (result) {
                 toast.success("Task Board created!");
                 closeModal();
-            } else if (result.error) {
-                console.error("Error creating task:", result.error);
+            } else {
                 toast.error("Error creating task. Please try again.", {
                     position: "bottom-right",
                 });

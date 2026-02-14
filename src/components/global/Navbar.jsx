@@ -13,17 +13,12 @@ import clsx from "clsx";
 import UserMenu from "./UserMenu";
 
 
-import { useUserDataFromClerk } from '@/hooks/useUserDataFromClerk';
-import { MdDashboard } from "react-icons/md";
 const Navbar = () => {
   const isVisible = useScrollDirection(); 
   const { data: session, status } = useSession();
   const isAuthenticated = status === "authenticated";
 
   const pathName = usePathname(); 
-
-  const { userData, isLoading } = useUserDataFromClerk();
-  const userRole = userData?.user?.role;
 
   
 

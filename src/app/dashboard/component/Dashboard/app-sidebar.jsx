@@ -33,8 +33,9 @@ import { NavMain } from "./nav-main";
 import { NavProjects } from "./nav-project";
 import { TeamSwitcher } from "./team-switcheer";
 import { NavUser } from "./nav-user";
-import { useGetTeamsByCurrentUserEmailQuery } from "@/redux/features/Api/teamApi";
+import useTeamStore from "@/store/useTeamStore";
 import { useSession } from "next-auth/react";
+import { useEffect } from "react";
 
 // This is sample data.
 const data = {
@@ -161,7 +162,13 @@ export function AppSidebar(props) {
   const user = session?.user;
   const userEmail = user?.email;
 
-  const { data: items } = useGetTeamsByCurrentUserEmailQuery(userEmail);
+  const { teams: items, fetchUserTeamsByEmail } = useTeamStore();
+
+  useEffect(() => {
+    if (userEmail) {
+      fetchUserTeamsByEmail(userEmail);
+    }
+  }, [userEmail, fetchUserTeamsByEmail]);
 
   const data = {
     user: {

@@ -1,4 +1,5 @@
 'use client'
+import React, { useEffect } from 'react';
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -25,11 +26,20 @@ import RecentTasks from "./RecentTasks";
 import WelcomeBanner from "./WelcomeBanner";
 import { ScratchToRevealDemo } from "./ScratchToRevealDemo";
 import { useSession } from "next-auth/react";
-import { useGetUserFullSummaryQuery } from "@/redux/features/Api/TaskApi";
+import useBoardStore from "@/store/useBoardStore";
+
 export default function Page() {
   const { data: session } = useSession();
-    const userEmail = session?.user?.email;
-    const {data:userData}=useGetUserFullSummaryQuery(userEmail);
+  const userEmail = session?.user?.email;
+  const { userSummary, fetchUserFullSummary } = useBoardStore();
+
+  useEffect(() => {
+    if (userEmail) {
+      fetchUserFullSummary(userEmail);
+    }
+  }, [userEmail, fetchUserFullSummary]);
+
+  const userData = userSummary;
 
   return (
     <SidebarInset>

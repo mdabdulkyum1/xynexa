@@ -1,8 +1,9 @@
 'use client';
 
-import { useUpdateTeamMutation } from '@/redux/features/Api/teamApi';
-import { useGetUserByEmailQuery } from '@/redux/features/Api/userApi';
+import useTeamStore from '@/store/useTeamStore';
+import useUserStore from '@/store/useUserStore';
 import { useSession } from "next-auth/react";
+import { useEffect } from 'react';
 
 import { Dialog, Transition } from '@headlessui/react';
 import { Fragment } from 'react';
@@ -26,11 +27,14 @@ const UpdateButton = ({ team, isOpen, setIsOpen }) => {
 
   const { data: session } = useSession();
   const userEmail = session?.user?.email;
-  const { data: userData, isLoading: userLoading, isError: userError } = useGetUserByEmailQuery(userEmail, {
-    skip: !userEmail,
-  });
+  const { user: userData, fetchUserByEmail, isLoading: userLoading } = useUserStore();
+  const { updateTeam, isLoading: isUpdating } = useTeamStore();
 
-  const [updateTeam, { isLoading: isUpdating }] = useUpdateTeamMutation();
+  useEffect(() => {
+    if (userEmail) {
+      fetchUserByEmail(userEmail);
+    }
+  }, [userEmail, fetchUserByEmail]);
 
   const onSubmit = async (data) => {
     try {
@@ -41,7 +45,7 @@ const UpdateButton = ({ team, isOpen, setIsOpen }) => {
         type: data.teamType,
       };
 
-      const result = await updateTeam(teamData).unwrap();
+      await updateTeam(team?._id, teamData);
 
       toast.success('Team updated successfully!', {
         duration: 1500,

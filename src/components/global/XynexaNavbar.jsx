@@ -14,15 +14,14 @@ import {
 import Link from "next/link";
 import { useState } from "react";
 import useScrollDirection from "@/hooks/ScrollDirection/useScrollDirection";
-import { usePathname } from "next/navigation";
-import { useSelector } from "react-redux";
+import useUserStore from "@/store/useUserStore";
 import { useSession } from "next-auth/react";
 import UserMenu from "./UserMenu";
 
 export function XynexaNavbar() {
   const { data: session, status } = useSession();
   const isAuthenticated = status === "authenticated";
-  const user = useSelector((state) => state.user.user);
+  const { user } = useUserStore();
   const userRole = user?.role;
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const scrollDirection = useScrollDirection(); 

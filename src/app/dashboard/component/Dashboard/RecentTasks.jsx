@@ -1,6 +1,6 @@
 'use client';
 import React from 'react';
-import { useGetTaskByCurrentUserEmailQuery } from '@/redux/features/Api/TaskApi';
+import useBoardStore from '@/store/useBoardStore';
 import { useSession } from "next-auth/react";
 import moment from 'moment';
 
@@ -8,7 +8,13 @@ const RecentTasks = () => {
     const { data: session } = useSession();
     const userEmail = session?.user?.email;
 
-    const { data: allTasks, isLoading, isError } = useGetTaskByCurrentUserEmailQuery(userEmail);
+    const { boards: allTasks, isLoading, fetchBoardsByEmail } = useBoardStore();
+
+    React.useEffect(() => {
+        if (userEmail) {
+            fetchBoardsByEmail(userEmail);
+        }
+    }, [userEmail, fetchBoardsByEmail]);
 
     if (isLoading) {
         return <div>Loading recent tasks...</div>;

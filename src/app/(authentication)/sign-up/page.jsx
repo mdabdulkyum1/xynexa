@@ -13,6 +13,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { toast } from "sonner";
 import { signIn } from "next-auth/react";
+import useAuthStore from "@/store/useAuthStore";
 
 const formSchema = z.object({
   firstName: z.string().min(2, {
@@ -47,50 +48,49 @@ export default function SignUpPage() {
     },
   });
 
-  async function onSubmit(values) {
-    setIsLoading(true);
-    try {
-      // 1. Register user via Backend API
-      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/register`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          firstName: values.firstName,
-          lastName: values.lastName,
-          email: values.email,
-          password: values.password,
-        }),
-      });
+    const login = useAuthStore((state) => state.login);
+    const registerUser = useAuthStore((state) => state.register);
 
-      const data = await response.json();
+    async function onSubmit(values) {
+        setIsLoading(true);
+        try {
+            // 1. Register user via Zustand Auth store
+            await registerUser({
+                firstName: values.firstName,
+                lastName: values.lastName,
+                email: values.email,
+                password: values.password,
+            });
 
-      if (!response.ok) {
-        throw new Error(data.message || "Registration failed");
-      }
+            // 2. Sign in user automatically with NextAuth
+            const result = await signIn("credentials", {
+                redirect: false,
+                email: values.email,
+                password: values.password,
+            });
 
-      // 2. Sign in user automatically
-      const result = await signIn("credentials", {
-        redirect: false,
-        email: values.email,
-        password: values.password,
-      });
-
-      if (result?.error) {
-        toast.error("Account created but failed to sign in automatically");
-        router.push("/sign-in");
-      } else {
-        toast.success("Account created successfully");
-        router.push("/dashboard");
-        router.refresh();
-      }
-    } catch (error) {
-      toast.error(error.message || "Something went wrong");
-    } finally {
-      setIsLoading(false);
+            if (result?.error) {
+                toast.error("Account created but failed to sign in automatically");
+                router.push("/sign-in");
+            } else {
+                // 3. Log in with Zustand for client-side API state management
+                try {
+                    await login(values.email, values.password);
+                    toast.success("Account created successfully");
+                    router.push("/dashboard");
+                    router.refresh();
+                } catch (authError) {
+                    console.error("Zustand auth error after signup:", authError);
+                    toast.warning("Account created, but some state failed to sync.");
+                    router.push("/dashboard");
+                }
+            }
+        } catch (error) {
+            toast.error(error.message || "Something went wrong");
+        } finally {
+            setIsLoading(false);
+        }
     }
-  }
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100 dark:bg-gray-900 p-4">

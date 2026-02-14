@@ -2,46 +2,42 @@
 
 import { useCallback, useEffect, useState } from "react";
 import { Send } from "lucide-react";
-import { useSelector } from "react-redux";
-import { useUserDataFromClerk } from "@/hooks/useUserDataFromClerk";
-import { useGetTeamQuery } from "@/redux/features/Api/teamApi";
-import { AnimatedTooltip } from "@/components/ui/animated-tooltip";
-import useAxiosPublic from "@/hooks/AxiosPublic/useAxiosPublic";
+import { useSession } from "next-auth/react";
+import useChatStore from "@/store/useChatStore";
+import useTeamStore from "@/store/useTeamStore";
+import useAuthStore from "@/store/useAuthStore";
 import { socket } from "../../../../../lib/socket";
 
 
 const GroupChatWindow = () => {
 
-    const [groupMsg, setGroupMsg] = useState([]);
     const [newMessage, setNewMessage] = useState("");
 
-    const axiosPublic = useAxiosPublic()
-    // get group _id
-    const groupId = useSelector((state) => state.groupChat.groupChatId);
+    const { data: session } = useSession();
+    const currentUserId = session?.user?.id;
 
-    // get User _id
-    const dataHook = useUserDataFromClerk()
-    const currentUserId = dataHook?.userData?.user?._id;
+    const { 
+        groupMessages: groupMsg, 
+        fetchGroupMessages, 
+        sendGroupMessage: sendToStore, 
+        addGroupMessage,
+        currentGroup
+    } = useChatStore();
 
-    const { data: team, isLoading, isError, error } = useGetTeamQuery(groupId);
+    const groupId = currentGroup?._id || currentGroup?.id;
+
+    const { currentTeam: team } = useTeamStore();
 
     useEffect(() => {
-        fetchGroupInfo()
-    }, [currentUserId, groupId])
-
-    const fetchGroupInfo = async () => {
-        try {
-            const { data } = await axiosPublic.get(`/api/groupMessage/${groupId}`);
-            setGroupMsg(data)
-        } catch (error) {
-            console.log("error", error)
+        if (groupId) {
+            fetchGroupMessages(groupId);
         }
-    }
+    }, [groupId, fetchGroupMessages]);
 
 
     // Mock data for messages
     const sendMessage = useCallback(async () => {
-        if (!newMessage.trim()) return;
+        if (!newMessage.trim() || !groupId || !currentUserId) return;
 
         const messageData = {
             senderId: currentUserId,
@@ -50,48 +46,27 @@ const GroupChatWindow = () => {
         };
 
         try {
-            const { data } = await axiosPublic.post(
-                "/api/groupMessage/send",
-                messageData
-            );
-
-            const messageId = data?.newGroupMessage?._id
-
-            const newMsg = {
-                ...data?.newGroupMessage,
-                senderId: {
-                    _id: currentUserId,
-                    firstName: dataHook?.userData?.user?.firstName,
-                    email: dataHook?.userData?.user?.email,
-                },
-            };
-
-            setGroupMsg((prev) => {
-                return [...prev, newMsg];
-            });
-
+            const data = await sendToStore(groupId, messageData);
+            
             // Emit the new message to the socket server
             socket.emit("sentGroupMessage", {
-                newMessage,
+                newMessage: data.message,
                 groupId,
                 senderId: currentUserId,
-                messageId,
+                messageId: data._id,
             });
-
 
             setNewMessage("");
         } catch (error) {
             console.error("Error sending message:", error);
-            alert("Failed to send message.");
         }
-    }, [newMessage, currentUserId, groupId, axiosPublic, groupMsg]);
+    }, [newMessage, currentUserId, groupId, sendToStore]);
 
 
 
     // Socket connection for real-time messaging
     useEffect(() => {
-        if (!groupId && !currentUserId) return;
-
+        if (!groupId || !currentUserId) return;
 
         socket.emit("joinGroup", { groupId });
 
@@ -100,23 +75,15 @@ const GroupChatWindow = () => {
             if (message.senderId === currentUserId) return;
             if (message.groupId !== groupId) return;
 
-
-            setGroupMsg((prev) => {
-                const exists = prev.some((msg) => msg._id === message._id);
-                if (exists) return prev;
-                return [...prev, message];
-            });
+            addGroupMessage(message);
         };
-
 
         socket.on("receiveGroupMessage", handleReceiveGroupMessage);
 
         return () => {
             socket.off("receiveGroupMessage", handleReceiveGroupMessage);
         }
-
-
-    }, [groupId, currentUserId, newMessage])
+    }, [groupId, currentUserId, addGroupMessage]);
 
     return (
         <div className="flex flex-col w-full h-[80vh] mx-4 shadow-xl rounded-2xl bg-white overflow-hidden">
@@ -143,7 +110,7 @@ const GroupChatWindow = () => {
                             <img
                                 src={
                                     msg?.senderId?._id === currentUserId
-                                        ? dataHook?.userData?.user?.imageUrl
+                                        ? (user?.imageUrl || session?.user?.image)
                                         : msg?.senderId?.imageUrl
                                 }
                                 className="w-6 h-6 rounded-full"

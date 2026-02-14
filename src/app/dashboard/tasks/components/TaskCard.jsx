@@ -18,11 +18,8 @@ import {
 import React, { useState, useRef, useEffect } from "react";
 import "./taskcard.css";
 import SingleTaskDeleteModal from "./SingleTaskDeleteModal";
-import {
-  useDeleteSingleTaskMutation,
-  useUpdateBoardStatusMutation,
-} from "@/redux/features/Api/TaskApi";
 import moment from "moment";
+import useBoardStore from "@/store/useBoardStore";
 import Comment from "./Comment";
 import Attachment from "./Atachment";
 import { useDraggable } from "@dnd-kit/core";
@@ -111,12 +108,11 @@ const TaskCard = ({ task }) => {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  const [deleteSingleTask] = useDeleteSingleTaskMutation();
-  const [updateBoardStatus] = useUpdateBoardStatusMutation();
+  const { deleteBoardTask, updateBoardStatus } = useBoardStore();
 
   const taskDelete = async () => {
     try {
-      await deleteSingleTask(task?._id).unwrap();
+      await deleteBoardTask(task?._id);
       closeModal();
     } catch (error) {
       console.error("Delete failed:", error);
@@ -146,7 +142,7 @@ const TaskCard = ({ task }) => {
     }
 
     try {
-      await updateBoardStatus({ boardId: taskId, status: newStatus }).unwrap();
+      await updateBoardStatus(taskId, newStatus);
     } catch (error) {
       console.error("Status update failed:", error);
     } finally {
@@ -165,7 +161,7 @@ const TaskCard = ({ task }) => {
     }
 
     try {
-      await updateBoardStatus({ boardId: taskId, status: newStatus }).unwrap();
+      await updateBoardStatus(taskId, newStatus);
     } catch (error) {
       console.error("Status update failed:", error);
     } finally {

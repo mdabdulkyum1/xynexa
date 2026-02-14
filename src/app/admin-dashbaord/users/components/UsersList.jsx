@@ -1,6 +1,5 @@
-'use client';
-
-import React, { useState } from 'react';
+import React, { useEffect } from 'react';
+import useUserStore from '@/store/useUserStore';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
@@ -9,29 +8,27 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Button } from '@/components/ui/button';
 import Swal from 'sweetalert2';
 
-const initialUsers = [
-  { id: 1, name: 'John Doe', email: 'john@example.com', role: 'Admin', status: 'Active', plan: 'Pro', joined: '2023-01-15', lastActive: '2024-04-26', image: 'https://randomuser.me/api/portraits/men/1.jpg' },
-  { id: 2, name: 'Jane Smith', email: 'jane@example.com', role: 'Member', status: 'Active', plan: 'Starter', joined: '2023-03-22', lastActive: '2024-04-20', image: 'https://randomuser.me/api/portraits/women/2.jpg' },
-  { id: 3, name: 'Mike Johnson', email: 'mike@example.com', role: 'Admin', status: 'Inactive', plan: 'Premium', joined: '2022-11-10', lastActive: '2024-04-24', image: 'https://randomuser.me/api/portraits/men/3.jpg' },
-  { id: 4, name: 'Emily Davis', email: 'emily@example.com', role: 'Member', status: 'Active', plan: 'Pro', joined: '2024-01-05', lastActive: '2024-04-25', image: 'https://randomuser.me/api/portraits/women/4.jpg' },
-  { id: 5, name: 'Chris Brown', email: 'chris@example.com', role: 'Admin', status: 'Inactive', plan: 'Starter', joined: '2023-06-17', lastActive: '2024-04-22', image: 'https://randomuser.me/api/portraits/men/5.jpg' },
-];
-
 export default function UsersList() {
-  const [users, setUsers] = useState(initialUsers);
+  const { users, fetchUsers, updateUser, deleteUser, isLoading } = useUserStore();
 
-  const handleRoleChange = (id, newRole) => {
-    const updatedUsers = users.map(user =>
-      user.id === id ? { ...user, role: newRole } : user
-    );
-    setUsers(updatedUsers);
+  useEffect(() => {
+    fetchUsers();
+  }, [fetchUsers]);
+
+  const handleRoleChange = async (id, newRole) => {
+    try {
+      await updateUser(id, { role: newRole });
+    } catch (error) {
+      console.error("Failed to update role:", error);
+    }
   };
 
-  const handlePlanChange = (id, newPlan) => {
-    const updatedUsers = users.map(user =>
-      user.id === id ? { ...user, plan: newPlan } : user
-    );
-    setUsers(updatedUsers);
+  const handlePlanChange = async (id, newPlan) => {
+    try {
+      await updateUser(id, { plan: newPlan });
+    } catch (error) {
+      console.error("Failed to update plan:", error);
+    }
   };
 
   const handleDelete = (id) => {
@@ -43,11 +40,14 @@ export default function UsersList() {
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
       confirmButtonText: 'Yes, delete it!',
-    }).then((result) => {
+    }).then(async (result) => {
       if (result.isConfirmed) {
-        const filteredUsers = users.filter(user => user.id !== id);
-        setUsers(filteredUsers);
-        Swal.fire('Deleted!', 'The user has been deleted.', 'success');
+        try {
+          await deleteUser(id);
+          Swal.fire('Deleted!', 'The user has been deleted.', 'success');
+        } catch (error) {
+          Swal.fire('Error!', 'Failed to delete user.', 'error');
+        }
       }
     });
   };
@@ -85,17 +85,17 @@ export default function UsersList() {
             </TableHeader>
             <TableBody>
               {users.map((user) => (
-                <TableRow key={user.id}>
+                <TableRow key={user._id || user.id}>
                   <TableCell className="flex items-center gap-3">
                     <Avatar className="h-9 w-9">
-                      <AvatarImage src={user.image} alt={user.name} />
-                      <AvatarFallback>{user.name.charAt(0)}</AvatarFallback>
+                      <AvatarImage src={user.image || user.imageUrl} alt={user.name || user.firstName} />
+                      <AvatarFallback>{(user.name || user.firstName || 'U').charAt(0)}</AvatarFallback>
                     </Avatar>
-                    <span>{user.name}</span>
+                    <span>{user.name || `${user.firstName || ''} ${user.lastName || ''}`}</span>
                   </TableCell>
                   <TableCell>{user.email}</TableCell>
                   <TableCell>
-                    <Select value={user.role} onValueChange={(value) => handleRoleChange(user.id, value)}>
+                    <Select value={user.role} onValueChange={(value) => handleRoleChange(user._id || user.id, value)}>
                       <SelectTrigger className="w-[120px]">
                         <SelectValue placeholder="Select role" />
                       </SelectTrigger>
@@ -110,18 +110,18 @@ export default function UsersList() {
                       variant="outline"
                       className={user.status === 'Active' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}
                     >
-                      {user.status}
+                      {user.status || 'Active'}
                     </Badge>
                   </TableCell>
                   <TableCell>
-                    <Badge variant="outline" className={getPlanBadgeColor(user.plan)}>
-                      {user.plan}
+                    <Badge variant="outline" className={getPlanBadgeColor(user.plan || 'Starter')}>
+                      {user.plan || 'Starter'}
                     </Badge>
                   </TableCell>
-                  <TableCell>{user.joined}</TableCell>
-                  <TableCell>{user.lastActive}</TableCell>
+                  <TableCell>{user.joined || user.createdAt?.split('T')[0] || 'N/A'}</TableCell>
+                  <TableCell>{user.lastActive || 'N/A'}</TableCell>
                   <TableCell>
-                    <Button variant="destructive" size="sm" onClick={() => handleDelete(user.id)}>
+                    <Button variant="destructive" size="sm" onClick={() => handleDelete(user._id || user.id)}>
                       Delete
                     </Button>
                   </TableCell>

@@ -3,17 +3,14 @@
 import { ScrollArea } from "@/components/ui/scroll-area";
 import useAxiosPublic from "@/hooks/AxiosPublic/useAxiosPublic";
 import { socket } from "@/lib/socket";
-import { useGetTeamsByEmailForGroupChatQuery } from "@/redux/features/Api/teamApi";
-import { setSelectedUserId } from "@/redux/features/Slice/chatSlice";
-import { setGroupChatId } from "@/redux/features/Slice/groupChatSlice";
+import useChatStore from "@/store/useChatStore";
+import useTeamStore from "@/store/useTeamStore";
 import { useSession } from "next-auth/react";
 import { format, isToday, isYesterday, parseISO } from "date-fns";
 import { Search, Users } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
 
 const ChatSidebar = () => {
-  const dispatch = useDispatch();
   const { data: session, status } = useSession();
   const user = session?.user;
   const isLoaded = status !== "loading";
@@ -36,9 +33,22 @@ const ChatSidebar = () => {
   }
 
   const userEmail = user?.email;
-  const { data: groups = [] } = useGetTeamsByEmailForGroupChatQuery(userEmail || "");
-  const selectedUserId = useSelector((state) => state.chat.selectedUserId);
-  const groupChatId = useSelector((state) => state.groupChat.groupChatId);
+  const { groupChats: groups, fetchTeamsForGroupChat } = useTeamStore();
+
+  useEffect(() => {
+    if (userEmail) {
+      fetchTeamsForGroupChat(userEmail);
+    }
+  }, [userEmail, fetchTeamsForGroupChat]);
+  const { 
+    currentChatPartner, 
+    setCurrentChatPartner, 
+    currentGroup, 
+    setCurrentGroup 
+  } = useChatStore();
+
+  const selectedUserId = currentChatPartner?._id;
+  const groupChatId = currentGroup?._id;
 
   const [users, setUsers] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
@@ -143,8 +153,7 @@ const ChatSidebar = () => {
                 <div
                   key={group._id}
                   onClick={() => {
-                    dispatch(setGroupChatId(group._id));
-                    dispatch(setSelectedUserId(null));
+                    setCurrentGroup(group);
                   }}
                   className={`flex items-center gap-4 p-4 rounded-2xl cursor-pointer transition-all duration-200
                     ${groupChatId === group._id
@@ -186,8 +195,7 @@ const ChatSidebar = () => {
                 <div
                   key={user._id || user.id}
                   onClick={() => {
-                    dispatch(setSelectedUserId(user._id || user.id));
-                    dispatch(setGroupChatId(null));
+                    setCurrentChatPartner(user);
                   }}
                   className={`flex items-center gap-4 p-4 rounded-2xl cursor-pointer transition-all duration-200 group
                     ${selectedUserId === (user._id || user.id)

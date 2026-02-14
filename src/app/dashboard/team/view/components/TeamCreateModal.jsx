@@ -1,6 +1,7 @@
-import { useCreateTeamMutation } from "@/redux/features/Api/teamApi";
-import { useGetUserByEmailQuery } from "@/redux/features/Api/userApi";
+import useTeamStore from "@/store/useTeamStore";
+import useUserStore from "@/store/useUserStore";
 import { useSession } from "next-auth/react";
+import { useEffect } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { Fragment, useMemo } from "react";
 import { useForm } from "react-hook-form";
@@ -15,20 +16,22 @@ const TeamCreateModal = ({ isOpen, closeModal }) => {
 
   const { data: session } = useSession();
   const user = session?.user;
-
   const userEmail = user?.email;
-  const {
-    data: userData,
-    isLoading,
-    isError,
-    error,
-  } = useGetUserByEmailQuery(userEmail, { skip: !userEmail });
+
+  const { user: userData, fetchUserByEmail, isLoading } = useUserStore();
+  const { createTeam } = useTeamStore();
+
+  useEffect(() => {
+    if (userEmail) {
+      fetchUserByEmail(userEmail);
+    }
+  }, [userEmail, fetchUserByEmail]);
 
   const creatorId = useMemo(() => {
-    return userData?.user?._id;
+    return userData?.user?._id || userData?.user?.id;
   }, [userData]);
 
-  const [createTeam] = useCreateTeamMutation();
+  const isError = false; // Store handles error
 
   
 const onSubmit = async (data) => {
@@ -38,7 +41,7 @@ const onSubmit = async (data) => {
       creator: creatorId,
     };
 
-    const result = await createTeam(teamData).unwrap();
+    await createTeam(teamData);
 
     
     toast.success("Team created successfully!", {

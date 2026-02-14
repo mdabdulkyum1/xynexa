@@ -3,9 +3,10 @@ import React from "react";
 import TaskHeading from "../components/TaskHeading";
 import TaskControl from "../components/TaskControl";
 import TaskBoard from "../components/TaskBoard ";
+import useTeamStore from "@/store/useTeamStore";
+import useBoardStore from "@/store/useBoardStore";
+import { useEffect } from "react";
 import { useParams } from "next/navigation";
-import { useGetTeamQuery } from "@/redux/features/Api/teamApi";
-import { useGetBoardByTeamIdQuery } from "@/redux/features/Api/TaskApi";
 
 
 
@@ -13,9 +14,18 @@ import { useGetBoardByTeamIdQuery } from "@/redux/features/Api/TaskApi";
 
 const TaskSingleBoard = () => {
     const { id: teamId } = useParams();
-    const { data: team, isLoading, isError, error } = useGetTeamQuery(teamId);
+    const { teams, currentTeam, setCurrentTeam } = useTeamStore();
+    const { boards: allTasks, fetchBoardsByTeamId, isLoading: taskLoading } = useBoardStore();
 
-    const { data: allTasks, isLoading: taskLoading , isError : taskIsError, error: task } = useGetBoardByTeamIdQuery(teamId);
+    useEffect(() => {
+        if (teamId) {
+            fetchBoardsByTeamId(teamId);
+            const team = teams.find(t => t.id === teamId || t._id === teamId);
+            if (team) setCurrentTeam(team);
+        }
+    }, [teamId, fetchBoardsByTeamId, teams, setCurrentTeam]);
+
+    const team = currentTeam;
     
   return (
     <div>

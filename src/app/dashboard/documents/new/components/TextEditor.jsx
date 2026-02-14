@@ -6,8 +6,9 @@ import { FaFilePdf } from "react-icons/fa6";
 import "react-quill-new/dist/quill.snow.css";
 import DocumentHeading from "./DocumentHeading";
 import { toast } from "react-hot-toast";
-import { useDocumentCreateMutation } from "@/redux/features/Api/documentApi";
-import { useUserDataFromClerk } from "@/hooks/useUserDataFromClerk";
+import { useSession } from "next-auth/react";
+import useAuthStore from "@/store/useAuthStore";
+import useDocumentStore from "@/store/useDocumentStore";
 import { useRouter } from "next/navigation";
 import "./editor.css"; 
 import { pdfExporter } from 'quill-to-pdf';
@@ -18,10 +19,11 @@ const ReactQuill = dynamic(() => import("react-quill-new"), { ssr: false });
 
 const TextEditor = () => {
     const router = useRouter();
-    const [documentCreate] = useDocumentCreateMutation();
-    const { userData } = useUserDataFromClerk();
-    const currentDocCreator_id = userData?.user?._id;
-    const currentDocCreatorEmail = userData?.user?.email;
+    const { data: session } = useSession();
+    const user = useAuthStore((state) => state.user);
+    const { createDocument } = useDocumentStore();
+    const currentDocCreator_id = user?.id || session?.user?.id;
+    const currentDocCreatorEmail = user?.email || session?.user?.email;
     const [content, setContent] = useState("");
     const [title, setTitle] = useState("Untitled Document");
     const [isBrowser, setIsBrowser] = useState(false);
@@ -107,7 +109,7 @@ const TextEditor = () => {
                 createdAt: new Date().toISOString(),
             };
 
-            const res = await documentCreate(docData).unwrap();
+            await createDocument(docData);
             toast.success("Document saved to database!");
             router.push(`/dashboard/documents`);
         } catch (err) {

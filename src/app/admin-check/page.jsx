@@ -1,17 +1,9 @@
-'use client';
-
-import { useEffect } from 'react';
-import { useRouter } from 'next/navigation';
 import { useSession } from "next-auth/react";
-import { useUserDataFromClerk } from '@/hooks/useUserDataFromClerk';
 
 const AdminCheck = () => {
   const router = useRouter();
   const { data: session, status } = useSession();
-  const userEmail = session?.user?.email;
-
-  const { userData, isLoading } = useUserDataFromClerk(userEmail);
-  const userRole = userData?.user?.role;
+  const userRole = session?.user?.role;
 
   useEffect(() => {
     if (status === "loading" || !session) return;
@@ -23,7 +15,7 @@ const AdminCheck = () => {
     }
   }, [status, session, userRole, router]);
 
-  if (status === "loading" || isLoading) {
+  if (status === "loading") {
     return (
       <div className="h-screen flex items-center justify-center bg-gray-100">
         <p className="text-lg font-semibold text-gray-600">Loading...</p>

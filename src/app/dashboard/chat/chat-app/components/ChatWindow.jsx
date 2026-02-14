@@ -5,52 +5,27 @@ import { useSession } from "next-auth/react";
 import { FaVideo, FaPhone, FaPaperPlane, FaEllipsisV } from "react-icons/fa";
 // ... imports
 import { socket } from "../../../../../lib/socket";
+import useChatStore from "@/store/useChatStore";
 
 const ChatWindow = () => {
-  const axiosPublic = useAxiosPublic();
   const { data: session, status } = useSession();
+  const userId = session?.user?.id;
   const isLoaded = status !== "loading"; 
 
-  const userId = session?.user?.id;
-  const receiverId = useSelector((state) => state.chat.selectedUserId);
+  const { 
+    messages, 
+    fetchUserMessages, 
+    sendMessage: sendMessageToStore, 
+    addMessage,
+    currentChatPartner: receiver,
+    setCurrentChatPartner
+  } = useChatStore();
 
-  const [receiver, setReceiver] = useState(null);
-  const [messages, setMessages] = useState([]);
+  const receiverId = receiver?._id;
+
   const [newMessage, setNewMessage] = useState("");
   const [isTyping, setIsTyping] = useState(false);
   const messagesEndRef = useRef(null);
-
-  if (!isLoaded) {
-    return (
-      <div className="flex h-screen items-center justify-center bg-gray-50 dark:bg-gray-900">
-        <p className="text-gray-500">Loading chat...</p>
-      </div>
-    );
-  }
-
-  if (!receiverId) {
-    return (
-      <div className="flex h-screen items-center justify-center bg-gray-50 dark:bg-gray-900">
-        <p className="text-gray-500 text-lg">Select a conversation to start messaging</p>
-      </div>
-    );
-  }
-
-  // Fetch receiver info
-  useEffect(() => {
-    if (!receiverId) return;
-
-    const fetchReceiver = async () => {
-      try {
-        const { data } = await axiosPublic.get(`/api/users/${receiverId}`);
-        setReceiver(data.user);
-      } catch (error) {
-        console.error("Error fetching receiver:", error);
-      }
-    };
-
-    fetchReceiver();
-  }, [receiverId, axiosPublic]);
 
   // Join socket & listeners
   useEffect(() => {
@@ -63,10 +38,7 @@ const ChatWindow = () => {
         (message.senderId === receiverId && message.receiverId === userId) ||
         (message.senderId === userId && message.receiverId === receiverId)
       ) {
-        setMessages((prev) => {
-          const exists = prev.some((m) => m._id === message._id);
-          return exists ? prev : [...prev, message];
-        });
+        addMessage(message);
       }
     };
 
@@ -76,42 +48,23 @@ const ChatWindow = () => {
 
     const handleStopTyping = () => setIsTyping(false);
 
-    const handleMessageRead = ({ id }) => {
-      setMessages((prev) =>
-        prev.map((msg) => (msg._id === id ? { ...msg, read: true } : msg))
-      );
-    };
-
     socket.on("receiveMessage", handleReceiveMessage);
     socket.on("typing", handleTyping);
     socket.on("stopTyping", handleStopTyping);
-    socket.on("messageRead", handleMessageRead);
 
     return () => {
       socket.off("receiveMessage");
       socket.off("typing");
       socket.off("stopTyping");
-      socket.off("messageRead");
     };
-  }, [userId, receiverId]);
+  }, [userId, receiverId, addMessage, session]);
 
   // Fetch messages
   useEffect(() => {
-    if (!userId || !receiverId) return;
-
-    const fetchMessages = async () => {
-      try {
-        const { data } = await axiosPublic.get(
-          `/api/messages?senderId=${userId}&receiverId=${receiverId}`
-        );
-        setMessages(data || []);
-      } catch (error) {
-        console.error("Error fetching messages:", error);
-      }
-    };
-
-    fetchMessages();
-  }, [userId, receiverId, axiosPublic]);
+    if (receiverId) {
+      fetchUserMessages(receiverId);
+    }
+  }, [receiverId, fetchUserMessages]);
 
   // Auto scroll
   useEffect(() => {
@@ -129,17 +82,16 @@ const ChatWindow = () => {
     };
 
     try {
-      const { data } = await axiosPublic.post("/api/messages/send", messageData);
+      const data = await sendMessageToStore(messageData);
       socket.emit("sendMessage", data);
-      setMessages((prev) => [...prev, data]);
       setNewMessage("");
     } catch (error) {
       console.error("Send failed:", error);
     }
-  }, [newMessage, userId, receiverId, axiosPublic]);
+  }, [newMessage, userId, receiverId, sendMessageToStore]);
 
   // Typing indicator
-  const handleTyping = () => {
+  const handleTypingIndicator = () => {
     if (!userId || !receiverId) return;
     socket.emit("typing", { senderId: userId, receiverId });
 
