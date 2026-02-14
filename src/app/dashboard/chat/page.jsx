@@ -1,11 +1,15 @@
 "use client";
 
 import useChatStore from "@/store/useChatStore";
+import Image from "next/image";
+import ChatWindow from "./chat-app/components/ChatWindow";
+import GroupChatWindow from "./chat-app/components/GroupChatWindow";
 
 export default function ChatPage() {
   const currentChatPartner = useChatStore((state) => state.currentChatPartner);
   const currentGroup = useChatStore((state) => state.currentGroup);
 
+  const groupChatId = currentGroup?._id;
   const isChatOpen = currentChatPartner || currentGroup;
 
   return (

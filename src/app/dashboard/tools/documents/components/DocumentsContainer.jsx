@@ -1,3 +1,5 @@
+"use client";
+
 import useDocumentStore from '@/store/useDocumentStore';
 import { useSession } from "next-auth/react";
 import Loading from '@/components/loading/Loading';

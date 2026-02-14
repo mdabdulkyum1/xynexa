@@ -13,17 +13,34 @@ import { MdOutlineWatchLater } from "react-icons/md";
 import { Avatar, AvatarGroup } from '@mui/material';
 
 export default function TeamView() {
-
     const { data: session, status } = useSession();
-    const { teams: teamData, fetchUserTeamsByEmail, isLoading: isTeamsLoading, error: teamError } = useTeamStore();
+    const teamData = useTeamStore((state) => state.teams);
+    const fetchUserTeamsByEmail = useTeamStore((state) => state.fetchUserTeamsByEmail);
+    const isTeamsLoading = useTeamStore((state) => state.isLoading);
+    const teamError = useTeamStore((state) => state.error);
+
+    const hasFetched = React.useRef(false);
+
+    console.log("TeamView Render:", { 
+        status, 
+        sessionEmail: session?.user?.email, 
+        isTeamsLoading, 
+        teamDataCount: teamData?.length,
+        hasFetched: hasFetched.current
+    });
 
     useEffect(() => {
-        if (session?.user?.email) {
-            fetchUserTeamsByEmail(session.user.email);
-        }
-    }, [session?.user?.email, fetchUserTeamsByEmail]);
+        const userEmail = session?.user?.email;
+        console.log("TeamView UseEffect Triggered:", { userEmail, status, hasFetched: hasFetched.current });
 
-    const isLoading = status === "loading" || isTeamsLoading;
+        if (status === "authenticated" && userEmail && !hasFetched.current) {
+            console.log("Calling fetchUserTeamsByEmail for:", userEmail);
+            hasFetched.current = true;
+            fetchUserTeamsByEmail(userEmail);
+        }
+    }, [session, status, fetchUserTeamsByEmail]);
+
+    const isLoading = status === "loading" || (isTeamsLoading && teamData.length === 0);
     const isError = !!teamError;
 
     if (isLoading) {

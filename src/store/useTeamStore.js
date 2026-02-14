@@ -9,11 +9,16 @@ const useTeamStore = create((set, get) => ({
     error: null,
 
     fetchUserTeamsByEmail: async (email) => {
+        console.log("Store: fetchUserTeamsByEmail called with:", email);
         set({ isLoading: true, error: null });
         try {
-            const response = await api.get(`/teams/user/teams/email/${email}`);
+            const url = `/teams/user/teams/email/${email}`;
+            console.log("Store: Fetching from URL:", url);
+            const response = await api.get(url);
+            console.log("Store: Response received:", response.data);
             set({ teams: response.data, isLoading: false });
         } catch (error) {
+            console.error("Store: fetchUserTeamsByEmail Error:", error);
             set({ error: error.message, isLoading: false });
         }
     },

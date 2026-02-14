@@ -3,7 +3,10 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { useSession } from "next-auth/react"; 
 import { FaVideo, FaPhone, FaPaperPlane, FaEllipsisV } from "react-icons/fa";
-// ... imports
+import { format, parseISO } from "date-fns";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 import { socket } from "../../../../../lib/socket";
 import useChatStore from "@/store/useChatStore";
 
@@ -77,8 +80,8 @@ const ChatWindow = () => {
 
     const messageData = {
       senderId: userId,
-      receiverId,
-      text: newMessage.trim(),
+      receiverId: receiverId,
+      content: newMessage.trim(),
     };
 
     try {
@@ -157,13 +160,15 @@ const ChatWindow = () => {
                         : "bg-white dark:bg-gray-800 text-gray-900 dark:text-white border border-gray-200 dark:border-gray-700"
                     } ${isMe ? "rounded-tr-none" : "rounded-tl-none"}`}
                   >
-                    <p className="text-sm lg:text-base whitespace-pre-wrap break-words">
-                      {msg.text}
+                    <p className="text-sm">{msg.content}</p>
+                    <p
+                        className={`text-[10px] mt-1 opacity-70 ${isMe ? "text-right" : "text-left"
+                            }`}
+                    >
+                        {msg.createdAt
+                            ? format(parseISO(msg.createdAt), "HH:mm")
+                            : ""}
                     </p>
-                    <div className="flex items-center gap-2 mt-1 justify-end text-xs opacity-70">
-                      <span>{formatTime(msg.timestamp)}</span>
-                      {isMe && <span>{msg.read ? "Seen" : "Sent"}</span>}
-                    </div>
                   </div>
                 </div>
               );
@@ -180,7 +185,7 @@ const ChatWindow = () => {
             value={newMessage}
             onChange={(e) => {
               setNewMessage(e.target.value);
-              handleTyping();
+              handleTypingIndicator();
             }}
             onKeyDown={(e) => {
               if (e.key === "Enter" && !e.shiftKey) {

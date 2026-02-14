@@ -4,8 +4,7 @@ import { useRouter } from 'next/navigation';
 
 
 const axiosInstance = axios.create({
-    // baseURL: 'http://localhost:5000'
-    // baseURL: ''
+    baseURL: 'http://localhost:5000'
   });
 
   

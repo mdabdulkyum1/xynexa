@@ -32,7 +32,13 @@ const useChatStore = create((set, get) => ({
 
     sendMessage: async (messageData) => {
         try {
-            const response = await api.post('/messages', messageData);
+            // Standardize to 'content' for backend
+            const payload = {
+                senderId: messageData.senderId,
+                receiverId: messageData.receiverId,
+                content: messageData.text // Map from frontend 'text' if needed, but better to fix both
+            };
+            const response = await api.post('/messages', payload);
             set((state) => ({
                 messages: [...state.messages, response.data],
             }));
@@ -45,7 +51,13 @@ const useChatStore = create((set, get) => ({
 
     sendGroupMessage: async (groupId, messageData) => {
         try {
-            const response = await api.post(`/group-messages/${groupId}`, messageData);
+            // Standardize to 'content' for backend
+            const payload = {
+                senderId: messageData.senderId,
+                groupId: groupId,
+                content: messageData.message || messageData.content
+            };
+            const response = await api.post('/group-messages', payload);
             set((state) => ({
                 groupMessages: [...state.groupMessages, response.data],
             }));

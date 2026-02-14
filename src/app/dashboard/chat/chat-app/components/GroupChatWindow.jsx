@@ -5,8 +5,9 @@ import { Send } from "lucide-react";
 import { useSession } from "next-auth/react";
 import useChatStore from "@/store/useChatStore";
 import useTeamStore from "@/store/useTeamStore";
-import useAuthStore from "@/store/useAuthStore";
 import { socket } from "../../../../../lib/socket";
+import { AnimatedTooltip } from "@/components/ui/animated-tooltip";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 
 const GroupChatWindow = () => {
@@ -50,7 +51,7 @@ const GroupChatWindow = () => {
             
             // Emit the new message to the socket server
             socket.emit("sentGroupMessage", {
-                newMessage: data.message,
+                content: data.content,
                 groupId,
                 senderId: currentUserId,
                 messageId: data._id,
@@ -97,37 +98,48 @@ const GroupChatWindow = () => {
             </div>
 
             {/* Chat Area */}
-            <div className="flex-1 overflow-y-auto p-4 space-y-3 bg-gray-50">
-                {groupMsg.map((msg) => (
-                    <div
-                        key={msg._id}
-                        className={`flex ${msg?.senderId?._id === currentUserId ? "justify-end" : "justify-start"}`}
-                    >
-                        <div
-                            className={`flex items-center gap-2 ${msg?.senderId?._id === currentUserId ? "flex-row-reverse" : ""
-                                }`}
-                        >
-                            <img
-                                src={
-                                    msg?.senderId?._id === currentUserId
-                                        ? (user?.imageUrl || session?.user?.image)
-                                        : msg?.senderId?.imageUrl
-                                }
-                                className="w-6 h-6 rounded-full"
-                                alt=""
-                            />
-                            <p
-                                className={`${msg?.senderId?._id === currentUserId
-                                        ? "bg-purple-700 text-white px-2 py-[0.4px] rounded-full"
-                                        : "bg-gray-200 text-black px-2 py-[0.4px] rounded-full"
-                                    }`}
+            <ScrollArea className="flex-1 p-4 bg-gray-50">
+                <div className="space-y-3">
+                    {groupMsg.map((msg) => {
+                        const isOwnMessage = msg?.senderId?._id === currentUserId || msg?.senderId === currentUserId;
+                        return (
+                            <div
+                                key={msg._id}
+                                className={`flex ${isOwnMessage ? "justify-end" : "justify-start"}`}
                             >
-                                {msg?.message}
-                            </p>
-                        </div>
-                    </div>
-                ))}
-            </div>
+                                <div
+                                    className={`flex items-start gap-2 ${isOwnMessage ? "flex-row-reverse" : ""}`}
+                                >
+                                    <img
+                                        src={
+                                            isOwnMessage
+                                                ? session?.user?.image
+                                                : msg?.senderId?.imageUrl
+                                        }
+                                        className="w-10 h-10 rounded-full border border-gray-200"
+                                        alt=""
+                                    />
+                                    <div className={`flex flex-col ${isOwnMessage ? "items-end" : "items-start"}`}>
+                                        <div
+                                            className={`px-4 py-2 rounded-2xl max-w-sm ${isOwnMessage
+                                                ? "bg-purple-600 text-white rounded-tr-none"
+                                                : "bg-white text-gray-800 border border-gray-200 rounded-tl-none"
+                                                }`}
+                                        >
+                                            <p className="text-sm">{msg.content}</p>
+                                        </div>
+                                        <p className="text-[10px] mt-1 opacity-70">
+                                            {msg.createdAt
+                                                ? format(parseISO(msg.createdAt), "HH:mm")
+                                                : ""}
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        );
+                    })}
+                </div>
+            </ScrollArea>
 
             {/* Input */}
             <div className="flex items-center border-t p-3 bg-white">

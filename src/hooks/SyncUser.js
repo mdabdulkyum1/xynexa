@@ -9,6 +9,7 @@ const SyncUser = () => {
     const syncUser = async () => {
       try {
         if (status === "authenticated" && session?.user) {
+          // Sync user to Zustand store
           useUserStore.setState({
             user: {
               user: {
@@ -21,8 +22,14 @@ const SyncUser = () => {
               }
             }
           });
+
+          // Sync token to localStorage for Axios
+          if (session.accessToken) {
+            localStorage.setItem('token', session.accessToken);
+          }
         } else if (status === "unauthenticated") {
           useUserStore.setState({ user: null });
+          localStorage.removeItem('token');
         }
 
       } catch (error) {

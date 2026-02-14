@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useEffect } from 'react';
 import useUserStore from '@/store/useUserStore';
 import { Card, CardContent } from '@/components/ui/card';

@@ -12,58 +12,38 @@ import { useEffect, useMemo, useState } from "react";
 
 const ChatSidebar = () => {
   const { data: session, status } = useSession();
-  const user = session?.user;
-  const isLoaded = status !== "loading";
-
-
-  if (!isLoaded) {
-    return (
-      <div className="flex h-full items-center justify-center bg-gray-50 dark:bg-gray-900">
-        <p className="text-gray-500 animate-pulse">Loading chats...</p>
-      </div>
-    );
-  }
-
-  if (!user) {
-    return (
-      <div className="flex h-full items-center justify-center bg-gray-50 dark:bg-gray-900">
-        <p className="text-red-500">Please sign in to view chats</p>
-      </div>
-    );
-  }
-
-  const userEmail = user?.email;
   const { groupChats: groups, fetchTeamsForGroupChat } = useTeamStore();
-
-  useEffect(() => {
-    if (userEmail) {
-      fetchTeamsForGroupChat(userEmail);
-    }
-  }, [userEmail, fetchTeamsForGroupChat]);
   const { 
     currentChatPartner, 
     setCurrentChatPartner, 
     currentGroup, 
     setCurrentGroup 
   } = useChatStore();
-
-  const selectedUserId = currentChatPartner?._id;
-  const groupChatId = currentGroup?._id;
+  const axiosPublic = useAxiosPublic();
 
   const [users, setUsers] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
-  const axiosPublic = useAxiosPublic();
+
+  const user = session?.user;
+  const isLoaded = status !== "loading";
+  const userEmail = user?.email;
+
+  useEffect(() => {
+    if (isLoaded && userEmail) {
+      fetchTeamsForGroupChat(userEmail);
+    }
+  }, [isLoaded, userEmail, fetchTeamsForGroupChat]);
 
   // Fetch online users
   useEffect(() => {
-    if (!userEmail) return;
+    if (!isLoaded || !userEmail) return;
     axiosPublic
-      .get(`/api/online/users/${userEmail}`)
+      .get(`/online/users/${userEmail}`)
       .then((res) => {
         setUsers(res.data.uniqueMembers || []);
       })
       .catch(console.error);
-  }, [userEmail, axiosPublic]);
+  }, [isLoaded, userEmail, axiosPublic]);
 
   // Real-time online/offline status
   useEffect(() => {
@@ -112,6 +92,26 @@ const ChatSidebar = () => {
         return new Date(b.lastActive || 0).getTime() - new Date(a.lastActive || 0).getTime();
       });
   }, [users, searchQuery]);
+
+  const selectedUserId = currentChatPartner?._id || currentChatPartner?.id;
+  const groupChatId = currentGroup?._id;
+
+  // Early returns must come AFTER hooks
+  if (!isLoaded) {
+    return (
+      <div className="flex h-full items-center justify-center bg-gray-50 dark:bg-gray-900">
+        <p className="text-gray-500 animate-pulse">Loading chats...</p>
+      </div>
+    );
+  }
+
+  if (!user) {
+    return (
+      <div className="flex h-full items-center justify-center bg-gray-50 dark:bg-gray-900">
+        <p className="text-red-500">Please sign in to view chats</p>
+      </div>
+    );
+  }
 
   // Filter Groups
   const filteredGroups = groups.filter((g) =>
