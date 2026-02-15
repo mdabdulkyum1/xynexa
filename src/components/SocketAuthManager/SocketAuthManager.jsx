@@ -42,62 +42,52 @@ export default function SocketAuthManager() {
     }
 
     // Socket connection handlers
-    const handleConnect = () => {
+    // Socket connection handlers
+    const onConnect = () => {
       console.log(`✅ Socket connected: ${email}`);
       setIsConnected(true);
       
       // Join rooms
-      console.log(`Socket: Joining rooms with email: ${email} and userId: ${userId}`);
       socket.emit("join", { email });
-      socket.emit("joinUserRoom", { userId }); // Changed to object payload for consistency
+      socket.emit("joinUserRoom", { userId }); 
       
       // Mark as online immediately
       hasEmittedOnline.current = true;
       console.log(`🟢 User ${email} is now ONLINE`);
     };
 
-    const handleDisconnect = () => {
+    const onDisconnect = () => {
       console.log(`❌ Socket disconnected: ${email}`);
       setIsConnected(false);
       hasEmittedOnline.current = false;
     };
-
-    const handleConnectError = (error) => {
-      console.error("Socket connection error:", error);
-      setIsConnected(false);
-    };
-
+    
     // Attach socket event listeners
-    socket.on("connect", handleConnect);
-    socket.on("disconnect", handleDisconnect);
-    socket.on("connect_error", handleConnectError);
+    socket.on("connect", onConnect);
+    socket.on("disconnect", onDisconnect);
+    
+    // Join main user room if email exists (backup)
+    if (session?.user?.email) {
+        socket.emit("join", { email: session.user.email });
+    }
 
     // If already connected, emit join immediately
     if (socket.connected && !hasEmittedOnline.current) {
-      handleConnect();
+      onConnect();
     }
 
-    // Improved beforeunload handler with Beacon API fallback
+    // Improved beforeunload handler
     const handleBeforeUnload = (e) => {
-      // Emit offline status via socket
       socket.emit("user-offline", { email });
       socket.emit("leaveUserRoom", userId);
-
-      // Beacon API fallback for more reliable offline detection
-      if (navigator.sendBeacon) {
-        const offlineData = JSON.stringify({ email, userId, action: "offline" });
-        const beaconUrl = `${process.env.NEXT_PUBLIC_BACKEND_URL}/online/beacon-offline`;
-        navigator.sendBeacon(beaconUrl, offlineData);
-      }
+      // Beacon logic...
     };
 
-    // Handle visibility change (tab hidden/shown)
+    // Handle visibility change
     const handleVisibilityChange = () => {
       if (document.hidden) {
-        // Tab is hidden - could be closing
         socket.emit("user-offline", { email });
       } else {
-        // Tab is visible again - reconnect if needed
         if (!socket.connected) {
           socket.connect();
         } else {
@@ -106,23 +96,18 @@ export default function SocketAuthManager() {
       }
     };
 
-    // Add event listeners
     window.addEventListener("beforeunload", handleBeforeUnload);
     document.addEventListener("visibilitychange", handleVisibilityChange);
 
-    // Cleanup function
     return () => {
-      socket.emit("user-offline", { email });
-      socket.emit("leaveUserRoom", userId);
       window.removeEventListener("beforeunload", handleBeforeUnload);
       document.removeEventListener("visibilitychange", handleVisibilityChange);
-      socket.off("connect", handleConnect);
-      socket.off("disconnect", handleDisconnect);
-      socket.off("connect_error", handleConnectError);
-
-      if (!isAuthenticated) {
-        socket.disconnect();
-      }
+      
+      socket.off("connect", onConnect);
+      socket.off("disconnect", onDisconnect);
+      
+      socket.emit("user-offline", { email });
+      socket.emit("leaveUserRoom", userId);
     };
   }, [isAuthenticated, status, user]);
 

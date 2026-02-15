@@ -100,10 +100,17 @@ const useChatStore = create((set, get) => ({
     }),
 
     addMessage: (message) => set((state) => {
+        const msgId = message.id || message._id;
+
         // Prevent duplicates
-        if (state.messages.some(m => m._id === message._id)) {
+        // Check both id and _id fields to be safe against schema differences
+        if (state.messages.some(m => {
+            const mId = m.id || m._id;
+            return mId === msgId;
+        })) {
             return state;
         }
+
         return { messages: [...state.messages, message] };
     }),
 
