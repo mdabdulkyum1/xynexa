@@ -9,11 +9,11 @@ const useChatStore = create((set, get) => ({
     isLoading: false,
     error: null,
 
-    fetchUserMessages: async (userId) => {
+    fetchUserMessages: async (receiverId, myId) => {
         set({ isLoading: true, error: null });
         try {
-            // In xynexa-nest, it might be /messages/:userId
-            const response = await api.get(`/messages/${userId}`);
+            // Updated to pass senderId (myId) in query
+            const response = await api.get(`/messages/${receiverId}?senderId=${myId}`);
             set({ messages: response.data, isLoading: false });
         } catch (error) {
             set({ error: error.message, isLoading: false });
@@ -36,8 +36,16 @@ const useChatStore = create((set, get) => ({
             const payload = {
                 senderId: messageData.senderId,
                 receiverId: messageData.receiverId,
-                content: messageData.text // Map from frontend 'text' if needed, but better to fix both
+                content: messageData.content || messageData.text, // Accept both for compatibility
+                read: false // Explicitly add read
             };
+            console.log("Store: Sending message payload:", JSON.stringify(payload, null, 2));
+
+            if (!payload.senderId || !payload.receiverId || !payload.content) {
+                console.error("Store: Missing required fields:", payload);
+                throw new Error("Missing required fields");
+            }
+
             const response = await api.post('/messages', payload);
             set((state) => ({
                 messages: [...state.messages, response.data],
@@ -70,10 +78,20 @@ const useChatStore = create((set, get) => ({
 
     setMessages: (messages) => set({ messages }),
     setGroupMessages: (messages) => set({ groupMessages: messages }),
-    setCurrentChatPartner: (partner) => set({
-        currentChatPartner: partner,
-        currentGroup: null,
-        messages: [] // Optional: clear messages when switching
+    setCurrentChatPartner: (partner) => set((state) => {
+        const partnerId = partner?._id || partner?.id;
+        const currentId = state.currentChatPartner?._id || state.currentChatPartner?.id;
+
+        // If clicking the same user, do nothing (preserves messages)
+        if (partnerId && currentId && partnerId === currentId) {
+            return state;
+        }
+
+        return {
+            currentChatPartner: partner,
+            currentGroup: null,
+            messages: [] // Only clear if switching to a NEW partner
+        };
     }),
     setCurrentGroup: (group) => set({
         currentGroup: group,
@@ -81,9 +99,13 @@ const useChatStore = create((set, get) => ({
         groupMessages: [] // Optional: clear messages when switching
     }),
 
-    addMessage: (message) => set((state) => ({
-        messages: [...state.messages, message]
-    })),
+    addMessage: (message) => set((state) => {
+        // Prevent duplicates
+        if (state.messages.some(m => m._id === message._id)) {
+            return state;
+        }
+        return { messages: [...state.messages, message] };
+    }),
 
     addGroupMessage: (message) => set((state) => ({
         groupMessages: [...state.groupMessages, message]

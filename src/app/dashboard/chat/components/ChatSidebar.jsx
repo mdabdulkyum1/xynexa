@@ -1,7 +1,7 @@
 "use client";
 
 import { ScrollArea } from "@/components/ui/scroll-area";
-import useAxiosPublic from "@/hooks/AxiosPublic/useAxiosPublic";
+import useAxiosSecure from "@/hooks/AxiosSecure/useAxiosSecure";
 import { socket } from "@/lib/socket";
 import useChatStore from "@/store/useChatStore";
 import useTeamStore from "@/store/useTeamStore";
@@ -19,7 +19,7 @@ const ChatSidebar = () => {
     currentGroup, 
     setCurrentGroup 
   } = useChatStore();
-  const axiosPublic = useAxiosPublic();
+  const axiosSecure = useAxiosSecure();
 
   const [users, setUsers] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
@@ -37,36 +37,55 @@ const ChatSidebar = () => {
   // Fetch online users
   useEffect(() => {
     if (!isLoaded || !userEmail) return;
-    axiosPublic
+    axiosSecure
       .get(`/online/users/${userEmail}`)
       .then((res) => {
-        setUsers(res.data.uniqueMembers || []);
+        console.log(res?.data?.uniqueMembers, ">>>>>>>>>>>>>>>>>>>>>>>>>>>")
+        setUsers(res?.data?.uniqueMembers || []);
       })
       .catch(console.error);
-  }, [isLoaded, userEmail, axiosPublic]);
+  }, [isLoaded, userEmail, axiosSecure]);
 
   // Real-time online/offline status
   useEffect(() => {
+    // Handle individual status updates
     const handleStatus = ({ email, status }) => {
+      console.log("Socket: Status update received:", email, status);
       setUsers((prev) =>
-        prev.map((u) =>
-          u.email === email
-            ? {
-                ...u,
-                status,
-                lastActive: status === "Online" ? new Date().toISOString() : u.lastActive || new Date().toISOString(),
-              }
-            : u
-        )
+        prev.map((u) => {
+          if (u.email === email) {
+            console.log("Socket: Updating user:", u.email, "to", status);
+            return {
+              ...u,
+              status,
+              lastActive: status === "Online" ? new Date().toISOString() : new Date().toISOString(),
+            };
+          }
+          return u;
+        })
+      );
+    };
+
+    // Handle full list of online users
+    const handleOnlineUsers = (onlineEmails) => {
+      console.log("Socket: Online users list:", onlineEmails);
+      if (!Array.isArray(onlineEmails)) return;
+      
+      setUsers((prev) => 
+        prev.map((u) => ({
+          ...u,
+          status: onlineEmails.includes(u.email) ? "Online" : "Offline",
+          lastActive: onlineEmails.includes(u.email) ? new Date().toISOString() : u.lastActive
+        }))
       );
     };
 
     socket.on("user-online-status", handleStatus);
-    socket.on("user-offline", handleStatus);
+    socket.on("online-users", handleOnlineUsers); // Sync full list
 
     return () => {
-      socket.off("user-online-status");
-      socket.off("user-offline");
+      socket.off("user-online-status", handleStatus);
+      socket.off("online-users", handleOnlineUsers);
     };
   }, []);
 
@@ -188,10 +207,12 @@ const ChatSidebar = () => {
               Direct Messages
             </h3>
 
-            {sortedAndFilteredUsers.length === 0 ? (
+            {sortedAndFilteredUsers.filter(u => u._id || u.id).length === 0 ? (
               <p className="text-center text-gray-500 py-8">No conversations found</p>
             ) : (
-              sortedAndFilteredUsers.map((user) => (
+              sortedAndFilteredUsers
+                .filter(user => user._id || user.id) // Ensure valid ID
+                .map((user) => (
                 <div
                   key={user._id || user.id}
                   onClick={() => {
@@ -218,7 +239,7 @@ const ChatSidebar = () => {
                     <p className="font-semibold text-gray-900 dark:text-white truncate">
                       {user.firstName || "Unknown"} {user.lastName || ""}
                     </p>
-                    <p className={`text-sm truncate ${user.status === "Online" ? "text-green-600 font-medium" : "text-gray-500"}`}>
+                    <p className={`text-sm truncate transition-all duration-300 ${user.status === "Online" ? "text-green-600 font-medium" : "text-gray-500"}`}>
                       {user.status === "Online"
                         ? "Active now"
                         : `Active ${formatTime(user.lastActive)}`}
