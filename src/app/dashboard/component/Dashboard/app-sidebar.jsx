@@ -200,7 +200,10 @@ export function AppSidebar(props) {
         url: "/dashboard/team",
         isActive: true,
         icon: Command, 
-        items,
+        items: items?.map((team) => ({
+          title: team.title || team.name,
+          url: team.url || `/dashboard/tasks/${team.id || team._id}`,
+        })) || [],
       },
       {
         title: "Chat",

@@ -36,7 +36,7 @@ const TaskCard = ({ task }) => {
 
   // Configure useDraggable with a handle
   const { attributes, listeners, setNodeRef, transform } = useDraggable({
-    id: task._id,
+    id: task.id || task?._id,
   });
 
   const style = useMemo(
@@ -44,6 +44,8 @@ const TaskCard = ({ task }) => {
       transform
         ? {
             transform: `translate3d(${transform.x}px, ${transform.y}px, 0)`,
+            zIndex: 50,
+            opacity: 0.8,
           }
         : {},
     [transform]
@@ -193,14 +195,10 @@ const TaskCard = ({ task }) => {
         
         <div  title="Drag to another">
           <GripVertical
-         
             className="text-gray-500 dark:text-gray-300 cursor-grab"
             size={20}
             {...listeners}
             {...attributes}
-            ref={setNodeRef}
-            style={style}
-            
           />
         </div>
         <h3 className="font-medium dark:font-normal text-sm md:text-base text-gray-900 dark:text-gray-100">
@@ -352,4 +350,4 @@ const TaskCard = ({ task }) => {
   );
 };
 
-export default TaskCard;
+export default React.memo(TaskCard);

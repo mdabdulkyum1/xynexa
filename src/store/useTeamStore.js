@@ -43,6 +43,16 @@ const useTeamStore = create((set, get) => ({
         }
     },
 
+    fetchFullTeamsByEmail: async (email) => {
+        set({ isLoading: true, error: null });
+        try {
+            const response = await api.get(`/teams/get-teams-by-email/${email}`);
+            set({ teams: response.data, isLoading: false });
+        } catch (error) {
+            set({ error: error.message, isLoading: false });
+        }
+    },
+
     createTeam: async (teamData) => {
         set({ isLoading: true, error: null });
         try {

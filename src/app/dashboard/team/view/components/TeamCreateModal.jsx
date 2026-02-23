@@ -28,18 +28,30 @@ const TeamCreateModal = ({ isOpen, closeModal }) => {
   }, [userEmail, fetchUserByEmail]);
 
   const creatorId = useMemo(() => {
-    return userData?.user?._id || userData?.user?.id;
-  }, [userData]);
+    // Prioritize the ID from the session (most reliable)
+    // Then fallback to userData from the store
+    const id = user?.id || userData?.id || userData?._id || userData?.data?.id || userData?.user?.id;
+    console.log("TeamCreateModal: Resolved creatorId:", id, { sessionUser: user, storeUserData: userData });
+    return id;
+  }, [user, userData]);
 
   const isError = false; // Store handles error
 
   
 const onSubmit = async (data) => {
   try {
+    if (!creatorId) {
+      console.error("onSubmit: Cannot create team. Missing creatorId.");
+      toast.error("User session not loaded. Please try again.");
+      return;
+    }
+
     const teamData = {
       ...data,
       creator: creatorId,
     };
+
+    console.log("onSubmit: Sending teamData:", teamData);
 
     await createTeam(teamData);
 

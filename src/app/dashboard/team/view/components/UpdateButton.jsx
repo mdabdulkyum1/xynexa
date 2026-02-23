@@ -37,15 +37,15 @@ const UpdateButton = ({ team, isOpen, setIsOpen }) => {
   }, [userEmail, fetchUserByEmail]);
 
   const onSubmit = async (data) => {
+    const tId = team?.id || team?._id;
     try {
       const teamData = {
-        id: team?._id,
         name: data.teamName,
         description: data.teamDescription,
         type: data.teamType,
       };
 
-      await updateTeam(team?._id, teamData);
+      await updateTeam(tId, teamData);
 
       toast.success('Team updated successfully!', {
         duration: 1500,

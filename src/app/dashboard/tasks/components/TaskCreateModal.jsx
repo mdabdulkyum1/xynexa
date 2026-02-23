@@ -43,29 +43,32 @@ const TaskCreateModal = ({ isOpen, closeModal, team = {} }) => {
     }
 
     const onSubmit = async (data) => {
+        const tId = team?.id || team?._id;
+        if (!tId) {
+            toast.error("Team context is missing. Cannot create task.");
+            return;
+        }
+
         try {
             const boardData = {
-                ...data,
-                teamId: team?._id,
+                title: data.title,
+                description: data.description,
+                teamId: tId,
+                status: data.status || "todo",
                 targetDate: startDate ? startDate.toISOString() : null,
-                members: selectedMembers,
             };
 
             const result = await createBoard(boardData);
 
             if (result) {
-                toast.success("Task Board created!");
+                toast.success("Task created successfully!");
+                // If there are members, we might need a separate call to add them, 
+                // but for now we follow the simple Board creation flow.
                 closeModal();
-            } else {
-                toast.error("Error creating task. Please try again.", {
-                    position: "bottom-right",
-                });
             }
         } catch (error) {
             console.error("Error creating task:", error);
-            toast.error("Error creating task. Please try again.", {
-                position: "bottom-right",
-            });
+            toast.error(error.response?.data?.message || "Error creating task. Please try again.");
         }
     };
 

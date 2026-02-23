@@ -41,9 +41,8 @@ const TaskColumn = ({ title, taskCategory, team ,teamId}) => {
         </Badge>
       </div>
       <div className="space-y-4">
-        {taskCategory?.map((task, idx) => (
-          
-          <TaskCard key={idx} task={task} teamId={teamId}/>
+        {taskCategory?.map((task) => (
+          <TaskCard key={task.id || task._id} task={task} teamId={teamId}/>
         ))}
       </div>
       <button onClick={() => setIsModalOpen(true)} className="mt-4 w-full bg-white dark:bg-[#0A0A0A] text-gray-900 dark:text-gray-200 py-1 rounded-md flex items-center justify-center">

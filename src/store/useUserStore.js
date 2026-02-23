@@ -13,8 +13,10 @@ const useUserStore = create((set, get) => ({
         set({ isLoading: true, error: null });
         try {
             const response = await api.get(`/users/email/${email}`);
-            set({ user: response.data, isLoading: false });
-            return response.data;
+            // Extract user from data.data (NestJS) or data.user (Express) or data (Direct)
+            const userData = response.data?.data || response.data?.user || (response.data?.id || response.data?._id ? response.data : null);
+            set({ user: userData, isLoading: false });
+            return userData;
         } catch (error) {
             set({ error: error.message, isLoading: false });
         }
