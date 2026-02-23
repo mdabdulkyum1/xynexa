@@ -13,8 +13,9 @@ const useUserStore = create((set, get) => ({
         set({ isLoading: true, error: null });
         try {
             const response = await api.get(`/users/email/${email}`);
-            // Extract user from data.data (NestJS) or data.user (Express) or data (Direct)
+            console.log("fetchUserByEmail: API Response Profile:", response.data);
             const userData = response.data?.data || response.data?.user || (response.data?.id || response.data?._id ? response.data : null);
+            console.log("fetchUserByEmail: Extracted userData:", userData);
             set({ user: userData, isLoading: false });
             return userData;
         } catch (error) {
@@ -57,12 +58,17 @@ const useUserStore = create((set, get) => ({
         set({ isLoading: true, error: null });
         try {
             const response = await api.put(`/users/${id}`, userData);
-            set((state) => ({
-                users: state.users.map((u) => (u._id === id ? response.data.data : u)),
-                currentUserProfile: state.currentUserProfile?._id === id ? response.data.data : state.currentUserProfile,
-                isLoading: false,
-            }));
-            return response.data.data;
+            const updatedUser = response.data?.data || response.data?.user || response.data;
+            set((state) => {
+                const isCurrentUser = state.user?.id === id || state.user?._id === id;
+                return {
+                    users: state.users.map((u) => (u.id === id || u._id === id ? updatedUser : u)),
+                    currentUserProfile: state.currentUserProfile?.id === id || state.currentUserProfile?._id === id ? updatedUser : state.currentUserProfile,
+                    user: isCurrentUser ? updatedUser : state.user,
+                    isLoading: false,
+                };
+            });
+            return updatedUser;
         } catch (error) {
             set({ error: error.message, isLoading: false });
             throw error;

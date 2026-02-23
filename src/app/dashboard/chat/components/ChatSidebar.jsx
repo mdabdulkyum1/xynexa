@@ -140,20 +140,20 @@ const ChatSidebar = () => {
   return (
     <div className="flex flex-col h-full bg-gray-50 dark:bg-gray-900">
       {/* Header */}
-      <div className="p-5 border-b border-gray-200 dark:border-gray-800">
-        <h1 className="text-2xl font-bold text-gray-800 dark:text-white">Messages</h1>
+      <div className="p-4 border-b border-gray-200 dark:border-gray-800">
+        <h1 className="text-xl font-bold text-gray-800 dark:text-white">Messages</h1>
       </div>
 
       {/* Search */}
-      <div className="px-4 py-3">
-        <div className="flex items-center bg-white dark:bg-gray-800 rounded-xl shadow-sm px-4 py-3 border border-gray-200 dark:border-gray-700">
-          <Search className="w-5 h-5 text-gray-500 mr-3" />
+      <div className="px-3 py-2">
+        <div className="flex items-center bg-white dark:bg-gray-800 rounded-lg shadow-sm px-3 py-2 border border-gray-200 dark:border-gray-700">
+          <Search className="w-4 h-4 text-gray-500 mr-2" />
           <input
             type="text"
             placeholder="Search conversations..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="bg-transparent outline-none flex-1 text-gray-700 dark:text-gray-300 placeholder-gray-500"
+            className="bg-transparent outline-none flex-1 text-sm text-gray-700 dark:text-gray-300 placeholder-gray-500"
           />
         </div>
       </div>
@@ -174,18 +174,18 @@ const ChatSidebar = () => {
                   onClick={() => {
                     setCurrentGroup(group);
                   }}
-                  className={`flex items-center gap-4 p-4 rounded-2xl cursor-pointer transition-all duration-200
+                  className={`flex items-center gap-3 p-3 rounded-xl cursor-pointer transition-all duration-200
                     ${groupChatId === group._id
-                      ? "bg-blue-100 dark:bg-blue-900/50 shadow-md"
+                      ? "bg-blue-100 dark:bg-blue-900/50 shadow-sm"
                       : "hover:bg-gray-100 dark:hover:bg-gray-800"
                     }`}
                 >
                   <div className="relative">
-                    <div className="w-14 h-14 bg-gradient-to-br from-purple-500 to-pink-500 rounded-2xl flex items-center justify-center text-white text-xl font-bold shadow-lg">
+                    <div className="w-10 h-10 bg-gradient-to-br from-purple-500 to-pink-500 rounded-xl flex items-center justify-center text-white text-base font-bold shadow-md">
                       {group.name?.[0]?.toUpperCase() || "G"}
                     </div>
-                    <div className="absolute -bottom-1 -right-1 bg-white dark:bg-gray-900 rounded-full p-1">
-                      <Users className="w-4 h-4 text-purple-600" />
+                    <div className="absolute -bottom-1 -right-1 bg-white dark:bg-gray-900 rounded-full p-0.5">
+                      <Users className="w-3 h-3 text-purple-600" />
                     </div>
                   </div>
                   <div className="flex-1">
@@ -218,9 +218,9 @@ const ChatSidebar = () => {
                   onClick={() => {
                     setCurrentChatPartner(user);
                   }}
-                  className={`flex items-center gap-4 p-4 rounded-2xl cursor-pointer transition-all duration-200 group
+                  className={`flex items-center gap-3 p-3 rounded-xl cursor-pointer transition-all duration-200 group
                     ${selectedUserId === (user._id || user.id)
-                      ? "bg-blue-100 dark:bg-blue-900/50 shadow-md"
+                      ? "bg-blue-100 dark:bg-blue-900/50 shadow-sm"
                       : "hover:bg-gray-100 dark:hover:bg-gray-800"
                     }`}
                 >
@@ -228,10 +228,10 @@ const ChatSidebar = () => {
                     <img
                       src={user.imageUrl || "/default-avatar.png"}
                       alt={user.firstName || "User"}
-                      className="w-14 h-14 rounded-2xl object-cover ring-4 ring-white dark:ring-gray-900 shadow-lg"
+                      className="w-10 h-10 rounded-xl object-cover ring-2 ring-white dark:ring-gray-900 shadow-md"
                     />
                     {user.status === "Online" && (
-                      <div className="absolute bottom-0 right-0 w-4 h-4 bg-green-500 rounded-full border-4 border-white dark:border-gray-900 animate-pulse"></div>
+                      <div className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 rounded-full border-2 border-white dark:border-gray-900 animate-pulse"></div>
                     )}
                   </div>
 
@@ -239,7 +239,7 @@ const ChatSidebar = () => {
                     <p className="font-semibold text-gray-900 dark:text-white truncate">
                       {user.firstName || "Unknown"} {user.lastName || ""}
                     </p>
-                    <p className={`text-sm truncate transition-all duration-300 ${user.status === "Online" ? "text-green-600 font-medium" : "text-gray-500"}`}>
+                    <p className={`text-xs truncate transition-all duration-300 ${user.status === "Online" ? "text-green-600 font-medium" : "text-gray-500"}`}>
                       {user.status === "Online"
                         ? "Active now"
                         : `Active ${formatTime(user.lastActive)}`}

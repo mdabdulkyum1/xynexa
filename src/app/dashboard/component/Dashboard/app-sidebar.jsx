@@ -267,11 +267,20 @@ export function AppSidebar(props) {
       {
         title: "Tools",
         url: "/dashboard/tools",
-        icon: Wrench, // Standard Tools Icon
+        icon: Wrench,
         items: [
-          { title: "documents", url: "/dashboard/documents" },
-          { title: "drawing", url: "/dashboard/tools/drawing" },
-          { title: "diagram", url: "/dashboard/tools/diagram" },
+          { title: "Documents", url: "/dashboard/documents" },
+          { title: "Drawing", url: "/dashboard/tools/drawing" },
+          { title: "Diagram", url: "/dashboard/tools/diagram" },
+        ],
+      },
+      {
+        title: "Settings",
+        url: "/dashboard/settings",
+        icon: Settings2,
+        items: [
+          { title: "Profile", url: "/dashboard/settings" },
+          { title: "Security", url: "/dashboard/settings/security" },
         ],
       },
     ],
