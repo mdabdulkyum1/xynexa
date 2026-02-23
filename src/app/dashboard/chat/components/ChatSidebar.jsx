@@ -7,7 +7,7 @@ import useChatStore from "@/store/useChatStore";
 import useTeamStore from "@/store/useTeamStore";
 import { useSession } from "next-auth/react";
 import { format, isToday, isYesterday, parseISO } from "date-fns";
-import { Search, Users } from "lucide-react";
+import { Search, Users, CheckCircle2 } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 
 const ChatSidebar = () => {
@@ -170,27 +170,27 @@ const ChatSidebar = () => {
               </h3>
               {filteredGroups.map((group) => (
                 <div
-                  key={group._id}
+                  key={group._id || group.id}
                   onClick={() => {
-                    setCurrentGroup(group);
+                    handleGroupClick(group);
                   }}
                   className={`flex items-center gap-3 p-3 rounded-xl cursor-pointer transition-all duration-200
-                    ${groupChatId === group._id
+                    ${groupChatId === (group._id || group.id)
                       ? "bg-blue-100 dark:bg-blue-900/50 shadow-sm"
                       : "hover:bg-gray-100 dark:hover:bg-gray-800"
                     }`}
                 >
                   <div className="relative">
                     <div className="w-10 h-10 bg-gradient-to-br from-purple-500 to-pink-500 rounded-xl flex items-center justify-center text-white text-base font-bold shadow-md">
-                      {group.name?.[0]?.toUpperCase() || "G"}
+                      {group.name?.[0]?.toUpperCase() || group.title?.[0]?.toUpperCase() || "G"}
                     </div>
                     <div className="absolute -bottom-1 -right-1 bg-white dark:bg-gray-900 rounded-full p-0.5">
                       <Users className="w-3 h-3 text-purple-600" />
                     </div>
                   </div>
-                  <div className="flex-1">
+                  <div className="flex-1 min-w-0">
                     <p className="font-semibold text-gray-900 dark:text-white truncate">
-                      {group.name || "Unnamed Group"}
+                      {group.name || group.title || "Untitled Group"}
                     </p>
                     <p className="text-xs text-gray-500 dark:text-gray-400">
                       {group.members?.length || 0} members
@@ -216,7 +216,7 @@ const ChatSidebar = () => {
                 <div
                   key={user._id || user.id}
                   onClick={() => {
-                    setCurrentChatPartner(user);
+                    handleUserClick(user);
                   }}
                   className={`flex items-center gap-3 p-3 rounded-xl cursor-pointer transition-all duration-200 group
                     ${selectedUserId === (user._id || user.id)
@@ -226,8 +226,8 @@ const ChatSidebar = () => {
                 >
                   <div className="relative">
                     <img
-                      src={user.imageUrl || "/default-avatar.png"}
-                      alt={user.firstName || "User"}
+                      src={user.imageUrl || user.image || "/default-avatar.png"}
+                      alt={user.firstName || user.name || "User"}
                       className="w-10 h-10 rounded-xl object-cover ring-2 ring-white dark:ring-gray-900 shadow-md"
                     />
                     {user.status === "Online" && (
@@ -236,9 +236,14 @@ const ChatSidebar = () => {
                   </div>
 
                   <div className="flex-1 min-w-0">
-                    <p className="font-semibold text-gray-900 dark:text-white truncate">
-                      {user.firstName || "Unknown"} {user.lastName || ""}
-                    </p>
+                    <div className="flex items-center gap-1.5">
+                      <p className="font-semibold text-gray-900 dark:text-white truncate">
+                        {user.firstName || user.name || "Unknown"}
+                      </p>
+                      {user.isEmailVerified && (
+                        <CheckCircle2 className="w-3.5 h-3.5 text-blue-500 fill-blue-500/10" />
+                      )}
+                    </div>
                     <p className={`text-xs truncate transition-all duration-300 ${user.status === "Online" ? "text-green-600 font-medium" : "text-gray-500"}`}>
                       {user.status === "Online"
                         ? "Active now"

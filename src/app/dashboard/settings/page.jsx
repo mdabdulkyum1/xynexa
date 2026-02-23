@@ -156,7 +156,7 @@ export default function SettingsPage() {
             <CardContent className="flex flex-col items-center space-y-4 pt-0">
               <div className="relative group">
                 <Avatar className="h-32 w-32 ring-4 ring-background shadow-xl border-2 border-primary/20">
-                  <AvatarImage src={storeUser.imageUrl} />
+                  <AvatarImage src={storeUser.imageUrl || storeUser.image} />
                   <AvatarFallback className="text-2xl font-bold bg-primary/10 text-primary">
                     {storeUser.firstName?.[0]}{storeUser.lastName?.[0]}
                   </AvatarFallback>

@@ -9,19 +9,25 @@ const SyncUser = () => {
     const syncUser = async () => {
       try {
         if (status === "authenticated" && session?.user) {
-          // Sync user to Zustand store
-          useUserStore.setState({
-            user: {
+          const currentUser = useUserStore.getState().user;
+
+          // Only sync if store is empty or we have new session info
+          // but don't overwrite detailed DB data with minimal session data
+          if (!currentUser || !currentUser.id) {
+            useUserStore.setState({
               user: {
-                username: session.user.name || session.user.email.split('@')[0],
+                firstName: session.user.name?.split(' ')[0] || session.user.email.split('@')[0],
+                lastName: session.user.name?.split(' ').slice(1).join(' ') || "",
+                name: session.user.name,
                 email: session.user.email,
-                photo: session.user.image,
+                image: session.user.image,
+                imageUrl: session.user.image, // Fallback to session image initially
                 role: session.user.role,
                 id: session.user.id,
                 _id: session.user.id
               }
-            }
-          });
+            });
+          }
 
           // Sync token to localStorage for Axios
           if (session.accessToken) {

@@ -250,7 +250,7 @@ const ChatWindow = () => {
     if (status === 'sending') return <div className="w-3 h-3 rounded-full border-2 border-slate-400 border-t-white animate-spin" />;
     if (status === 'failed') return <span className="text-red-500 text-xs">Failed</span>;
     if (isRead) return <FaCheckDouble className="w-3 h-3 text-blue-400" />; // Read
-    if (status === 'delivered' || msg.delivered) return <FaCheckDouble className="w-3 h-3 text-gray-400" />; // Delivered
+    if (status === 'delivered' || msg.delivered || msg.status === 'delivered') return <FaCheckDouble className="w-3 h-3 text-gray-400" />; // Delivered
     
     return <FaCheck className="w-3 h-3 text-gray-400" />; // Sent
   };
@@ -277,8 +277,8 @@ const ChatWindow = () => {
             </Button>
             <div className="relative">
                 <img
-                    src={receiver?.imageUrl || "/default-avatar.png"}
-                    alt={receiver?.firstName}
+                    src={receiver?.imageUrl || receiver?.image || "/default-avatar.png"}
+                    alt={receiver?.firstName || receiver?.name}
                     className="w-10 h-10 rounded-full object-cover"
                 />
                 {receiver?.status === "Online" && (

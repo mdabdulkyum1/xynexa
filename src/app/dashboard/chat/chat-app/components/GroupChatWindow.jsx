@@ -92,54 +92,77 @@ const GroupChatWindow = () => {
             <div className="bg-blue-600 text-white text-lg font-semibold px-4 py-3  flex items-center justify-between">
                 <h5 className="capitalize">{team?.name}</h5>
 
-                <div className="flex items-center gap-2">
-                    <AnimatedTooltip items={team?.members} />
-                </div>
-            </div>
-
-            {/* Chat Area */}
-            <ScrollArea className="flex-1 p-4 bg-gray-50">
-                <div className="space-y-3">
-                    {groupMsg.map((msg) => {
-                        const isOwnMessage = msg?.senderId?._id === currentUserId || msg?.senderId === currentUserId;
-                        return (
-                            <div
-                                key={msg._id}
-                                className={`flex ${isOwnMessage ? "justify-end" : "justify-start"}`}
-                            >
-                                <div
-                                    className={`flex items-start gap-2 ${isOwnMessage ? "flex-row-reverse" : ""}`}
-                                >
+                    <div className="flex items-center gap-2">
+                        {team?.members && (
+                            <div className="flex -space-x-2 overflow-hidden">
+                                {team.members.slice(0, 5).map((member, i) => (
                                     <img
-                                        src={
-                                            isOwnMessage
-                                                ? session?.user?.image
-                                                : msg?.senderId?.imageUrl
-                                        }
-                                        className="w-10 h-10 rounded-full border border-gray-200"
-                                        alt=""
+                                        key={member._id || i}
+                                        className="inline-block h-8 w-8 rounded-full ring-2 ring-blue-600 object-cover"
+                                        src={member.imageUrl || member.image || "/default-avatar.png"}
+                                        alt={member.firstName || member.name}
+                                        title={member.firstName || member.name}
                                     />
-                                    <div className={`flex flex-col ${isOwnMessage ? "items-end" : "items-start"}`}>
-                                        <div
-                                            className={`px-4 py-2 rounded-2xl max-w-sm ${isOwnMessage
-                                                ? "bg-purple-600 text-white rounded-tr-none"
-                                                : "bg-white text-gray-800 border border-gray-200 rounded-tl-none"
-                                                }`}
-                                        >
-                                            <p className="text-sm">{msg.content}</p>
+                                ))}
+                                {team.members.length > 5 && (
+                                    <div className="flex items-center justify-center h-8 w-8 rounded-full bg-blue-500 ring-2 ring-blue-600 text-[10px] font-medium text-white">
+                                        +{team.members.length - 5}
+                                    </div>
+                                )}
+                            </div>
+                        )}
+                    </div>
+                </div>
+
+                {/* Chat Area */}
+                <ScrollArea className="flex-1 p-4 bg-gray-50">
+                    <div className="space-y-3">
+                        {groupMsg.map((msg, index) => {
+                            const isOwnMessage = msg?.senderId?._id === currentUserId || msg?.senderId === currentUserId;
+                            const sender = msg?.senderId;
+                            return (
+                                <div
+                                    key={msg._id || index}
+                                    className={`flex ${isOwnMessage ? "justify-end" : "justify-start"}`}
+                                >
+                                    <div
+                                        className={`flex items-start gap-2 ${isOwnMessage ? "flex-row-reverse" : ""}`}
+                                    >
+                                        <img
+                                            src={
+                                                isOwnMessage
+                                                    ? (session?.user?.image || session?.user?.imageUrl || "/default-avatar.png")
+                                                    : (sender?.imageUrl || sender?.image || "/default-avatar.png")
+                                            }
+                                            className="w-8 h-8 rounded-full border border-gray-200 object-cover"
+                                            alt=""
+                                        />
+                                        <div className={`flex flex-col ${isOwnMessage ? "items-end" : "items-start"}`}>
+                                            {!isOwnMessage && (
+                                                <span className="text-[10px] text-gray-500 mb-0.5 ml-1">
+                                                    {sender?.firstName || sender?.name || "Member"}
+                                                </span>
+                                            )}
+                                            <div
+                                                className={`px-3 py-1.5 rounded-2xl max-w-sm ${isOwnMessage
+                                                    ? "bg-purple-600 text-white rounded-tr-none"
+                                                    : "bg-white text-gray-800 border border-gray-200 rounded-tl-none"
+                                                    }`}
+                                            >
+                                                <p className="text-sm">{msg.content}</p>
+                                            </div>
+                                            <p className="text-[9px] mt-1 opacity-70">
+                                                {msg.createdAt
+                                                    ? format(parseISO(msg.createdAt), "HH:mm")
+                                                    : ""}
+                                            </p>
                                         </div>
-                                        <p className="text-[10px] mt-1 opacity-70">
-                                            {msg.createdAt
-                                                ? format(parseISO(msg.createdAt), "HH:mm")
-                                                : ""}
-                                        </p>
                                     </div>
                                 </div>
-                            </div>
-                        );
-                    })}
-                </div>
-            </ScrollArea>
+                            );
+                        })}
+                    </div>
+                </ScrollArea>
 
             {/* Input */}
             <div className="flex items-center border-t p-3 bg-white">

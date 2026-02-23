@@ -28,6 +28,7 @@ const Company = () => {
                 src={logo}
                 alt={`Logo ${index + 1}`}
                 className="h-8 md:h-12 grayscale opacity-75" 
+                style={{ width: 'auto' }}
               />
             </div>
           ))}

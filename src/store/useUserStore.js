@@ -14,7 +14,7 @@ const useUserStore = create((set, get) => ({
         try {
             const response = await api.get(`/users/email/${email}`);
             console.log("fetchUserByEmail: API Response Profile:", response.data);
-            const userData = response.data?.data || response.data?.user || (response.data?.id || response.data?._id ? response.data : null);
+            const userData = response.data?.data;
             console.log("fetchUserByEmail: Extracted userData:", userData);
             set({ user: userData, isLoading: false });
             return userData;

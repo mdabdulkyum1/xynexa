@@ -83,6 +83,7 @@ export default function Home() {
             height={600}
             alt="Dashboard Preview"
             className="rounded-xl"
+            style={{ height: 'auto' }}
           />
         </div>
       </motion.div>
