@@ -3,7 +3,6 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Hero from './components/home/Hero/Hero';
-// import FavriteApps from './landingPage/FavriteApps';
 import MuchMore from './landingPage/MuchMore';
 import OthersFeatures from './landingPage/OthersFeatures';
 import Testimonials from './landingPage/Testimonials';
@@ -19,7 +18,7 @@ import Pricing from './landingPage/Pricing';
 
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowUp, ArrowDown } from 'lucide-react';
-// import Load from '@/components/Loader/Load';
+
 
 
 
