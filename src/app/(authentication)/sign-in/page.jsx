@@ -62,8 +62,11 @@ export default function SignInPage() {
           router.push("/dashboard");
           router.refresh();
         } catch (authError) {
-          console.error("Zustand auth error:", authError);
-          // If Zustand fails but NextAuth succeeded, we might still want to proceed or handle it
+          console.error("Zustand auth error details:", authError);
+          // If authError has response data, log it
+          if (authError.response) {
+            console.error("Auth error response data:", authError.response.data);
+          }
           toast.warning("Logged in, but some state failed to sync.");
           router.push("/dashboard");
         }

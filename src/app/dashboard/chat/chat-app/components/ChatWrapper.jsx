@@ -10,7 +10,7 @@ const ChatWrapper = () => {
     <>
       {currentGroup ? (
         <GroupChatWindow />
-      ) : currentChatPartner?._id ? (
+      ) : (currentChatPartner?._id || currentChatPartner?.id) ? (
         <ChatWindow />
       ) : (
         <div className="text-center text-gray-500 mt-10">Select a user or group to start chatting</div>
