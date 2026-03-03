@@ -8,24 +8,17 @@ import { Sheet, SheetTrigger, SheetContent } from "@/components/ui/sheet";
 import { Menu } from "lucide-react";
 import useScrollDirection from "@/hooks/ScrollDirection/useScrollDirection";
 import { usePathname } from "next/navigation";
-import { SignedIn, SignedOut, UserButton, useUser } from "@clerk/nextjs";
+import { useSession } from "next-auth/react";
 import clsx from "clsx";
+import UserMenu from "./UserMenu";
 
 
-import { useUserDataFromClerk } from '@/hooks/useUserDataFromClerk';
-import { MdDashboard } from "react-icons/md";
 const Navbar = () => {
   const isVisible = useScrollDirection(); 
-  const { user } = useUser();
+  const { data: session, status } = useSession();
+  const isAuthenticated = status === "authenticated";
 
   const pathName = usePathname(); 
-
-
-  const { user: mainUser, isLoaded } = useUser();
-  const userEmail = mainUser?.emailAddresses[0]?.emailAddress;
-
-  const { userData, isLoading } = useUserDataFromClerk(userEmail);
-  const userRole = userData?.user?.role;
 
   
 
@@ -117,7 +110,8 @@ const Navbar = () => {
                 </ul>
 
                 <div className="p-6">
-                  <SignedOut className="flex gap-4">
+                  {!isAuthenticated ? (
+                    <div className="flex gap-4">
                     <Link
                       href="/sign-in"
                       className="dark:text-white inline-block px-4 py-2 rounded-md font-medium text-[#014E4E] bg-transparent transition-all duration-300 hover:bg-[#014E4E] hover:text-white"
@@ -129,10 +123,10 @@ const Navbar = () => {
                     >
                       Sign In
                     </Link>
-                  </SignedOut>
-                  <SignedIn>
-                    <UserButton />
-                  </SignedIn>
+                    </div>
+                  ) : (
+                    <UserMenu />
+                  )}
                 </div>
               </div>
             </SheetContent>
@@ -141,7 +135,8 @@ const Navbar = () => {
           {/* Right-aligned buttons */}
           <div className="hidden lg:flex space-x-4">
             <div className="">
-              <SignedOut className="flex gap-4">
+              {!isAuthenticated ? (
+                <div className="flex gap-4">
                 <Link
                   href="/sign-in"
                   className="dark:text-white inline-block px-4 py-2 rounded-md font-medium text-[#014E4E] bg-transparent transition-all duration-300 hover:bg-[#014E4E] hover:text-white"
@@ -153,16 +148,10 @@ const Navbar = () => {
                 >
                   Sign In
                 </Link>
-              </SignedOut>
-              <SignedIn>
-              <UserButton>
-                    <UserButton.MenuItems>
-                      <UserButton.Link label="Dashboard" href={userRole === "admin" ? "/admin-dashbaord" : "/dashboard"} labelIcon={<MdDashboard size={15} />} />
-                      <UserButton.Action label="manageAccount" />
-                      <UserButton.Action label="signOut" />
-                    </UserButton.MenuItems>
-                  </UserButton>
-              </SignedIn>
+                </div>
+              ) : (
+               <UserMenu />
+              )}
             </div>
           </div>
         </div>

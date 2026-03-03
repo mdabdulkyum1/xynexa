@@ -8,7 +8,7 @@ const Pricing = () => {
             {/* Main Container */}
             <div className="w-full container bg-white dark:bg-transparent p-10 rounded-lg  text-center relative z-10">
                 <h2 className="text-3xl font-bold mb-3">Pricing Plans Great</h2>
-                <p className="text-gray-500 dark:text-gray-300 mb-6">StartAI features that will help your company scale faster</p>
+                <p className="text-gray-500 dark:text-gray-300 mb-6">Start AI features that will help your company scale faster</p>
 
                 {/* Pricing Cards Grid */}
                 <div className="grid md:grid-cols-3 gap-6">

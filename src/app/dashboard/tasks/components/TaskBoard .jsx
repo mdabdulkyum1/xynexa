@@ -4,8 +4,9 @@ import { io } from "socket.io-client";
 import TaskColumn from "./TaskColumn";
 import {
   DndContext,
-  closestCorners,
+  rectIntersection,
   PointerSensor,
+  TouchSensor,
   useSensor,
   useSensors,
 } from "@dnd-kit/core";
@@ -17,7 +18,20 @@ const TaskBoard = ({ team, allTasks, teamId }) => {
   const [tasks, setTasks] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const taskStatuses = ["todo", "in-progress", "done"];
-  const sensors = useSensors(useSensor(PointerSensor));
+  
+  const sensors = useSensors(
+    useSensor(PointerSensor, {
+      activationConstraint: {
+        distance: 8,
+      },
+    }),
+    useSensor(TouchSensor, {
+      activationConstraint: {
+        delay: 200,
+        tolerance: 6,
+      },
+    })
+  );
 
   // ✅ Sync local tasks with prop on mount or change
   useEffect(() => {
@@ -30,15 +44,28 @@ const TaskBoard = ({ team, allTasks, teamId }) => {
   // ✅ Socket listener: update tasks on board change
   useEffect(() => {
     socket.on("boardStatusUpdated", (updatedBoard) => {
-      if (updatedBoard?.tasks) {
-        setTasks(updatedBoard.tasks);
+      if (updatedBoard) {
+        setTasks((prevTasks) => {
+          // If the updated item is in our current list, replace it
+          const exists = prevTasks.some(t => (t.id || t._id) === (updatedBoard.id || updatedBoard._id));
+          if (exists) {
+            return prevTasks.map(t => 
+              (t.id || t._id) === (updatedBoard.id || updatedBoard._id) ? updatedBoard : t
+            );
+          }
+          // If it's a new board (e.g. created), we might want to add it if it belongs to this team
+          if (updatedBoard.teamId === teamId) {
+             return [...prevTasks, updatedBoard];
+          }
+          return prevTasks;
+        });
       }
     });
 
     return () => {
       socket.off("boardStatusUpdated");
     };
-  }, []);
+  }, [teamId]);
 
   // ✅ Optimistic UI + emit update to backend
   const handleDragEnd = (event) => {
@@ -49,20 +76,19 @@ const TaskBoard = ({ team, allTasks, teamId }) => {
     const newStatus = over.id;
     if (!taskId || !newStatus || taskId === newStatus) return;
 
-    const updatedTask = tasks.find((task) => task._id === taskId);
+    const updatedTask = tasks.find((task) => (task.id || task._id) === taskId);
     if (!updatedTask || updatedTask.status === newStatus) return;
 
     // ✅ Optimistically update UI
     setTasks((prevTasks) =>
       prevTasks.map((task) =>
-        task._id === taskId ? { ...task, status: newStatus } : task
+        (task.id || task._id) === taskId ? { ...task, status: newStatus } : task
       )
     );
 
     // ✅ Emit real-time update to backend
     socket.emit("update-task-status", {
-      boardId: taskId,   
-      taskId,
+      taskId,   
       newStatus,
     });
 
@@ -70,7 +96,7 @@ const TaskBoard = ({ team, allTasks, teamId }) => {
 
   return (
     <DndContext
-      collisionDetection={closestCorners}
+      collisionDetection={rectIntersection}
       onDragEnd={handleDragEnd}
       sensors={sensors}
     >

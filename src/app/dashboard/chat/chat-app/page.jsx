@@ -1,3 +1,4 @@
+"use client";
 import ChatWrapper from "./components/ChatWrapper";
 
 const page = () => {

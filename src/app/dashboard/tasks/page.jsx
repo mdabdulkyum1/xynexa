@@ -1,16 +1,22 @@
 'use client'
-import { useGetTaskByCurrentUserEmailQuery } from '@/redux/features/Api/TaskApi';
-import { useUser } from '@clerk/nextjs';
-import TaskBoard from './components/TaskBoard ';
-import TaskControl from './components/TaskControl';
-
+import { useSession } from "next-auth/react";
+import useBoardStore from "@/store/useBoardStore";
+import { useEffect } from "react";
+import TaskControl from "./components/TaskControl";
+import TaskBoard from "./components/TaskBoard ";
 
 export default function Page() {
 
-      const { user } = useUser();
-      const userEmail = user?.emailAddresses[0]?.emailAddress;
+  const { data: session } = useSession();
+  const userEmail = session?.user?.email;
 
-      const {data:allTasks}=useGetTaskByCurrentUserEmailQuery(userEmail);
+  const { boards: allTasks, fetchBoardsByEmail } = useBoardStore();
+
+  useEffect(() => {
+    if (userEmail) {
+      fetchBoardsByEmail(userEmail);
+    }
+  }, [userEmail, fetchBoardsByEmail]);
 
     return (
         <div className='bg-gray-100 dark:bg-[#0A0A0A] py-2 px-2'>

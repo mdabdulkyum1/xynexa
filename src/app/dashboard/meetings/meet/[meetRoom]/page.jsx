@@ -1,6 +1,7 @@
 "use client";
 
-import { useUserDataFromClerk } from "@/hooks/useUserDataFromClerk";
+import { useSession } from "next-auth/react";
+import useAuthStore from "@/store/useAuthStore";
 import { selectIsConnectedToRoom, useHMSActions, useHMSStore } from "@100mslive/react-sdk";
 import Conference from "../components/Conference";
 import Footer from "../components/Footer";
@@ -9,12 +10,12 @@ import { useEffect, useState } from "react";
 
 const Page = () => {
   const [isStarting, setIsStarting] = useState(false);
-  const { userData } = useUserDataFromClerk();
+  const { data: session } = useSession();
+  const user = useAuthStore((state) => state.user);
   const { meetRoom: roomCode } = useParams();
 
-  const userName = userData?.user?.firstName && userData?.user?.lastName
-    ? `${userData.user.firstName} ${userData.user.lastName}`
-    : null;
+  const userName = user?.name || session?.user?.name || 
+    (user?.firstName ? `${user.firstName} ${user.lastName || ''}` : null);
 
   const isConnected = useHMSStore(selectIsConnectedToRoom);
   const hmsActions = useHMSActions();
@@ -52,7 +53,7 @@ const Page = () => {
         userName,
         authToken,
         metaData: JSON.stringify({
-          profileImage: userData?.user?.imageUrl || "",
+          profileImage: user?.imageUrl || session?.user?.image || "",
         }),
       });
     } catch (e) {

@@ -4,7 +4,7 @@ import { Dialog, Transition } from "@headlessui/react";
 import { Fragment, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
-import { useUser } from "@clerk/nextjs";
+
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import {
@@ -16,7 +16,7 @@ import {
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { useCreateBoardMutation } from "@/redux/features/Api/TaskApi";
+import useBoardStore from "@/store/useBoardStore";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { format } from "date-fns";
@@ -33,40 +33,42 @@ const TaskCreateModal = ({ isOpen, closeModal, team = {} }) => {
         },
     });
 
-    const { user } = useUser();
+
     const [startDate, setStartDate] = useState(null);
     const [selectedMembers, setSelectedMembers] = useState([]);
-    const [createBoard, { isLoading }] = useCreateBoardMutation();
+    const { createBoard, isLoading } = useBoardStore();
 
     if (!team) {
         return <p>Loading....</p>;
     }
 
     const onSubmit = async (data) => {
+        const tId = team?.id || team?._id;
+        if (!tId) {
+            toast.error("Team context is missing. Cannot create task.");
+            return;
+        }
+
         try {
             const boardData = {
-                ...data,
-                teamId: team?._id,
+                title: data.title,
+                description: data.description,
+                teamId: tId,
+                status: data.status || "todo",
                 targetDate: startDate ? startDate.toISOString() : null,
-                members: selectedMembers,
             };
 
             const result = await createBoard(boardData);
 
-            if (result.data) {
-                toast.success("Task Board created!");
+            if (result) {
+                toast.success("Task created successfully!");
+                // If there are members, we might need a separate call to add them, 
+                // but for now we follow the simple Board creation flow.
                 closeModal();
-            } else if (result.error) {
-                console.error("Error creating task:", result.error);
-                toast.error("Error creating task. Please try again.", {
-                    position: "bottom-right",
-                });
             }
         } catch (error) {
             console.error("Error creating task:", error);
-            toast.error("Error creating task. Please try again.", {
-                position: "bottom-right",
-            });
+            toast.error(error.response?.data?.message || "Error creating task. Please try again.");
         }
     };
 

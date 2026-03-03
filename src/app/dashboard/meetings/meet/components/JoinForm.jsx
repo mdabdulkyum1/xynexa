@@ -2,17 +2,19 @@
 import { useHMSActions } from "@100mslive/react-sdk";
 import { useState } from "react";
 import { Video } from "lucide-react";
-import { useUserDataFromClerk } from "@/hooks/useUserDataFromClerk";
+import { useSession } from "next-auth/react";
+import useAuthStore from "@/store/useAuthStore";
+import useMeetingStore from "@/store/useMeetingStore";
 import { io } from "socket.io-client";
 import { useRouter } from "next/navigation";
 
 const socket = io(process.env.NEXT_PUBLIC_SERVER_URL);
 
 function JoinForm() {
-
   const router = useRouter();
-
-  const { userData } = useUserDataFromClerk();
+  const { data: session } = useSession();
+  const user = useAuthStore((state) => state.user);
+  const { createMeeting } = useMeetingStore();
 
 
 
@@ -51,29 +53,26 @@ function JoinForm() {
 
 
 
-  const handleNewMeeting = () => {
-
-
-    const name = userData?.user?.firstName + " " + userData?.user?.lastName;
-    
-    const imageUrl = userData?.user?.imageUrl;
+  const handleNewMeeting = async () => {
+    const name = (user?.firstName || session?.user?.name || "User") + " " + (user?.lastName || "");
+    const imageUrl = user?.imageUrl || session?.user?.image;
 
     const meetUserData = {
-      name,
+      name: name.trim(),
       imageUrl,
       timestamp: new Date(),
     };
 
-    socket.emit("createRoom", meetUserData)
+    try {
+      socket.emit("createRoom", meetUserData);
 
-    socket.on("RoomCreated", (roomCode, name, timestamp) => {
-
-      router.push("/dashboard/meetings/meet/" + roomCode);
-      
-    })
-
-
-  }
+      socket.on("RoomCreated", (roomCode, name, timestamp) => {
+        router.push("/dashboard/meetings/meet/" + roomCode);
+      });
+    } catch (error) {
+      console.error("Failed to create meeting:", error);
+    }
+  };
 
 
   return (

@@ -18,11 +18,8 @@ import {
 import React, { useState, useRef, useEffect } from "react";
 import "./taskcard.css";
 import SingleTaskDeleteModal from "./SingleTaskDeleteModal";
-import {
-  useDeleteSingleTaskMutation,
-  useUpdateBoardStatusMutation,
-} from "@/redux/features/Api/TaskApi";
 import moment from "moment";
+import useBoardStore from "@/store/useBoardStore";
 import Comment from "./Comment";
 import Attachment from "./Atachment";
 import { useDraggable } from "@dnd-kit/core";
@@ -39,7 +36,7 @@ const TaskCard = ({ task }) => {
 
   // Configure useDraggable with a handle
   const { attributes, listeners, setNodeRef, transform } = useDraggable({
-    id: task._id,
+    id: task.id || task?._id,
   });
 
   const style = useMemo(
@@ -47,6 +44,8 @@ const TaskCard = ({ task }) => {
       transform
         ? {
             transform: `translate3d(${transform.x}px, ${transform.y}px, 0)`,
+            zIndex: 50,
+            opacity: 0.8,
           }
         : {},
     [transform]
@@ -111,12 +110,11 @@ const TaskCard = ({ task }) => {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  const [deleteSingleTask] = useDeleteSingleTaskMutation();
-  const [updateBoardStatus] = useUpdateBoardStatusMutation();
+  const { deleteBoardTask, updateBoardStatus } = useBoardStore();
 
   const taskDelete = async () => {
     try {
-      await deleteSingleTask(task?._id).unwrap();
+      await deleteBoardTask(task?._id);
       closeModal();
     } catch (error) {
       console.error("Delete failed:", error);
@@ -146,7 +144,7 @@ const TaskCard = ({ task }) => {
     }
 
     try {
-      await updateBoardStatus({ boardId: taskId, status: newStatus }).unwrap();
+      await updateBoardStatus(taskId, newStatus);
     } catch (error) {
       console.error("Status update failed:", error);
     } finally {
@@ -165,7 +163,7 @@ const TaskCard = ({ task }) => {
     }
 
     try {
-      await updateBoardStatus({ boardId: taskId, status: newStatus }).unwrap();
+      await updateBoardStatus(taskId, newStatus);
     } catch (error) {
       console.error("Status update failed:", error);
     } finally {
@@ -197,14 +195,10 @@ const TaskCard = ({ task }) => {
         
         <div  title="Drag to another">
           <GripVertical
-         
             className="text-gray-500 dark:text-gray-300 cursor-grab"
             size={20}
             {...listeners}
             {...attributes}
-            ref={setNodeRef}
-            style={style}
-            
           />
         </div>
         <h3 className="font-medium dark:font-normal text-sm md:text-base text-gray-900 dark:text-gray-100">
@@ -356,4 +350,4 @@ const TaskCard = ({ task }) => {
   );
 };
 
-export default TaskCard;
+export default React.memo(TaskCard);

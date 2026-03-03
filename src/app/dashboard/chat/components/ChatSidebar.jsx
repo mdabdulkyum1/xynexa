@@ -1,182 +1,261 @@
 "use client";
 
-import { Card } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import useAxiosPublic from "@/hooks/AxiosPublic/useAxiosPublic";
-import { useGetTeamsByEmailForGroupChatQuery } from "@/redux/features/Api/teamApi";
-import { setSelectedUserId } from "@/redux/features/Slice/chatSlice";
-import { setGroupChatId } from "@/redux/features/Slice/groupChatSlice";
-import { useUser } from "@clerk/nextjs";
-import {
-  differenceInDays,
-  differenceInWeeks,
-  format,
-  isToday,
-  isYesterday,
-  parseISO,
-} from "date-fns";
-import { Search } from "lucide-react";
-import Link from "next/link";
-import { useEffect, useState } from "react";
-import { FaUsers } from "react-icons/fa";
-import { useDispatch, useSelector } from "react-redux";
+import useAxiosSecure from "@/hooks/AxiosSecure/useAxiosSecure";
+import { socket } from "@/lib/socket";
+import useChatStore from "@/store/useChatStore";
+import useTeamStore from "@/store/useTeamStore";
+import { useSession } from "next-auth/react";
+import { format, isToday, isYesterday, parseISO } from "date-fns";
+import { Search, Users, CheckCircle2 } from "lucide-react";
+import { useEffect, useMemo, useState } from "react";
 
 const ChatSidebar = () => {
-  const axiosPublic = useAxiosPublic();
-  const { user } = useUser();
+  const { data: session, status } = useSession();
+  const { groupChats: groups, fetchTeamsForGroupChat } = useTeamStore();
+  const { 
+    currentChatPartner, 
+    setCurrentChatPartner, 
+    currentGroup, 
+    setCurrentGroup 
+  } = useChatStore();
+  const axiosSecure = useAxiosSecure();
+
   const [users, setUsers] = useState([]);
+  const [searchQuery, setSearchQuery] = useState("");
 
-  const userEmail = user?.emailAddresses[0]?.emailAddress;
-  const { data: groups = [] } = useGetTeamsByEmailForGroupChatQuery(userEmail);
-
-
-  const dispatch = useDispatch();
-
-  const fetchUsers = async () => {
-    if (user && userEmail) {
-      try {
-        const res = await axiosPublic.get(`/api/online/users/${userEmail}`);
-        const fetchedUsers = res.data.uniqueMembers;
-
-        // Sort: Online users first, then offline; both sorted by lastActive DESC
-        const sortedUsers = fetchedUsers.sort((a, b) => {
-          if (a.status === b.status) {
-            return new Date(b.lastActive) - new Date(a.lastActive);
-          }
-          return a.status === "Online" ? -1 : 1;
-        });
-
-        setUsers(sortedUsers);
-      } catch (error) {
-        console.error("Error fetching users:", error);
-      }
-    }
-  };
+  const user = session?.user;
+  const isLoaded = status !== "loading";
+  const userEmail = user?.email;
 
   useEffect(() => {
-    fetchUsers();
-  }, [user]);
-
-  // const groups = [
-  //   { id: 1, name: "React Developers", img: "https://placehold.co/40x40" },
-  //   { id: 2, name: "Gaming Squad", img: "https://placehold.co/40x40" },
-  //   { id: 3, name: "UI Designers", img: "https://placehold.co/40x40" },
-  // ];
-
-  const formatLastActive = (timestamp) => {
-    const date = parseISO(timestamp);
-
-    if (isToday(date)) {
-      return format(date, "h:mm a"); // 9:34 AM
-    } else if (isYesterday(date)) {
-      return "Yesterday";
-    } else if (differenceInWeeks(new Date(), date) < 1) {
-      const daysAgo = differenceInDays(new Date(), date);
-      return `${daysAgo}d`; // e.g., 3d
-    } else {
-      return format(date, "MMM d, yyyy"); // Apr 5, 2025
+    if (isLoaded && userEmail) {
+      fetchTeamsForGroupChat(userEmail);
     }
+  }, [isLoaded, userEmail, fetchTeamsForGroupChat]);
+
+  // Fetch online users
+  useEffect(() => {
+    if (!isLoaded || !userEmail) return;
+    axiosSecure
+      .get(`/online/users/${userEmail}`)
+      .then((res) => {
+        console.log(res?.data?.uniqueMembers, ">>>>>>>>>>>>>>>>>>>>>>>>>>>")
+        setUsers(res?.data?.uniqueMembers || []);
+      })
+      .catch(console.error);
+  }, [isLoaded, userEmail, axiosSecure]);
+
+  // Real-time online/offline status
+  useEffect(() => {
+    // Handle individual status updates
+    const handleStatus = ({ email, status }) => {
+      console.log("Socket: Status update received:", email, status);
+      setUsers((prev) =>
+        prev.map((u) => {
+          if (u.email === email) {
+            console.log("Socket: Updating user:", u.email, "to", status);
+            return {
+              ...u,
+              status,
+              lastActive: status === "Online" ? new Date().toISOString() : new Date().toISOString(),
+            };
+          }
+          return u;
+        })
+      );
+    };
+
+    // Handle full list of online users
+    const handleOnlineUsers = (onlineEmails) => {
+      console.log("Socket: Online users list:", onlineEmails);
+      if (!Array.isArray(onlineEmails)) return;
+      
+      setUsers((prev) => 
+        prev.map((u) => ({
+          ...u,
+          status: onlineEmails.includes(u.email) ? "Online" : "Offline",
+          lastActive: onlineEmails.includes(u.email) ? new Date().toISOString() : u.lastActive
+        }))
+      );
+    };
+
+    socket.on("user-online-status", handleStatus);
+    socket.on("online-users", handleOnlineUsers); // Sync full list
+
+    return () => {
+      socket.off("user-online-status", handleStatus);
+      socket.off("online-users", handleOnlineUsers);
+    };
+  }, []);
+
+  // Format time safely
+  const formatTime = (timestamp) => {
+    if (!timestamp) return "Never";
+    const date = parseISO(timestamp);
+    if (isToday(date)) return format(date, "h:mm a");
+    if (isYesterday(date)) return "Yesterday";
+    return format(date, "MMM d");
   };
 
+  // Filter + Sort Users (Online first → then by lastActive)
+  const sortedAndFilteredUsers = useMemo(() => {
+    return users
+      .filter((u) => {
+        const fullName = `${u.firstName || ""} ${u.lastName || ""}`.trim().toLowerCase();
+        return fullName.includes(searchQuery.toLowerCase());
+      })
+      .sort((a, b) => {
+        if (a.status === "Online" && b.status !== "Online") return -1;
+        if (a.status !== "Online" && b.status === "Online") return 1;
+        return new Date(b.lastActive || 0).getTime() - new Date(a.lastActive || 0).getTime();
+      });
+  }, [users, searchQuery]);
 
-const [active, setActive] = useState(false);
+  const selectedUserId = currentChatPartner?._id || currentChatPartner?.id;
+  const groupChatId = currentGroup?._id;
 
-  const handleUserSelect = (id) => {
-    setActive(id)
-    dispatch(setSelectedUserId(id))
-    dispatch(setGroupChatId(null))
-  };
+  // Early returns must come AFTER hooks
+  if (!isLoaded) {
+    return (
+      <div className="flex h-full items-center justify-center bg-gray-50 dark:bg-gray-900">
+        <p className="text-gray-500 animate-pulse">Loading chats...</p>
+      </div>
+    );
+  }
 
+  if (!user) {
+    return (
+      <div className="flex h-full items-center justify-center bg-gray-50 dark:bg-gray-900">
+        <p className="text-red-500">Please sign in to view chats</p>
+      </div>
+    );
+  }
 
-  const handleGroupSelect = (id) => {
-    dispatch(setGroupChatId(id))
-    dispatch(setSelectedUserId(null))
-  };
-
+  // Filter Groups
+  const filteredGroups = groups.filter((g) =>
+    g.name?.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   return (
-    <div className="flex border-r-2 border-l-2  dark:border-gray-700 ">
-      {/* Sidebar */}
-      <div className="relative w-40 md:w-80">
-        <Card className="p-4 h-[90vh] flex flex-col bg-blue-50/50">
-          {/* Search Bar */}
-          <div className="flex items-center bg-white rounded-2xl shadow-sm px-4 py-2 w-full max-w-sm border border-gray-200">
-            <Search className="text-gray-400 w-5 h-5 mr-2" />
-            <input
-              type="text"
-              placeholder="Search"
-              className="outline-none w-full bg-transparent text-gray-700 placeholder-gray-400"
-            />
-          </div>
+    <div className="flex flex-col h-full bg-gray-50 dark:bg-gray-900">
+      {/* Header */}
+      <div className="p-4 border-b border-gray-200 dark:border-gray-800">
+        <h1 className="text-xl font-bold text-gray-800 dark:text-white">Messages</h1>
+      </div>
 
-          {/* Scrollable List */}
-          <ScrollArea className="flex-1 overflow-y-auto">
-            {/* Groups Section */}
+      {/* Search */}
+      <div className="px-3 py-2">
+        <div className="flex items-center bg-white dark:bg-gray-800 rounded-lg shadow-sm px-3 py-2 border border-gray-200 dark:border-gray-700">
+          <Search className="w-4 h-4 text-gray-500 mr-2" />
+          <input
+            type="text"
+            placeholder="Search conversations..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="bg-transparent outline-none flex-1 text-sm text-gray-700 dark:text-gray-300 placeholder-gray-500"
+          />
+        </div>
+      </div>
 
-            <div className="space-y-3 bg-white rounded-lg p-4 shadow-sm">
-              <h3 className="text-lg font-medium text-gray-800 mb-3 flex items-center">
-                <FaUsers className="mr-2" /> Groups
+      {/* Scrollable List */}
+      <ScrollArea className="flex-1">
+        <div className="p-3 space-y-6">
+
+          {/* Groups Section */}
+          {filteredGroups.length > 0 && (
+            <div>
+              <h3 className="text-xs font-bold text-gray-500 uppercase tracking-wider px-3 mb-3 flex items-center gap-2">
+                <Users className="w-4 h-4" /> Group Chats
               </h3>
-              {groups.map((group) => (
-                <Link href="/dashboard/chat/chat-app" key={group._id} 
-                className={`${active === group._id ? "bg-blue-500" : ""}`}>
-                  <div
-
-                    key={group._id}
-                    className="flex items-center p-2 rounded-md hover:bg-gray-100 cursor-pointer transition capitalize border-b-2 border-gray-200"
-                    onClick={() => handleGroupSelect(group._id)}
-                  >
-                    <p className="text-sm font-medium text-gray-800">
-                      {group.name}
-                    </p>
-                  </div>
-                </Link>
-              ))}
-            </div>
-
-
-            {/* People Section */}
-
-            <div className="space-y-3 bg-white rounded-lg p-4 shadow-sm mt-4">
-              <h3 className="text-lg font-medium text-gray-800 dark:text-white mb-3">People</h3>
-              {users.map((user) => (
-                <Link href="/dashboard/chat/chat-app" key={user._id}>
-                  <div
-                    className="flex items-center p-2 rounded-md  hover:bg-gray-100 cursor-pointer transition border-b-2 border-gray-200"
-                    onClick={() => handleUserSelect(user?.clerkId)} // Set selected user
-                  >
-                    <img
-                      src={user.imageUrl}
-                      alt={`${user.firstName} ${user.lastName}`}
-                      className="w-10 h-10 rounded-full object-cover mr-3"
-                    />
-                    <div className="flex-1">
-                      <div className="flex justify-between">
-                        <p className="text-sm font-medium text-gray-800 dark:text-white">
-                          {user.firstName} {user.lastName}
-                        </p>
-                        <p className="text-xs text-gray-600 dark:text-gray-400">
-                          {user?.lastActive &&
-                            formatLastActive(user.lastActive)}
-                        </p>
-                      </div>
-                      <p
-                        className={`text-xs ${user.status === "Online"
-                          ? "text-green-500"
-                          : "text-gray-500"
-                          }`}
-                      >
-                        {user.status}
-                      </p>
+              {filteredGroups.map((group) => (
+                <div
+                  key={group._id || group.id}
+                  onClick={() => {
+                    handleGroupClick(group);
+                  }}
+                  className={`flex items-center gap-3 p-3 rounded-xl cursor-pointer transition-all duration-200
+                    ${groupChatId === (group._id || group.id)
+                      ? "bg-blue-100 dark:bg-blue-900/50 shadow-sm"
+                      : "hover:bg-gray-100 dark:hover:bg-gray-800"
+                    }`}
+                >
+                  <div className="relative">
+                    <div className="w-10 h-10 bg-gradient-to-br from-purple-500 to-pink-500 rounded-xl flex items-center justify-center text-white text-base font-bold shadow-md">
+                      {group.name?.[0]?.toUpperCase() || group.title?.[0]?.toUpperCase() || "G"}
+                    </div>
+                    <div className="absolute -bottom-1 -right-1 bg-white dark:bg-gray-900 rounded-full p-0.5">
+                      <Users className="w-3 h-3 text-purple-600" />
                     </div>
                   </div>
-                </Link>
+                  <div className="flex-1 min-w-0">
+                    <p className="font-semibold text-gray-900 dark:text-white truncate">
+                      {group.name || group.title || "Untitled Group"}
+                    </p>
+                    <p className="text-xs text-gray-500 dark:text-gray-400">
+                      {group.members?.length || 0} members
+                    </p>
+                  </div>
+                </div>
               ))}
             </div>
-          </ScrollArea>
-        </Card>
-      </div>
+          )}
+
+          {/* Direct Messages */}
+          <div>
+            <h3 className="text-xs font-bold text-gray-500 uppercase tracking-wider px-3 mb-3">
+              Direct Messages
+            </h3>
+
+            {sortedAndFilteredUsers.filter(u => u._id || u.id).length === 0 ? (
+              <p className="text-center text-gray-500 py-8">No conversations found</p>
+            ) : (
+              sortedAndFilteredUsers
+                .filter(user => user._id || user.id) // Ensure valid ID
+                .map((user) => (
+                <div
+                  key={user._id || user.id}
+                  onClick={() => {
+                    handleUserClick(user);
+                  }}
+                  className={`flex items-center gap-3 p-3 rounded-xl cursor-pointer transition-all duration-200 group
+                    ${selectedUserId === (user._id || user.id)
+                      ? "bg-blue-100 dark:bg-blue-900/50 shadow-sm"
+                      : "hover:bg-gray-100 dark:hover:bg-gray-800"
+                    }`}
+                >
+                  <div className="relative">
+                    <img
+                      src={user.imageUrl || user.image || "/default-avatar.png"}
+                      alt={user.firstName || user.name || "User"}
+                      className="w-10 h-10 rounded-xl object-cover ring-2 ring-white dark:ring-gray-900 shadow-md"
+                    />
+                    {user.status === "Online" && (
+                      <div className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 rounded-full border-2 border-white dark:border-gray-900 animate-pulse"></div>
+                    )}
+                  </div>
+
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-1.5">
+                      <p className="font-semibold text-gray-900 dark:text-white truncate">
+                        {user.firstName || user.name || "Unknown"}
+                      </p>
+                      {user.isEmailVerified && (
+                        <CheckCircle2 className="w-3.5 h-3.5 text-blue-500 fill-blue-500/10" />
+                      )}
+                    </div>
+                    <p className={`text-xs truncate transition-all duration-300 ${user.status === "Online" ? "text-green-600 font-medium" : "text-gray-500"}`}>
+                      {user.status === "Online"
+                        ? "Active now"
+                        : `Active ${formatTime(user.lastActive)}`}
+                    </p>
+                  </div>
+                </div>
+              ))
+            )}
+          </div>
+        </div>
+      </ScrollArea>
     </div>
   );
 };

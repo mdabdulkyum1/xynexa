@@ -8,26 +8,25 @@ import {
     PopoverTrigger,
 } from "@/components/ui/popover";
 import { Paperclip } from "lucide-react";
-import { useUser } from "@clerk/nextjs";
-import { useGetUserByEmailQuery } from "@/redux/features/Api/userApi";
-import { useAddAttachmentToBoardMutation } from "@/redux/features/Api/TaskApi";
+import { useSession } from "next-auth/react";
+import useUserStore from "@/store/useUserStore";
+import useBoardStore from "@/store/useBoardStore";
 import { useForm } from "react-hook-form";
 
 const Attachment = ({ task }) => {
-    const { user } = useUser();
+    const { data: session } = useSession();
+    const userEmail = session?.user?.email;
+    const { user: userData, fetchUserByEmail, isLoading } = useUserStore();
+    const { addAttachmentToBoard, isLoading: isAddingAttachment } = useBoardStore();
 
-    const userEmail = user?.emailAddresses[0]?.emailAddress;
-    const {
-        data: userData,
-        isLoading,
-        isError,
-        error,
-    } = useGetUserByEmailQuery(userEmail, { skip: !userEmail });
+    useEffect(() => {
+        if (userEmail) {
+            fetchUserByEmail(userEmail);
+        }
+    }, [userEmail, fetchUserByEmail]);
 
-    const userId = userData?.user?._id;
+    const userId = userData?._id || userData?.id;
     const boardId = task?._id;
-
-    const [addAttachmentToBoard, { isLoading: isAddingAttachment }] = useAddAttachmentToBoardMutation();
 
     const [localAttachments, setLocalAttachments] = useState([]);
 
@@ -47,7 +46,7 @@ const Attachment = ({ task }) => {
                     userId,
                     url: data.attachmentUrl,
                     filename: data.attachmentName.trim() || data.attachmentUrl.substring(data.attachmentUrl.lastIndexOf('/') + 1),
-                }).unwrap();
+                });
                 reset();
                 // Optionally, refetch task data
             } catch (err) {

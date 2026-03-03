@@ -1,45 +1,59 @@
-import { useCreateTeamMutation } from "@/redux/features/Api/teamApi";
-import { useGetUserByEmailQuery } from "@/redux/features/Api/userApi";
-import { ClerkLoading, useAuth, useUser } from "@clerk/nextjs";
+import useTeamStore from "@/store/useTeamStore";
+import useUserStore from "@/store/useUserStore";
+import { useSession } from "next-auth/react";
+import { useEffect } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { Fragment, useMemo } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 const TeamCreateModal = ({ isOpen, closeModal }) => {
-  <ClerkLoading>
-    <p className="text-red-600">Loaded</p>
-  </ClerkLoading>;
+
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
 
-  const { user } = useUser();
+  const { data: session } = useSession();
+  const user = session?.user;
+  const userEmail = user?.email;
 
-  const userEmail = user?.emailAddresses[0]?.emailAddress;
-  const {
-    data: userData,
-    isLoading,
-    isError,
-    error,
-  } = useGetUserByEmailQuery(userEmail, { skip: !userEmail });
+  const { user: userData, fetchUserByEmail, isLoading } = useUserStore();
+  const { createTeam } = useTeamStore();
+
+  useEffect(() => {
+    if (userEmail) {
+      fetchUserByEmail(userEmail);
+    }
+  }, [userEmail, fetchUserByEmail]);
 
   const creatorId = useMemo(() => {
-    return userData?.user?._id;
-  }, [userData]);
+    // Prioritize the ID from the session (most reliable)
+    // Then fallback to userData from the store
+    const id = user?.id || userData?.id || userData?._id || userData?.data?.id || userData?.user?.id;
+    console.log("TeamCreateModal: Resolved creatorId:", id, { sessionUser: user, storeUserData: userData });
+    return id;
+  }, [user, userData]);
 
-  const [createTeam] = useCreateTeamMutation();
+  const isError = false; // Store handles error
 
   
 const onSubmit = async (data) => {
   try {
+    if (!creatorId) {
+      console.error("onSubmit: Cannot create team. Missing creatorId.");
+      toast.error("User session not loaded. Please try again.");
+      return;
+    }
+
     const teamData = {
       ...data,
       creator: creatorId,
     };
 
-    const result = await createTeam(teamData).unwrap();
+    console.log("onSubmit: Sending teamData:", teamData);
+
+    await createTeam(teamData);
 
     
     toast.success("Team created successfully!", {

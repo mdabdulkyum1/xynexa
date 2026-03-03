@@ -1,25 +1,41 @@
-import { logout, setUser } from '@/redux/features/Slice/userSlice';
-import { useUser } from '@clerk/nextjs';
+import useUserStore from '@/store/useUserStore';
+import { useSession } from "next-auth/react";
 import React, { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
 
 const SyncUser = () => {
-  const { user, isSignedIn } = useUser();
-  const dispatch = useDispatch();
+  const { data: session, status } = useSession();
 
   useEffect(() => {
     const syncUser = async () => {
       try {
-        if (isSignedIn && user) {
-          dispatch(
-            setUser({
-              username: user.username || user.emailAddresses[0]?.emailAddress.split('@')[0],
-              email: user.emailAddresses[0]?.emailAddress,
-              photo: user.imageUrl,
-            })
-          );
-        }else{
-            dispatch(logout())
+        if (status === "authenticated" && session?.user) {
+          const currentUser = useUserStore.getState().user;
+
+          // Only sync if store is empty or we have new session info
+          // but don't overwrite detailed DB data with minimal session data
+          if (!currentUser || !currentUser.id) {
+            useUserStore.setState({
+              user: {
+                firstName: session.user.name?.split(' ')[0] || session.user.email.split('@')[0],
+                lastName: session.user.name?.split(' ').slice(1).join(' ') || "",
+                name: session.user.name,
+                email: session.user.email,
+                image: session.user.image,
+                imageUrl: session.user.image, // Fallback to session image initially
+                role: session.user.role,
+                id: session.user.id,
+                _id: session.user.id
+              }
+            });
+          }
+
+          // Sync token to localStorage for Axios
+          if (session.accessToken) {
+            localStorage.setItem('token', session.accessToken);
+          }
+        } else if (status === "unauthenticated") {
+          useUserStore.setState({ user: null });
+          localStorage.removeItem('token');
         }
 
       } catch (error) {
@@ -27,8 +43,8 @@ const SyncUser = () => {
       }
     };
 
-    syncUser(); 
-  }, [isSignedIn, user, dispatch]);
+    syncUser();
+  }, [status, session]);
 
   return null;
 };

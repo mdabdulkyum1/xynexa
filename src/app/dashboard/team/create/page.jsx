@@ -1,11 +1,13 @@
-// import CreateBoard from "./components/CreateBoard";
+"use client";
+import { useState } from "react";
+import CreateBoard from "./components/CreateBoard";
 
-// export default function CreatePage() {
+export default function CreatePage() {
+  const [open, setOpen] = useState(true);
 
-
-//   return (
-//     <div>
-//       <CreateBoard></CreateBoard> 
-//     </div>
-//   );
-// }
+  return (
+    <div>
+      <CreateBoard open={open} setOpen={setOpen} /> 
+    </div>
+  );
+}

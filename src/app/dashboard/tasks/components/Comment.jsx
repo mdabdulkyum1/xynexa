@@ -9,35 +9,27 @@ import {
 import { MessageSquareText } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { useAddCommentToBoardMutation } from "@/redux/features/Api/TaskApi";
-import { useUser } from "@clerk/nextjs";
-import { useGetUserByEmailQuery } from "@/redux/features/Api/userApi";
+import { useSession } from "next-auth/react";
+import useUserStore from "@/store/useUserStore";
+import useBoardStore from "@/store/useBoardStore";
 import moment from "moment";
 import Image from "next/image";
 
 const Comment = ({ task }) => {
-  const { user } = useUser();
+  const { data: session } = useSession();
+  const userEmail = session?.user?.email;
+    const { user: userData, fetchUserByEmail, isLoading } = useUserStore();
+    const { addCommentToBoard, isLoading: isCommentAdding, error: commentError } = useBoardStore();
 
-  const userEmail = user?.emailAddresses[0]?.emailAddress;
-  const {
-    data: userData,
-    isLoading,
-    isError,
-    error,
-  } = useGetUserByEmailQuery(userEmail, { skip: !userEmail });
+    useEffect(() => {
+        if (userEmail) {
+            fetchUserByEmail(userEmail);
+        }
+    }, [userEmail, fetchUserByEmail]);
 
-  const userId = userData?.user?._id;
-  const boardId = task?._id;
-
-  const [
-    addCommentToBoard,
-    {
-      isLoading: isCommentAdding,
-      isSuccess: isCommentSuccess,
-      isError: isCommentError,
-      error: commentError,
-    },
-  ] = useAddCommentToBoardMutation();
+    const userId = userData?._id || userData?.id;
+    const boardId = task?._id;
+    const isCommentError = !!commentError;
 
   const {
     register,
@@ -55,7 +47,7 @@ const Comment = ({ task }) => {
         text,
       };
       try {
-        await addCommentToBoard(commentData).unwrap();
+        await addCommentToBoard(commentData);
         reset();
         
       } catch (err) {

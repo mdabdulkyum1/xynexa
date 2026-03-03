@@ -4,11 +4,14 @@ import { CardElement, useElements, useStripe } from '@stripe/react-stripe-js';
 import Swal from 'sweetalert2';
 import { useRouter } from 'next/navigation';
 import useAxiosPublic from '@/hooks/AxiosPublic/useAxiosPublic';
-import { useUserDataFromClerk } from '@/hooks/useUserDataFromClerk';
+import { useSession } from "next-auth/react";
+import useAuthStore from "@/store/useAuthStore";
 import Loading from '@/components/loading/Loading';
 
 const CheckoutForm = ({ amount, plan }) => {
-  const { userData, isLoading: clerkLoding, isError } = useUserDataFromClerk();
+  const { data: session, status } = useSession();
+  const user = useAuthStore((state) => state.user);
+  const isLoadingSession = status === "loading";
   const axiosPublic = useAxiosPublic();
   const router = useRouter();
 
@@ -21,9 +24,9 @@ const CheckoutForm = ({ amount, plan }) => {
   const [isLoading, setIsLoading] = useState(false);
 
   const price = parseFloat(amount) || 0;
-  const userId = userData?.user?._id;
-  const userEmail = userData?.user?.email;
-  const userName = `${userData?.user?.firstName || ''} ${userData?.user?.lastName || ''}`.trim();
+  const userId = user?.id || session?.user?.id;
+  const userEmail = user?.email || session?.user?.email;
+  const userName = user?.name || session?.user?.name || `${user?.firstName || ''} ${user?.lastName || ''}`.trim();
 
 
 
@@ -147,7 +150,7 @@ const CheckoutForm = ({ amount, plan }) => {
     }
   };
 
-  if (clerkLoding || isError) {
+  if (isLoadingSession) {
     return (
       <div className='flex items-center justify-center h-screen'>
         <Loading />

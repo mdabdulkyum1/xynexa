@@ -1,8 +1,11 @@
 "use client";
 
+import SessionProviderWrapper from "@/providers/SessionProviderWrapper";
+
+
 import Providers from "@/providers/Providers";
 import { HMSRoomProvider } from "@100mslive/react-sdk";
-import { ClerkProvider } from "@clerk/nextjs";
+
 import ContentWithLogic from "./ContentWithLogic";
 import { Geist, Geist_Mono } from "next/font/google";
 
@@ -19,23 +22,18 @@ const geistMono = Geist_Mono({
 export default function RootLayout({ children }) {
   return (
     <HMSRoomProvider>
-      <ClerkProvider
-        appearance={{
-          layout: {
-            unsafe_disableDevelopmentModeWarnings: true,
-          },
-        }}
-      >
+      <SessionProviderWrapper>
         <html lang="en" suppressHydrationWarning>
           <body
             className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+            suppressHydrationWarning
           >
             <Providers>
               <ContentWithLogic>{children}</ContentWithLogic>
             </Providers>
           </body>
         </html>
-      </ClerkProvider>
+      </SessionProviderWrapper>
     </HMSRoomProvider>
   );
 }

@@ -1,0 +1,92 @@
+import { create } from 'zustand';
+import api from '../lib/axios';
+
+const useUserStore = create((set, get) => ({
+    users: [],
+    user: null,
+    userStats: null,
+    currentUserProfile: null,
+    isLoading: false,
+    error: null,
+
+    fetchUserByEmail: async (email) => {
+        set({ isLoading: true, error: null });
+        try {
+            const response = await api.get(`/users/email/${email}`);
+            console.log("fetchUserByEmail: API Response Profile:", response.data);
+            const userData = response.data?.data;
+            console.log("fetchUserByEmail: Extracted userData:", userData);
+            set({ user: userData, isLoading: false });
+            return userData;
+        } catch (error) {
+            set({ error: error.message, isLoading: false });
+        }
+    },
+
+    fetchUsers: async () => {
+        set({ isLoading: true, error: null });
+        try {
+            const response = await api.get('/users');
+            set({ users: response.data.data, isLoading: false });
+        } catch (error) {
+            set({ error: error.message, isLoading: false });
+        }
+    },
+
+    fetchUserStats: async () => {
+        set({ isLoading: true, error: null });
+        try {
+            const response = await api.get('/users/stats');
+            set({ userStats: response.data.data, isLoading: false });
+        } catch (error) {
+            set({ error: error.message, isLoading: false });
+        }
+    },
+
+    fetchUserProfile: async (id) => {
+        set({ isLoading: true, error: null });
+        try {
+            const response = await api.get(`/users/${id}`);
+            set({ currentUserProfile: response.data.data, isLoading: false });
+            return response.data.data;
+        } catch (error) {
+            set({ error: error.message, isLoading: false });
+        }
+    },
+
+    updateUser: async (id, userData) => {
+        set({ isLoading: true, error: null });
+        try {
+            const response = await api.put(`/users/${id}`, userData);
+            const updatedUser = response.data?.data || response.data?.user || response.data;
+            set((state) => {
+                const isCurrentUser = state.user?.id === id || state.user?._id === id;
+                return {
+                    users: state.users.map((u) => (u.id === id || u._id === id ? updatedUser : u)),
+                    currentUserProfile: state.currentUserProfile?.id === id || state.currentUserProfile?._id === id ? updatedUser : state.currentUserProfile,
+                    user: isCurrentUser ? updatedUser : state.user,
+                    isLoading: false,
+                };
+            });
+            return updatedUser;
+        } catch (error) {
+            set({ error: error.message, isLoading: false });
+            throw error;
+        }
+    },
+
+    deleteUser: async (id) => {
+        set({ isLoading: true, error: null });
+        try {
+            await api.delete(`/users/${id}`);
+            set((state) => ({
+                users: state.users.filter((u) => u._id !== id),
+                isLoading: false,
+            }));
+        } catch (error) {
+            set({ error: error.message, isLoading: false });
+        }
+    },
+}));
+
+export default useUserStore;

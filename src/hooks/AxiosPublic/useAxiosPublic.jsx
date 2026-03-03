@@ -1,8 +1,7 @@
 import axios from 'axios'
 
 const axiosInstance = axios.create({
-  // baseURL: 'http://localhost:5000'
-   baseURL: 'https://xynexa-server.onrender.com'
+  baseURL: 'http://localhost:5000/api/v1'
 });
 
 
