@@ -202,7 +202,7 @@ export function AppSidebar(props) {
         icon: Command, 
         items: items?.map((team) => ({
           title: team.title || team.name,
-          url: team.url || `/dashboard/tasks/${team.id || team._id}`,
+          url: `/dashboard/team/view/${team.id || team._id}`,
         })) || [],
       },
       {

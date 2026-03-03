@@ -4,8 +4,7 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useRef } from 'react';
 
 const axiosInstance = axios.create({
-    baseURL: 'https://xynexa-nest.onrender.com/api/v1'
-    // baseURL: 'http://localhost:5000/api/v1'
+    baseURL: process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:5000/api/v1'
 });
 
 const useAxiosSecure = () => {
