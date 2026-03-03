@@ -1,3 +1,4 @@
+"use client";
 import useChatStore from "@/store/useChatStore";
 import ChatWindow from "./ChatWindow";
 import GroupChatWindow from "./GroupChatWindow";

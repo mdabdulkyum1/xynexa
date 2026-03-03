@@ -8,6 +8,7 @@ import TextStyle from '@tiptap/extension-text-style';
 import Color from '@tiptap/extension-color';
 import Highlight from '@tiptap/extension-highlight';
 import TextAlign from '@tiptap/extension-text-align';
+import { toast } from "sonner";
 
 
 import { useSession } from "next-auth/react";
@@ -20,6 +21,13 @@ const DocsEditor = () => {
   const user = useAuthStore((state) => state.user);
   const { createDocument } = useDocumentStore();
   const router = useRouter();
+
+  const [title, setTitle] = useState("Untitled Document");
+  const [fontFamily, setFontFamily] = useState("Sans Serif");
+  const [fontColor, setFontColor] = useState("#000000");
+  const [bgColor, setBgColor] = useState("#ffffff");
+  const [fontSize, setFontSize] = useState("16px");
+  const editorWrapperRef = useRef(null);
 
   const docCreator_id = user?.id || session?.user?.id;
   const docCreatorEmail = user?.email || session?.user?.email;
