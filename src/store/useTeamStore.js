@@ -12,7 +12,7 @@ const useTeamStore = create((set, get) => ({
         console.log("Store: fetchUserTeamsByEmail called with:", email);
         set({ isLoading: true, error: null });
         try {
-            const url = `/teams/user/teams/email/${email}`;
+            const url = `/teams/get-teams-by-email/${email}`;
             console.log("Store: Fetching from URL:", url);
             const response = await api.get(url);
             console.log("Store: Response received:", response.data);

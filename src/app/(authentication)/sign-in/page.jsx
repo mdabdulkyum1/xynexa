@@ -14,6 +14,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { toast } from "sonner";
 import useAuthStore from "@/store/useAuthStore";
+import { Eye, EyeOff } from "lucide-react";
 
 const formSchema = z.object({
   email: z.string().email({
@@ -27,6 +28,7 @@ const formSchema = z.object({
 export default function SignInPage() {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   const {
     register,
@@ -62,8 +64,11 @@ export default function SignInPage() {
           router.push("/dashboard");
           router.refresh();
         } catch (authError) {
-          console.error("Zustand auth error:", authError);
-          // If Zustand fails but NextAuth succeeded, we might still want to proceed or handle it
+          console.error("Zustand auth error details:", authError);
+          // If authError has response data, log it
+          if (authError.response) {
+            console.error("Auth error response data:", authError.response.data);
+          }
           toast.warning("Logged in, but some state failed to sync.");
           router.push("/dashboard");
         }
@@ -99,12 +104,26 @@ export default function SignInPage() {
             </div>
             <div className="space-y-2">
               <Label htmlFor="password">Password</Label>
-              <Input
-                id="password"
-                type="password"
-                placeholder="Password"
-                {...register("password")}
-              />
+              <div className="relative">
+                <Input
+                  id="password"
+                  type={showPassword ? "text" : "password"}
+                  placeholder="Password"
+                  {...register("password")}
+                  className="pr-10"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
+                >
+                  {showPassword ? (
+                    <EyeOff className="h-4 w-4" />
+                  ) : (
+                    <Eye className="h-4 w-4" />
+                  )}
+                </button>
+              </div>
               {errors.password && (
                 <p className="text-sm text-red-500">{errors.password.message}</p>
               )}

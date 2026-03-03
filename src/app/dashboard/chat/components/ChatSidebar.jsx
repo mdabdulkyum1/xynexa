@@ -28,6 +28,14 @@ const ChatSidebar = () => {
   const isLoaded = status !== "loading";
   const userEmail = user?.email;
 
+  const handleGroupClick = (group) => {
+    setCurrentGroup(group);
+  };
+
+  const handleUserClick = (selectedUser) => {
+    setCurrentChatPartner(selectedUser);
+  };
+
   useEffect(() => {
     if (isLoaded && userEmail) {
       fetchTeamsForGroupChat(userEmail);
