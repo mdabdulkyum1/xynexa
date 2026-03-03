@@ -86,6 +86,7 @@ const Hero = () => {
               className="rounded-full w-full h-full object-cover"
               width={80}
               height={80}
+              priority
             />
             <motion.div
               className="absolute bottom-0 right-0 bg-white text-teal-400 backdrop-blur-md rounded-full p-1"
@@ -108,6 +109,7 @@ const Hero = () => {
               className="rounded-full w-full h-full object-cover"
               width={80}
               height={80}
+              priority
             />
             <motion.div
               className="absolute bottom-0 right-0 bg-white text-teal-400 backdrop-blur-md rounded-full p-1"

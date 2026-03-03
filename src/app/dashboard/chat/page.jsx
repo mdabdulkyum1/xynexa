@@ -1,16 +1,16 @@
 "use client";
 
-import { useSelector } from "react-redux";
+import useChatStore from "@/store/useChatStore";
 import Image from "next/image";
-import GroupChatWindow from "./chat-app/components/GroupChatWindow";
 import ChatWindow from "./chat-app/components/ChatWindow";
-
+import GroupChatWindow from "./chat-app/components/GroupChatWindow";
 
 export default function ChatPage() {
-  const selectedUserId = useSelector((state) => state.chat.selectedUserId);
-  const groupChatId = useSelector((state) => state.groupChat.groupChatId);
+  const currentChatPartner = useChatStore((state) => state.currentChatPartner);
+  const currentGroup = useChatStore((state) => state.currentGroup);
 
-  const isChatOpen = selectedUserId || groupChatId;
+  const groupChatId = currentGroup?._id;
+  const isChatOpen = currentChatPartner || currentGroup;
 
   return (
     <div className="flex-1 flex flex-col bg-gray-50 dark:bg-gray-900">

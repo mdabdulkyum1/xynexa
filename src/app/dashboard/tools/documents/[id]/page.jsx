@@ -5,10 +5,7 @@ import { useParams, useRouter } from "next/navigation";
 
 import toast from "react-hot-toast";
 import Loading from "@/components/loading/Loading";
-import {
-  useDocumentGetByIdQuery,
-  useDocumentUpdateMutation,
-} from "@/redux/features/Api/documentApi";
+import useDocumentStore from "@/store/useDocumentStore";
 
 // TipTap Editor
 import { useEditor, EditorContent } from "@tiptap/react";
@@ -24,8 +21,13 @@ const DetailsPage = () => {
   const router = useRouter();
   const editorWrapperRef = useRef(null);
 
-  const { data: document = {}, isLoading, isError, error } = useDocumentGetByIdQuery(id);
-  const [documentUpdate, { isLoading: isUpdating }] = useDocumentUpdateMutation();
+  const { 
+    currentDocument, 
+    fetchDocumentById, 
+    updateDocument, 
+    isLoading, 
+    error: isError 
+  } = useDocumentStore();
 
   const [title, setTitle] = useState('');
   const [fontColor, setFontColor] = useState('#000000');
@@ -45,15 +47,21 @@ const DetailsPage = () => {
     content: '',
   });
 
+  useEffect(() => {
+    if (id) {
+      fetchDocumentById(id);
+    }
+  }, [id, fetchDocumentById]);
+
   // Set title and editor content when data is available
   useEffect(() => {
-    if (document?.document?.title) {
-      setTitle(document.document.title);
+    if (currentDocument?.document?.title) {
+      setTitle(currentDocument.document.title);
     }
-    if (editor && document?.document?.content) {
-      editor.commands.setContent(document.document.content);
+    if (editor && currentDocument?.document?.content) {
+      editor.commands.setContent(currentDocument.document.content);
     }
-  }, [document, editor]);
+  }, [currentDocument, editor]);
 
   const applyStyles = () => {
     if (!editor) return;
@@ -85,7 +93,7 @@ const DetailsPage = () => {
     //   return;
     // }
     try {
-      await documentUpdate({ id, title, content: updatedContent });
+      await updateDocument(id, { title, content: updatedContent });
       toast.success("Document updated successfully!");
       router.push(`/dashboard/tools/documents/${id}`);
     } catch (err) {

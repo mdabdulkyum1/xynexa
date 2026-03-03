@@ -2,33 +2,49 @@
 import dynamic from "next/dynamic";
 const Lottie = dynamic(() => import("lottie-react"), { ssr: false });
 import rocketData from '../../../../../../public/assets/lottie/rocket.json';
-// import {
-//   Dialog,
-//   DialogContent,
-//   DialogHeader,
-//   DialogTitle,
-//   Button,
-//   Label,
-//   Input,
-//   Textarea,
-//   Select,
-//   SelectContent,
-//   SelectItem,
-//   SelectTrigger,
-//   SelectValue,
-// } from "@/components/ui";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
-import Image from 'next/image';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
-import { Select, SelectValue } from "@/components/ui/select";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Button } from "@/components/ui/button";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { useSession } from "next-auth/react";
+import useTeamStore from "@/store/useTeamStore";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 const CreateBoard = ({ open, setOpen }) => {
+  const { data: session } = useSession();
+  const { createTeam, isLoading } = useTeamStore();
   const { register, handleSubmit, setValue, formState: { errors } } = useForm();
+  const router = useRouter();
 
-  const onSubmit = (data) => {
-    setOpen(false); // Close the dialog after submission
+  const onSubmit = async (data) => {
+    if (!session?.user?.id) {
+      toast.error("You must be logged in to create a team");
+      return;
+    }
+
+    try {
+      const teamData = {
+        teamName: data.boardName,
+        teamDescription: data.description,
+        teamType: data.category || "teams",
+        creator: session.user.id,
+      };
+
+      const result = await createTeam(teamData);
+      if (result) {
+        toast.success("Team created successfully!");
+        setOpen(false);
+        router.push(`/dashboard/team/view`);
+      }
+    } catch (error) {
+      console.error("Error creating team:", error);
+      toast.error(error.message || "Failed to create team");
+    }
   };
 
   return (
@@ -52,38 +68,24 @@ const CreateBoard = ({ open, setOpen }) => {
                   <SelectValue placeholder="Select Category" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="It & Support">IT & Support</SelectItem>
-                  <SelectItem value="Marketing">Marketing</SelectItem>
-                  <SelectItem value="Operations">Operations</SelectItem>
-                  <SelectItem value="Product & Dev">Product & Dev</SelectItem>
-                  <SelectItem value="Creative Design">Creative Design</SelectItem>
-                  <SelectItem value="Hr">HR</SelectItem>
+                  <SelectItem value="teams">Internal Team</SelectItem>
+                  <SelectItem value="startups">Startup</SelectItem>
+                  <SelectItem value="businesses">Business</SelectItem>
+                  <SelectItem value="remote_workers">Remote Workers</SelectItem>
                 </SelectContent>
               </Select>
               <Label>Project Name<span className="text-red-500">*</span></Label>
               <Input className="w-full" {...register('projectName', { required: 'Project Name is required' })} />
               {errors.projectName && <p className="text-red-500">{errors.projectName.message}</p>}
-              <Label>Creator Admin</Label>
-              <Input className="w-full" {...register('adminName')} placeholder='je create korbe admin hisebe boshbe ' />
-              <Label>Add Team Members<span className="text-red-500">*</span></Label>
-              <Select onValueChange={(value) => setValue('teamMembers', value)}>
-                <SelectTrigger className="w-full">
-                  <SelectValue placeholder="Select Team Members" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="5-10">5-10</SelectItem>
-                  <SelectItem value="20-25">20-25</SelectItem>
-                  <SelectItem value="70-100">70-100</SelectItem>
-                </SelectContent>
-              </Select>
+              
               <Label>Description Your Board</Label>
               <Textarea className="w-full" {...register("description")} />
-              <Label>Cover Photo<span className="text-red-500">*</span></Label>
-              <Input type="file" className="w-full" {...register("coverPhoto", { required: "Cover Photo is required" })} />
-              {errors.coverPhoto && <p className="text-red-500">{errors.coverPhoto.message}</p>}
+              
               <div className="flex justify-end space-x-2 mt-4">
-                <Button type="submit">Create</Button>
-                <Button variant="outline" onClick={() => setOpen(false)}>Cancel</Button>
+                <Button type="submit" disabled={isLoading}>
+                  {isLoading ? "Creating..." : "Create"}
+                </Button>
+                <Button variant="outline" type="button" onClick={() => setOpen(false)}>Cancel</Button>
               </div>
             </div>
           </div>
@@ -92,3 +94,5 @@ const CreateBoard = ({ open, setOpen }) => {
     </Dialog>
   );
 };
+
+export default CreateBoard;

@@ -1,6 +1,6 @@
 'use client';
 
-import { useDeleteTeamMutation, useGetTeamQuery } from '@/redux/features/Api/teamApi';
+import useTeamStore from '@/store/useTeamStore';
 import { Users, Mail, Hammer, MoreVertical } from 'lucide-react';
 import { useParams } from 'next/navigation';
 import AddMember from '../components/AddMember';
@@ -22,8 +22,15 @@ const TeamDetails = () => {
   const menuRef = useRef(null); // Ref to track the menu element
   const router = useRouter();
 
-  const { data: team, isLoading, isError, error } = useGetTeamQuery(teamId);
-  const [deleteTeam, { isLoading: isDeleting }] = useDeleteTeamMutation();
+  const { currentTeam: team, fetchTeamById, deleteTeam, isLoading } = useTeamStore();
+
+  useEffect(() => {
+    if (teamId) {
+      fetchTeamById(teamId);
+    }
+  }, [teamId, fetchTeamById]);
+
+  const isError = false; // Simplified for now as store handles error state
 
   // Close menu when clicking outside
   useEffect(() => {

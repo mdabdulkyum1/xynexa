@@ -33,9 +33,9 @@ import { NavMain } from "./nav-main";
 import { NavProjects } from "./nav-project";
 import { TeamSwitcher } from "./team-switcheer";
 import { NavUser } from "./nav-user";
-import { useUserDataFromClerk } from "@/hooks/useUserDataFromClerk";
-import { useGetTeamsByCurrentUserEmailQuery } from "@/redux/features/Api/teamApi";
-import { useUser } from "@clerk/nextjs";
+import useTeamStore from "@/store/useTeamStore";
+import { useSession } from "next-auth/react";
+import { useEffect } from "react";
 
 // This is sample data.
 const data = {
@@ -158,16 +158,23 @@ projects: [
 };
 
 export function AppSidebar(props) {
-  const { user } = useUser();
-  const userEmail = user?.emailAddresses[0]?.emailAddress;
+  const { data: session } = useSession();
+  const user = session?.user;
+  const userEmail = user?.email;
 
-  const { data: items } = useGetTeamsByCurrentUserEmailQuery(userEmail);
+  const { teams: items, fetchUserTeamsByEmail } = useTeamStore();
+
+  useEffect(() => {
+    if (userEmail) {
+      fetchUserTeamsByEmail(userEmail);
+    }
+  }, [userEmail, fetchUserTeamsByEmail]);
 
   const data = {
     user: {
-      name: user?.fullName || "Guest",
-      email: user?.emailAddresses[0]?.emailAddress || "No email",
-      avatar: user?.imageUrl || "/default-avatar.png",
+      name: user?.name || "Guest",
+      email: user?.email || "No email",
+      avatar: user?.image || "/default-avatar.png",
     },
     teams: [
       {
@@ -193,7 +200,10 @@ export function AppSidebar(props) {
         url: "/dashboard/team",
         isActive: true,
         icon: Command, 
-        items,
+        items: items?.map((team) => ({
+          title: team.title || team.name,
+          url: team.url || `/dashboard/tasks/${team.id || team._id}`,
+        })) || [],
       },
       {
         title: "Chat",
@@ -257,11 +267,20 @@ export function AppSidebar(props) {
       {
         title: "Tools",
         url: "/dashboard/tools",
-        icon: Wrench, // Standard Tools Icon
+        icon: Wrench,
         items: [
-          { title: "documents", url: "/dashboard/documents" },
-          { title: "drawing", url: "/dashboard/tools/drawing" },
-          { title: "diagram", url: "/dashboard/tools/diagram" },
+          { title: "Documents", url: "/dashboard/documents" },
+          { title: "Drawing", url: "/dashboard/tools/drawing" },
+          { title: "Diagram", url: "/dashboard/tools/diagram" },
+        ],
+      },
+      {
+        title: "Settings",
+        url: "/dashboard/settings",
+        icon: Settings2,
+        items: [
+          { title: "Profile", url: "/dashboard/settings" },
+          { title: "Security", url: "/dashboard/settings/security" },
         ],
       },
     ],

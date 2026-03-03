@@ -1,53 +1,30 @@
-'use client';
+"use client";
 
+import useDocumentStore from '@/store/useDocumentStore';
+import { useSession } from "next-auth/react";
 import Loading from '@/components/loading/Loading';
-import { useDocumentDeleteMutation, useDocumentGetByEmailQuery } from '@/redux/features/Api/documentApi';
-import { useUser } from '@clerk/nextjs';
-import axios from 'axios';
 import Link from 'next/link';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import Swal from 'sweetalert2';
 import { MdDelete } from "react-icons/md";
 import { FaEdit } from "react-icons/fa";
 
 const DocumentsContainer = () => {
-  const [loading, setLoading] = useState(false);
+  const { data: session } = useSession();
+  const userEmail = session?.user?.email;
 
-  const { user } = useUser();
-  const [availableDocuments, setAvailableDocuments] = useState([]);
-  const userEmail = user?.emailAddresses[0]?.emailAddress;
+  const { 
+    documents, 
+    fetchDocumentsByEmail, 
+    deleteDocument, 
+    isLoading 
+  } = useDocumentStore();
 
-const {data:availableDocumentsData=[], isError, error, isLoading:isFetchingLoading} = useDocumentGetByEmailQuery(userEmail)
   useEffect(() => {
     if (userEmail) {
-      const fetchDocuments = async () => {
-        setLoading(true);
-        try {
-          const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/documents/getAllDoc?email=${userEmail}`);
-          setTimeout(() => {
-            if (response.data.documents.length > 0) {
-              setAvailableDocuments(response.data.documents);
-            } else {
-              console.error('Expected an array of documents, but got:', response.data);
-              setAvailableDocuments([]);
-            }
-            setLoading(false);
-
-          }, 2000);
-
-
-        } catch (error) {
-          console.error('Error fetching documents:', error);
-          setAvailableDocuments([]);
-        }
-      };
-
-      fetchDocuments();
+      fetchDocumentsByEmail(userEmail);
     }
-  }, [userEmail]);
-
-
-const [documentDelete, {isLoading:isDeleting}] =  useDocumentDeleteMutation()
+  }, [userEmail, fetchDocumentsByEmail]);
 
   const handleDelete = (docsId) => {
     Swal.fire({
@@ -60,8 +37,7 @@ const [documentDelete, {isLoading:isDeleting}] =  useDocumentDeleteMutation()
       confirmButtonText: 'Yes, delete it!',
     }).then((result) => {
       if (result.isConfirmed) {
-        documentDelete(docsId);
-        
+        deleteDocument(docsId);
       }
     });
   };
@@ -73,18 +49,18 @@ const [documentDelete, {isLoading:isDeleting}] =  useDocumentDeleteMutation()
       {/* Render available documents here */}
       <div>
         {
-          loading ? (
+          isLoading ? (
             <div className='h-[200px] w-full flex items-center justify-center'>
               <Loading></Loading>
             </div>
           ) : (
             <div>
-              {availableDocumentsData?.documents?.length === 0 ? (
+              {documents?.length === 0 ? (
               <div className='flex justify-center items-center  h-[200px]'><p className="text-gray-500 text-2xl lg:text-3xl">No documents available.</p></div>
               ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
 
-                  {availableDocumentsData?.documents?.map((doc) => (
+                  {documents?.map((doc) => (
                     <div key={doc._id} className="border p-4 rounded-lg shadow-md">
                       <h3 className="text-lg font-bold">{doc.title}</h3>
                       

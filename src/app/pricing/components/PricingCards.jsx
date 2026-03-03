@@ -4,7 +4,8 @@ import { useState, useEffect } from "react";
 import { FaCheck } from "react-icons/fa";
 import { useRouter } from "next/navigation";
 import useAxiosPublic from "@/hooks/AxiosPublic/useAxiosPublic";
-import { useUserDataFromClerk } from "@/hooks/useUserDataFromClerk";
+import { useSession } from "next-auth/react";
+import useAuthStore from "@/store/useAuthStore";
 import SelectPaymentModal from "./SelectPaymentModal";
 
 const plans = [
@@ -55,9 +56,10 @@ const plans = [
 
 const PricingCards = () => {
   const router = useRouter();
-  const { userData } = useUserDataFromClerk();
-  const packageInfo = userData?.user?.package;
-  const userId = userData?.user?._id;
+  const { data: session } = useSession();
+  const user = useAuthStore((state) => state.user);
+  const packageInfo = user?.package || session?.user?.package;
+  const userId = user?.id || session?.user?.id;
 
   const axiosPublic = useAxiosPublic();
   const [showModal, setShowModal] = useState(false);

@@ -2,7 +2,7 @@
 
 import React from "react";
 import { BadgeCheck, Bell, ChevronsUpDown, CreditCard, LogOut, Sparkles, Home } from "lucide-react";
-import { useClerk, useUser } from "@clerk/nextjs";
+
 
 import {
   Avatar,
@@ -25,18 +25,26 @@ import {
   useSidebar
 } from "@/components/ui/sidebar";
 import Link from "next/link";
-import { useGetUserByEmailQuery } from '@/redux/features/Api/userApi';
+import { useEffect } from "react";
+import useUserStore from '@/store/useUserStore';
+import { useSession, signOut } from "next-auth/react";
+
 export function NavUser({ user }) {
   const { isMobile } = useSidebar();
-  const { signOut } = useClerk();
-
-  const { user:mainUser } = useUser();
   
-      const userEmail = mainUser?.emailAddresses[0]?.emailAddress;
+  const { data: session } = useSession();
+  const userEmail = session?.user?.email;
       
-      const {data:userData}=useGetUserByEmailQuery(userEmail)
-      const creator=userData?.user
-      
+  const { user: storeUser, fetchUserByEmail } = useUserStore();
+  
+  useEffect(() => {
+    if (userEmail && !storeUser) {
+      console.log("NavUser: Fetching user data for", userEmail);
+      fetchUserByEmail(userEmail);
+    }
+  }, [userEmail, storeUser, fetchUserByEmail]);
+
+  const creator = storeUser || user; // Fallback to prop if store is null
 
   return (
     <SidebarMenu>
@@ -45,11 +53,13 @@ export function NavUser({ user }) {
           <DropdownMenuTrigger asChild>
             <SidebarMenuButton size="lg">
               <Avatar className="h-8 w-8 rounded-lg">
-                <AvatarImage src={creator?.imageUrl} alt={creator?.firstName} />
-                <AvatarFallback className="rounded-lg">CN</AvatarFallback>
+                <AvatarImage src={creator?.imageUrl || creator?.image} alt={creator?.firstName || creator?.name} />
+                <AvatarFallback className="rounded-lg">
+                  {creator?.firstName?.[0] || creator?.name?.[0] || "U"}
+                </AvatarFallback>
               </Avatar>
               <div className="grid flex-1 text-left text-sm leading-tight">
-                <span className="truncate font-semibold">{creator?.firstName}</span>
+                <span className="truncate font-semibold">{creator?.firstName || creator?.name || "User"}</span>
                 <span className="truncate text-xs">{creator?.email}</span>
               </div>
               <ChevronsUpDown className="ml-auto size-4" />

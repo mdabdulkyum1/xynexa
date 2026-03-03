@@ -3,11 +3,12 @@ import React, { useState, useRef, useEffect } from "react";
 import dynamic from "next/dynamic";
 import "react-quill-new/dist/quill.snow.css";
 import { FaEdit } from "react-icons/fa";
-import { useUserDataFromClerk } from "@/hooks/useUserDataFromClerk";
+import { useSession } from "next-auth/react";
+import useAuthStore from "@/store/useAuthStore";
+import useDocumentStore from "@/store/useDocumentStore";
 import { useParams, useRouter } from "next/navigation";
 import "../../new/components/editor.css";
 import DocumentHeading from "../../new/components/DocumentHeading";
-import { useDocumentGetByIdQuery, useDocumentUpdateMutation } from "@/redux/features/Api/documentApi";
 import Swal from "sweetalert2";
 import { toast } from "react-hot-toast";
 
@@ -16,29 +17,28 @@ const ReactQuill = dynamic(() => import("react-quill-new"), { ssr: false });
 const TextEditor = () => {
     const router = useRouter();
     const quillRef = useRef(null);
-    const { userData } = useUserDataFromClerk();
+    const { data: session } = useSession();
+    const user = useAuthStore((state) => state.user);
     const { id } = useParams();
-    const [isBrowser, setIsBrowser] = useState(false);
-
-    const { data: document = {}, isLoading, isError, error } = useDocumentGetByIdQuery(id);
-    const [documentUpdate, { isLoading: isUpdating }] = useDocumentUpdateMutation();
+    const { fetchDocumentById, currentDocument: document, updateDocument, isLoading } = useDocumentStore();
 
     const [content, setContent] = useState("");
     const [title, setTitle] = useState("");
 
-    const currentDocCreator_id = userData?.user?._id;
-    const currentDocCreatorEmail = userData?.user?.email;
+    const currentDocCreator_id = user?.id || session?.user?.id;
+    const currentDocCreatorEmail = user?.email || session?.user?.email;
 
-    // Eta diye window check
-    // useEffect(() => {
-    //     setIsBrowser(typeof window !== 'undefined');
-    // }, []);
+    useEffect(() => {
+        if (id) {
+            fetchDocumentById(id);
+        }
+    }, [id, fetchDocumentById]);
 
     // Jokhon document load hobe, tokhon title and content set hobe
     useEffect(() => {
-        if (document?.document) {
-            setTitle(document.document.title || "");
-            setContent(document.document.content || ""); // document er content set
+        if (document) {
+            setTitle(document.title || "");
+            setContent(document.content || "");
         }
     }, [document]);
 
@@ -71,15 +71,14 @@ const TextEditor = () => {
         }
     
         try {
-            await documentUpdate({
-                id,
+            await updateDocument(id, {
                 title,
                 content,
                 creator: {
-                    _id: currentDocCreator_id,
+                    id: currentDocCreator_id,
                     email: currentDocCreatorEmail,
                 },
-            }).unwrap();
+            });
     
             Swal.fire({
                 icon: "success",

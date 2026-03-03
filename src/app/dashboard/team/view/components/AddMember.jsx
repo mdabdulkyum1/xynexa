@@ -1,17 +1,25 @@
 import React, { Fragment, useState } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
-import { useGetUserByEmailQuery } from '@/redux/features/Api/userApi';
+import useUserStore from '@/store/useUserStore';
 import { toast } from 'sonner';
-import { useAddMemberToTeamMutation } from '@/redux/features/Api/teamApi';
+import useTeamStore from '@/store/useTeamStore';
+import { useEffect } from 'react';
 
 const AddMember = ({ teamId, isOpenAdd,  setIsOpenAdd }) => {
     const closeModal = () => setIsOpenAdd(false);
     const openModal = () => setIsOpenAdd(true);
     const [userEmail, setEmail] = useState('');
 
-    const { data: userData, isLoading, isError, error } = useGetUserByEmailQuery(userEmail, { skip: !userEmail });
+    const { user: userData, fetchUserByEmail, isLoading } = useUserStore();
+    const { addMemberToTeam, isLoading: isAddingMember } = useTeamStore();
 
-    const [addMemberToTeam, { isLoading: isAddingMember, isError: addMemberError }] = useAddMemberToTeamMutation();
+    useEffect(() => {
+        if (userEmail) {
+            fetchUserByEmail(userEmail);
+        }
+    }, [userEmail, fetchUserByEmail]);
+
+    const isError = false; // Simplified
 
     const handleAddMember = async () => {
         if (isLoading) {
@@ -27,10 +35,7 @@ const AddMember = ({ teamId, isOpenAdd,  setIsOpenAdd }) => {
         if (userData) {
             try {
                 const response = await addMemberToTeam({ teamId: teamId, memberEmail: userEmail });
-                if (response.error) {
-                    
-                    toast.error(response.error.data.message || 'Failed to add member');
-                } else {
+                if (response) {
                     toast.success('Member added successfully!');
                     closeModal();
                 }

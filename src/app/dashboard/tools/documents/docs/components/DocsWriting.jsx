@@ -8,29 +8,29 @@ import TextStyle from '@tiptap/extension-text-style';
 import Color from '@tiptap/extension-color';
 import Highlight from '@tiptap/extension-highlight';
 import TextAlign from '@tiptap/extension-text-align';
+import { toast } from "sonner";
 
 
-import { useUserDataFromClerk } from '@/hooks/useUserDataFromClerk';
+import { useSession } from "next-auth/react";
+import useAuthStore from "@/store/useAuthStore";
+import useDocumentStore from "@/store/useDocumentStore";
 import { useRouter } from 'next/navigation';
-import { useDocumentCreateMutation } from '@/redux/features/Api/documentApi';
-import toast from 'react-hot-toast';
 
 const DocsEditor = () => {
-  
+  const { data: session } = useSession();
+  const user = useAuthStore((state) => state.user);
+  const { createDocument } = useDocumentStore();
   const router = useRouter();
+
+  const [title, setTitle] = useState("Untitled Document");
+  const [fontFamily, setFontFamily] = useState("Sans Serif");
+  const [fontColor, setFontColor] = useState("#000000");
+  const [bgColor, setBgColor] = useState("#ffffff");
+  const [fontSize, setFontSize] = useState("16px");
   const editorWrapperRef = useRef(null);
-  const [title, setTitle] = useState('Untitled Document');
-  const [fontColor, setFontColor] = useState('#000000');
-  const [bgColor, setBgColor] = useState('#ffff00');
-  const [fontSize, setFontSize] = useState('16px');
-  const [fontFamily, setFontFamily] = useState('Sans Serif');
 
-  const { userData } = useUserDataFromClerk();
-  const docCreator_id = userData?.user?._id;
-  const docCreatorEmail = userData?.user?.email;
-
-
-  const [documentCreate] = useDocumentCreateMutation()
+  const docCreator_id = user?.id || session?.user?.id;
+  const docCreatorEmail = user?.email || session?.user?.email;
 
   const editor = useEditor({
     extensions: [
@@ -51,14 +51,14 @@ const DocsEditor = () => {
 
   
 
-  try{
-    const result = await documentCreate(newDoc).unwrap()
-    toast.success('Document created successfully!')
-    router.push(`/dashboard/tools/documents`);
-  }catch (error){
-    console.error('Error creating document:', error);
-    toast.error('Error creating document. Please try again.');
-  }
+    try {
+      await createDocument(newDoc);
+      toast.success('Document created successfully!');
+      router.push(`/dashboard/tools/documents`);
+    } catch (error) {
+      console.error('Error creating document:', error);
+      toast.error('Error creating document. Please try again.');
+    }
   };
 
  

@@ -2,27 +2,25 @@
 
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
-import { useDispatch } from "react-redux";
-import { useUser } from "@clerk/nextjs";
-import { useGetUserByEmailQuery } from "@/redux/features/Api/userApi";
-import { LoginUserToDB } from "@/lib/loginUserToDB";
-import { SaveUserToDB } from "@/lib/saveUserToDB";
+import { useSession } from "next-auth/react";
+import useUserStore from "@/store/useUserStore";
 import { XynexaNavbar } from "@/components/global/XynexaNavbar";
 import Footer from "@/components/global/Footer";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "sonner";
-import { logout, setUser } from "@/redux/features/Slice/userSlice";
 import "./globals.css";
 import SocketAuthManager from "@/components/SocketAuthManager/SocketAuthManager";
 
 export default function ContentWithLogic({ children }) {
-  const dispatch = useDispatch();
-  const { user, isLoaded } = useUser();
-  const userEmail = user?.emailAddresses[0]?.emailAddress;
+  const { data: session, status } = useSession();
+  const userEmail = session?.user?.email;
+  const { fetchUserByEmail, user: storeUser, isLoading } = useUserStore();
 
-  const { data: userData, isLoading } = useGetUserByEmailQuery(userEmail, {
-    skip: !userEmail,
-  });
+  useEffect(() => {
+    if (userEmail) {
+      fetchUserByEmail(userEmail);
+    }
+  }, [userEmail, fetchUserByEmail]);
 
   const pathname = usePathname();
   const [shouldShowNavbarFooter, setShouldShowNavbarFooter] = useState(true);
@@ -33,19 +31,17 @@ export default function ContentWithLogic({ children }) {
   }, [pathname]);
 
   useEffect(() => {
-    if (userData?.user) {
-      dispatch(setUser(userData.user));
-    } else if (!user && isLoaded) {
-      dispatch(logout());
+    // If we need to handle global logout or state sync, we can do it here with useUserStore
+    if (status === "unauthenticated") {
+        // useUserStore doesn't strictly have a logout yet, but we can set user to null
+        useUserStore.setState({ user: null });
     }
-  }, [userData?.user, user, isLoaded, dispatch]);
+  }, [status]);
 
   return (
     <ThemeProvider attribute="class" defaultTheme="light"  enableSystem={true} >
       {shouldShowNavbarFooter && <XynexaNavbar />}
       <main className="min-h-screen">
-        <SaveUserToDB />
-        <LoginUserToDB />
         <SocketAuthManager />
         <Toaster position="top-right" />
         {children}

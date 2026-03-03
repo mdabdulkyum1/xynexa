@@ -1,7 +1,8 @@
 'use client';
 import Loading from '@/components/loading/Loading';
-import { useDocumentDeleteMutation, useDocumentGetByEmailQuery } from '@/redux/features/Api/documentApi';
-import { useUser } from '@clerk/nextjs';
+import { useSession } from "next-auth/react";
+import useDocumentStore from '@/store/useDocumentStore';
+import { useEffect } from 'react';
 import Image from 'next/image';
 import React, {  useState } from 'react';
 import docsImg from '../../../../../../public/assets/images/dynamic-docs.png'
@@ -12,8 +13,8 @@ import Swal from 'sweetalert2';
 import Link from 'next/link';
 
 const DynamicDocsContainer = () => {
-    const { user } = useUser();
-    const userEmail = user?.emailAddresses[0]?.emailAddress;
+    const { data: session } = useSession();
+    const userEmail = session?.user?.email;
     const [openId, setOpenId] = useState(null);
     
 
@@ -22,9 +23,18 @@ const DynamicDocsContainer = () => {
       };
 
 
-    const { data: availableDocumentsData = [], isError, error, isLoading: isFetchingLoading } = useDocumentGetByEmailQuery(userEmail)
-    const [documentDelete, {isLoading:isDeleting}] =  useDocumentDeleteMutation()
-    const documents = availableDocumentsData.documents
+    const { 
+        documents, 
+        fetchDocumentsByEmail, 
+        deleteDocument, 
+        isLoading: isFetchingLoading 
+    } = useDocumentStore();
+
+    useEffect(() => {
+        if (userEmail) {
+            fetchDocumentsByEmail(userEmail);
+        }
+    }, [userEmail, fetchDocumentsByEmail]);
     
 
     const handleDelete = (docsId) => {
@@ -38,8 +48,7 @@ const DynamicDocsContainer = () => {
           confirmButtonText: 'Yes, delete it!',
         }).then((result) => {
           if (result.isConfirmed) {
-            documentDelete(docsId);
-            
+            deleteDocument(docsId);
           }
         });
       };
