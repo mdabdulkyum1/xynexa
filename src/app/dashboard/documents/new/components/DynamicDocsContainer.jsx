@@ -64,25 +64,25 @@ const DynamicDocsContainer = () => {
           <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4'>
             {
               documents?.map((doc) => (
-                <div key={doc?._id} className='p-4 rounded-lg bg-gray-200 dark:bg-black dark:border-2'>
+                <div key={doc?.id} className='p-4 rounded-lg bg-gray-200 dark:bg-black dark:border-2'>
                   <div className='flex justify-between'>
                     <p>{doc?.title}</p>
                     {/* actions */}
                     <div className="relative inline-block">
                       <button
-                        onClick={() => toggleMenu(doc._id)}
+                        onClick={() => toggleMenu(doc.id)}
                         className="text-2xl text-gray-600 dark:text-gray-200"
                       >
                         <BsThreeDotsVertical />
                       </button>
 
-                      {openId === doc._id && ( 
+                      {openId === doc.id && ( 
                         <div className="absolute right-0 mt-2 bg-white dark:bg-black dark:border-2 shadow-lg rounded-md p-2 z-10 space-y-2">
-                          <button onClick={()=>handleDelete(doc?._id)} className="text-red-500 text-2xl hover:scale-110 transition">
+                          <button onClick={()=>handleDelete(doc?.id)} className="text-red-500 text-2xl hover:scale-110 transition">
                             <MdDelete />
                           </button>
                           <button className="text-blue-500 text-2xl hover:scale-110 transition">
-                            <Link href={`/dashboard/documents/updateDocs/${doc?._id}`}><MdEditSquare /></Link>
+                            <Link href={`/dashboard/documents/updateDocs/${doc?.id}`}><MdEditSquare /></Link>
                             
                           </button>
                         </div>

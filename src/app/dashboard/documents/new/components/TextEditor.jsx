@@ -102,10 +102,8 @@ const TextEditor = () => {
             const docData = {
                 title: title,
                 content: content,
-                docCreator_id: currentDocCreator_id,
+                docCreatorId: currentDocCreator_id,
                 docCreatorEmail: currentDocCreatorEmail,
-                plainText: plainText.trim(),
-
                 createdAt: new Date().toISOString(),
             };
 
