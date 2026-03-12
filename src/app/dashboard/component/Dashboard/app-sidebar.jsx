@@ -202,7 +202,7 @@ export function AppSidebar(props) {
         icon: Command, 
         items: items?.map((team) => ({
           title: team.title || team.name,
-          url: `/dashboard/team/view/${team.id || team._id}`,
+          url: `/dashboard/tasks/${team.id || team._id}`,
         })) || [],
       },
       {
@@ -280,7 +280,7 @@ export function AppSidebar(props) {
         icon: Settings2,
         items: [
           { title: "Profile", url: "/dashboard/settings" },
-          { title: "Security", url: "/dashboard/settings/security" },
+          // { title: "Security", url: "/dashboard/settings/security" },
         ],
       },
     ],

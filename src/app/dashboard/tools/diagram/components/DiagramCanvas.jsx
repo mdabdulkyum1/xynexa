@@ -12,6 +12,11 @@ import { SketchPicker } from 'react-color';
 import { v4 as uuidv4 } from 'uuid';
 import * as htmlToImage from 'html-to-image';
 import CustomNode from './CustomNode';
+import { useSession } from 'next-auth/react';
+import useAuthStore from '@/store/useAuthStore';
+import useDocumentStore from '@/store/useDocumentStore';
+import { toast } from 'react-hot-toast';
+import { useRouter } from 'next/navigation';
 
 const nodeTypes = {
   custom: CustomNode,
@@ -44,6 +49,14 @@ const initialEdges = [
 ];
 
 const Diagram = () => {
+  const router = useRouter();
+  const { data: session } = useSession();
+  const user = useAuthStore((state) => state.user);
+  const { createDocument } = useDocumentStore();
+
+  const currentDocCreator_id = user?.id || session?.user?.id;
+  const currentDocCreatorEmail = user?.email || session?.user?.email;
+
   const diagramRef = useRef(null);
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
@@ -110,6 +123,33 @@ const Diagram = () => {
       console.error('Diagram ref is not defined');
     }
   };
+
+  const handleSaveToDatabase = async () => {
+    if (!diagramRef.current) return;
+
+    try {
+      const dataUrl = await htmlToImage.toPng(diagramRef.current, {
+        pixelRatio: 0.5,
+        backgroundColor: '#ffffff',
+        style: { transform: 'scale(1)', transformOrigin: 'top left' },
+      });
+
+      const docData = {
+        title: `Diagram - ${new Date().toLocaleString()}`,
+        content: `<img src="${dataUrl}" alt="diagram" />`,
+        docCreatorId: currentDocCreator_id,
+        docCreatorEmail: currentDocCreatorEmail,
+        createdAt: new Date().toISOString(),
+      };
+
+      await createDocument(docData);
+      toast.success("Diagram saved to database!");
+      router.push(`/dashboard/documents`);
+    } catch (err) {
+      console.error("Error saving diagram to DB:", err);
+      toast.error("Failed to save diagram to database.");
+    }
+  };
   
 
 
@@ -127,6 +167,12 @@ const Diagram = () => {
           className="text-[#20B7AB] border-2 border-[#20B7AB] px-4 py-2 rounded-full"
         >
           Download as Image
+        </button>
+        <button
+          onClick={handleSaveToDatabase}
+          className="bg-[#20B7AB] text-white px-4 py-2 rounded-full hover:bg-[#1a9289] transition"
+        >
+          Save to DB
         </button>
 
         {editingNode && (

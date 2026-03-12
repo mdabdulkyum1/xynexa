@@ -45,9 +45,8 @@ const DocsEditor = () => {
   });
 
   const handleSave = async () => {
-
     const html = editor?.getHTML();
-    const newDoc = { title, content: html, docCreator_id, docCreatorEmail };
+    const newDoc = { title, content: html, docCreatorId: docCreator_id, docCreatorEmail };
 
   
 
