@@ -61,13 +61,13 @@ const DocumentsContainer = () => {
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
 
                   {documents?.map((doc) => (
-                    <div key={doc._id} className="border p-4 rounded-lg shadow-md">
+                    <div key={doc.id} className="border p-4 rounded-lg shadow-md">
                       <h3 className="text-lg font-bold">{doc.title}</h3>
                       
 
                      <div className='flex items-center justify-between mt-4'>
-                     <Link className="btn px-4 py-2 text-xl text-blue-500 border-none dark:bg-black dark:text-white rounded  transition mr-2" href={`/dashboard/tools/documents/${doc?._id}`}><FaEdit /></Link>
-                     <button onClick={()=>handleDelete(doc?._id)} className='btn text-xl text-red-600 border-none bg-transparent'><MdDelete /></button>
+                     <Link className="btn px-4 py-2 text-xl text-blue-500 border-none dark:bg-black dark:text-white rounded  transition mr-2" href={`/dashboard/tools/documents/${doc?.id}`}><FaEdit /></Link>
+                     <button onClick={()=>handleDelete(doc?.id)} className='btn text-xl text-red-600 border-none bg-transparent'><MdDelete /></button>
                      </div>
 
                      
