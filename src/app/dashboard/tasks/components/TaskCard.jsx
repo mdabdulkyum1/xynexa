@@ -114,7 +114,7 @@ const TaskCard = ({ task }) => {
 
   const taskDelete = async () => {
     try {
-      await deleteBoardTask(task?._id);
+      await deleteBoardTask(task.id || task._id);
       closeModal();
     } catch (error) {
       console.error("Delete failed:", error);
@@ -268,7 +268,7 @@ const TaskCard = ({ task }) => {
           <AvatarGroup max={4}>
             {task?.members?.map((member) => (
               <Avatar
-                key={member?._id}
+                key={member?.id || member?._id}
                 sx={{ width: 24, height: 24 }}
                 alt={`${member?.firstName} ${member?.lastName}`}
                 src={member?.imageUrl || "https://i.ibb.co/B6sBj8C/stokes.jpg"}
@@ -293,7 +293,7 @@ const TaskCard = ({ task }) => {
               <button
                 onClick={(e) => {
                   e.stopPropagation();
-                  handleStatusChangePre(task._id, task.status);
+                  handleStatusChangePre(task.id || task._id, task.status);
                 }}
                 className={`p-1 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 ${
                   isUpdatingStatusPre ? "cursor-not-allowed" : ""
@@ -315,7 +315,7 @@ const TaskCard = ({ task }) => {
               <button
                 onClick={(e) => {
                   e.stopPropagation();
-                  handleStatusChange(task._id, task.status);
+                  handleStatusChange(task.id || task._id, task.status);
                 }}
                 className={`p-1 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 ${
                   isUpdatingStatus ? "cursor-not-allowed" : ""
