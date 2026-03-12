@@ -74,10 +74,8 @@ const TextEditor = () => {
             await updateDocument(id, {
                 title,
                 content,
-                creator: {
-                    id: currentDocCreator_id,
-                    email: currentDocCreatorEmail,
-                },
+                docCreatorId: currentDocCreator_id,
+                docCreatorEmail: currentDocCreatorEmail,
             });
     
             Swal.fire({
@@ -98,6 +96,13 @@ const TextEditor = () => {
         }
     };
     
+    if (isLoading) {
+        return (
+            <div className="flex justify-center items-center h-screen bg-purple-50 dark:bg-[#0A0A0A]">
+                <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-fuchsia-700"></div>
+            </div>
+        );
+    }
 
     return (
         <div className="min-h-screen bg-purple-50 dark:bg-[#0A0A0A] flex justify-center items-start p-4">

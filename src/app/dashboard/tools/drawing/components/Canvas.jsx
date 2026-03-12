@@ -18,14 +18,27 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { useSession } from "next-auth/react";
+import useAuthStore from "@/store/useAuthStore";
+import useDocumentStore from "@/store/useDocumentStore";
+import { toast } from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
 const Canvas = () => {
+  const router = useRouter();
+  const { data: session } = useSession();
+  const user = useAuthStore((state) => state.user);
+  const { createDocument } = useDocumentStore();
+
   const colorInputRef = useRef(null);
   const canvasRef = useRef(null);
   const [strokeColor, setStrokeColor] = useState("#014E4E");
   const [strokeWidth, setStrokeWidth] = useState(4);
   const [eraserWidth, setEraserWidth] = useState(10);
   const [eraseMode, setEraseMode] = useState(false);
+
+  const currentDocCreator_id = user?.id || session?.user?.id;
+  const currentDocCreatorEmail = user?.email || session?.user?.email;
 
   const handleStrokeColorChange = (e) => {
     setStrokeColor(e.target.value);
@@ -60,6 +73,28 @@ const Canvas = () => {
       document.body.appendChild(link);
       link.click();
       link.remove();
+    }
+  };
+
+  const handleSaveToDatabase = async () => {
+    try {
+      const dataURL = await canvasRef.current?.exportImage("png");
+      if (!dataURL) return toast.error("Canvas is empty!");
+
+      const docData = {
+        title: `Sketch - ${new Date().toLocaleString()}`,
+        content: `<img src="${dataURL}" alt="sketch" />`,
+        docCreatorId: currentDocCreator_id,
+        docCreatorEmail: currentDocCreatorEmail,
+        createdAt: new Date().toISOString(),
+      };
+
+      await createDocument(docData);
+      toast.success("Drawing saved to database!");
+      router.push(`/dashboard/documents`);
+    } catch (err) {
+      console.error("Error saving to DB:", err);
+      toast.error("Failed to save drawing to database.");
     }
   };
 
@@ -217,6 +252,20 @@ const Canvas = () => {
                   </Button>
                 </TooltipTrigger>
                 <TooltipContent>Save Image</TooltipContent>
+              </Tooltip>
+
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button
+                    size="icon"
+                    variant="outline"
+                    onClick={handleSaveToDatabase}
+                    className="w-8 h-8 sm:w-10 sm:h-10 bg-green-500 hover:bg-green-600 text-white"
+                  >
+                    <Save size={16} className="text-white" />
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent>Save to DB</TooltipContent>
               </Tooltip>
 
               <Tooltip>

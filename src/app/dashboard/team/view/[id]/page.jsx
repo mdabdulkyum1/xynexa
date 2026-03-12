@@ -183,7 +183,7 @@ const TeamDetails = () => {
                 <tbody>
                   {team?.members?.map((member, index) => (
                     <tr
-                      key={member._id}
+                      key={member.id || member._id}
                       className="border-b border-gray-200 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-black/30"
                     >
                       <td className="p-3 text-gray-600 dark:text-gray-300">{index + 1}</td>
